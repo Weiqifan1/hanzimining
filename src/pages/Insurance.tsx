@@ -1,10 +1,10 @@
-
+import IPage from "../interfaces/page";
 
 import { useDispatch, useSelector } from "react-redux";
 import {bindActionCreators} from "redux";
 import { actionCreators, State } from '../state/index';//from '../state/index';//'./state/index'
 
-const Insurance = () => {
+const Insurance : React.FunctionComponent<IPage> = props => {
 
     const dispatch = useDispatch();
     const {

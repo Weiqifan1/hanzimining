@@ -1,6 +1,6 @@
+import IPage from "../interfaces/page";
 
-
-const Products = () => {
+const Products: React.FunctionComponent<IPage> = props => {
 
     return (
     <section>
