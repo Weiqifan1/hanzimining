@@ -1,2 +1,2 @@
-# Getting Started with Create React App
-changed readme again
+# Test
+[start](https://weiqifan1.github.io/hanzimining/index.html)
