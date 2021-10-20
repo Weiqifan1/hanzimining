@@ -40,8 +40,8 @@ const TodoItem: React.FC<{content: Content}> = (props) => {
     }
 
     const editNumberValue = (htmlelement: FormEvent<HTMLElement>, defaultValue: number): number => {
-        const textvalue = htmlelement.currentTarget.textContent
-        if (!textvalue || !Number.isInteger(textvalue)) {
+        const textvalue: string | null = htmlelement.currentTarget.textContent
+        if (!(textvalue == null) && !Number.isInteger(parseInt(textvalue))) {
             //console.log("not a number: " + htmlelement.currentTarget.textContent)
             return defaultValue
         }else {

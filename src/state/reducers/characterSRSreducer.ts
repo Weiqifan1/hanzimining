@@ -8,8 +8,22 @@ const initialState: CharactersSRS = {
 }
 
 const editListItem = (newContent: Content, characterSRSObject: CharactersSRS): CharactersSRS => {
-    console.log("editListItem-reducer")
-    return characterSRSObject
+    const characterList: Content[] = characterSRSObject.content
+    const newContentNumber: number = newContent.number
+    const index = characterList.map(function(e) { return e.number; }).indexOf(newContentNumber);
+
+    const earlyIndexMembers: Content[] = characterList.slice(0, index);
+    const lateIndexMembers: Content[] = characterList.slice(index+1, characterList.length)
+
+    const newContentList: Content[] = earlyIndexMembers
+    newContentList.push(newContent)
+    newContentList.push(...lateIndexMembers)
+
+    const result: CharactersSRS = {
+        characterset: characterSRSObject.characterset,
+        content: newContentList
+    }
+    return result
 }
 
 const characterSRSreducer = (state: CharactersSRS = initialState, action: CharacterSRSaction): CharactersSRS => {
