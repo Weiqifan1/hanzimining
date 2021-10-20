@@ -10,7 +10,7 @@ const initialState: CharactersSRS = {
 const characterSRSreducer = (state: CharactersSRS = initialState, action: CharacterSRSaction): CharactersSRS => {
     switch (action.type) {
         case CharacterSRSactionTypes.CREATESRSOBJECT:
-            return action.payload
+            return action.payload.CharactersSRS
         default:
             return state
     }

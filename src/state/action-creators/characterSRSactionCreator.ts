@@ -8,7 +8,17 @@ export const createSRSobject = (characterSRSobject: CharactersSRS) => {
     return (dispatch: Dispatch<CharacterSRSaction>) => {
         dispatch({
             type: CharacterSRSactionTypes.CREATESRSOBJECT,
-            payload: characterSRSobject
+            payload: {
+                CharactersSRS: characterSRSobject,
+                Content: {
+                    number: 0,
+                    character: "",
+                    keyword: "",
+                    story: "",
+                    dateOfLastReview: "",
+                    reviewValue: 0,
+                }
+            }
         })
     }
 }

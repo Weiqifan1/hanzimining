@@ -1,9 +1,12 @@
 import {CharacterSRSactionTypes} from "../action-types/characterSRSactionTypes";
-import {CharactersSRS} from "../state-types/charactersrstypes";
+import {CharactersSRS, Content} from "../state-types/charactersrstypes";
 
 interface CreateSRSobject {
     type: CharacterSRSactionTypes.CREATESRSOBJECT
-    payload: CharactersSRS
+    payload: {
+        CharactersSRS: CharactersSRS,
+        Content: Content
+    }
 }
 
 export type CharacterSRSaction = CreateSRSobject
