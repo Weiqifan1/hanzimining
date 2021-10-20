@@ -36,8 +36,25 @@ const PasteHeisig: React.FunctionComponent<IPage> = props => {
         insertHanzi.value = ""
     }
 
+    const testchr = (filename: string, text: string) => {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    }
+
+    const downloadCharacterSRSobject = () => {
+        const characterSRSobject: CharactersSRS = characterSRSstate
+        const result: string = JSON.stringify(characterSRSobject)
+        testchr("updatedList", result)
+    }
+
     return <section>
         <h1> The paste heisig page </h1>
+        <button type="button" onClick={() => downloadCharacterSRSobject()}>downloadCharacterSRS</button>
         <button type="button" onClick={() => processJsonInput()}>processJson</button>
         <button type="button" onClick={() => clearInputField()}>ClearInput</button>
         <p>{characterSRSstate.content.length}</p>
