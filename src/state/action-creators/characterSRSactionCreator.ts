@@ -1,4 +1,4 @@
-import {CharactersSRS} from "../state-types/charactersrstypes";
+import {CharactersSRS, Content} from "../state-types/charactersrstypes";
 import {Dispatch} from "redux";
 import {CharacterSRSaction} from "../actions/characterSRSactions";
 import {CharacterSRSactionTypes} from "../action-types/characterSRSactionTypes";
@@ -18,6 +18,18 @@ export const createSRSobject = (characterSRSobject: CharactersSRS) => {
                     dateOfLastReview: "",
                     reviewValue: 0,
                 }
+            }
+        })
+    }
+}
+
+export const editListItem = (listItem: Content, characterSRSobject: CharactersSRS) => {
+    return (dispatch: Dispatch<CharacterSRSaction>) => {
+        dispatch({
+            type: CharacterSRSactionTypes.EDITLISTITEM,
+            payload: {
+                CharactersSRS: characterSRSobject,
+                Content: listItem
             }
         })
     }

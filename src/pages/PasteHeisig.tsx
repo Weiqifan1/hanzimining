@@ -15,15 +15,15 @@ const PasteHeisig: React.FunctionComponent<IPage> = props => {
     
     const processJsonInput = () => {
         const content: string = ((document.getElementById("inserthanzi") as HTMLInputElement).value);
-        console.log("process json content");
-        console.log(content.length);
-        console.log(typeof content)
+        //console.log("process json content");
+        //console.log(content.length);
+        //console.log(typeof content)
 
         try {
             let characterSRSobj: CharactersSRS = JSON.parse(content);
             createSRSobject(characterSRSobj)
             console.log("no error")
-            console.log(characterSRSobj.content.length)
+            //console.log(characterSRSobj.content.length)
         }
         catch(e){
             console.log("error:")

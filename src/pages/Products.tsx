@@ -26,9 +26,7 @@ const Products: React.FunctionComponent<IPage> = props => {
         document.body.removeChild(element);
     }
 
-    //2021 10 19: new version of download text that fetches json from github pages
     const getCharactersJson = (filename: string, url: string) => {
-        console.log("jeg henter fra gh pages")
         fetch(url)
             .then(res => res.json())
             .then(data => testchr(filename, JSON.stringify(data)))

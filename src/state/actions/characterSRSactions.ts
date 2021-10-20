@@ -9,4 +9,12 @@ interface CreateSRSobject {
     }
 }
 
-export type CharacterSRSaction = CreateSRSobject
+interface EditListItem {
+    type: CharacterSRSactionTypes.EDITLISTITEM
+    payload: {
+        CharactersSRS: CharactersSRS,
+        Content: Content
+    }
+}
+
+export type CharacterSRSaction = CreateSRSobject | EditListItem

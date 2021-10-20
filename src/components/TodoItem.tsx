@@ -1,6 +1,11 @@
-import {Content} from "../state/state-types/charactersrstypes";
 import classes from "./TodoItem.module.css"
 import {FormEvent} from "react";
+import React from "react";
+import IPage from "../interfaces/page";
+import {CharactersSRS, Content} from "../state/state-types/charactersrstypes";
+import { useDispatch, useSelector } from "react-redux";
+import {bindActionCreators} from "redux";
+import { characterSRSactionCreators, State } from '../state/index';
 
 const TodoItem: React.FC<{content: Content}> = (props) => {
     const content: Content = props.content
@@ -8,6 +13,12 @@ const TodoItem: React.FC<{content: Content}> = (props) => {
     var tempDateOfLastReview: string = props.content.dateOfLastReview
     var tempKeyword: string = props.content.keyword
     var tempStory: string = props.content.story
+
+    const dispatch = useDispatch();
+    const {editListItem} = bindActionCreators(characterSRSactionCreators, dispatch)
+    const characterSRSstate = useSelector(
+        (state: State) => state.characterSRS
+    )
 
     const saveEdit = () => {
         var changesMade: boolean = false
@@ -24,13 +35,14 @@ const TodoItem: React.FC<{content: Content}> = (props) => {
             story: tempStory
         }
         //TDOD: create an action that can save a content object
+        editListItem(newContentObject, characterSRSstate)
 
     }
 
     const editNumberValue = (htmlelement: FormEvent<HTMLElement>, defaultValue: number): number => {
         const textvalue = htmlelement.currentTarget.textContent
         if (!textvalue || !Number.isInteger(textvalue)) {
-            console.log("not a number: " + htmlelement.currentTarget.textContent)
+            //console.log("not a number: " + htmlelement.currentTarget.textContent)
             return defaultValue
         }else {
             const finalresult: number = Number(textvalue)
@@ -41,7 +53,7 @@ const TodoItem: React.FC<{content: Content}> = (props) => {
     const editStringvalue = (htmlelement: FormEvent<HTMLElement>, defaultValue: string): string => {
         const textvalue = htmlelement.currentTarget.textContent
         if (!textvalue) {
-            console.log("not a string: " + htmlelement.currentTarget.textContent)
+            //console.log("not a string: " + htmlelement.currentTarget.textContent)
             return defaultValue
         }else {
             const finalresult: string = textvalue ? textvalue : defaultValue

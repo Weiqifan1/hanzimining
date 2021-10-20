@@ -1,3 +1,4 @@
 export enum CharacterSRSactionTypes{
-    CREATESRSOBJECT = "createsrsobject"
+    CREATESRSOBJECT = "createsrsobject",
+    EDITLISTITEM = "editlistitem"
 }
