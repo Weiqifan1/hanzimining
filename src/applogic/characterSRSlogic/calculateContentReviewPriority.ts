@@ -5,7 +5,7 @@ export const getReviewPriority = (allContentItems: Content[], forbiddenCharacter
     const forbiddenCharacterNumbers: number[] = forbiddenCharacters.map(eachContent => eachContent.number)
     const contentAddedToDeck: Content[] = allContentItems.filter(eachContent => eachContent.reviewValue > 0)
     const nonProhibited: Content[] = contentAddedToDeck.filter(eachContent => {
-        return (forbiddenCharacterNumbers.indexOf(eachContent.number) > -1)
+        return (forbiddenCharacterNumbers && forbiddenCharacterNumbers.indexOf(eachContent.number) === -1)
     })
     const nonProhibitedSorted: Content[] = calculateReviewPriority(nonProhibited)
     return nonProhibitedSorted
