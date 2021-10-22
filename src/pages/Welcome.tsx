@@ -136,10 +136,21 @@ const Welcome: React.FunctionComponent<IPage> = props => {
         return buttonsToReturn
     }
 
-
+    const displayMostRecentCharacters = (): ReactElement => {
+        const mostRecentCharacter: Content[] = []//mostRecentContentObjects ? mostRecentContentObjects : []
+        let resultString: string;
+        if (!mostRecentCharacter || mostRecentCharacter.length === 0) {
+            resultString = "No previous characters yet"
+        }else {
+            const charactersList: string[] = mostRecentCharacter.map(each => each.character)
+            resultString = "previous: " + charactersList.join()
+        }
+        return <section>{resultString}</section>
+    }
 
     return <section>
         <h1> The Welcome page </h1>
+        {displayMostRecentCharacters()}
         {displayNumberOfCharacters()}
         {addCharactersPageContent()}
         {buttonsToShowAndHandleCharacterSRSContentElement()}
