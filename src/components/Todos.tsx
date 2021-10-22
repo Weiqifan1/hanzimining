@@ -6,7 +6,7 @@ const Todos: React.FC<{data: CharactersSRS}> = (props) => {
     return (
         <ul>
             {props.data.content.map((item) =>(
-                <TodoItem content={item}/>
+                <TodoItem content={item} show={true}/>
             ))}
         </ul>
     )

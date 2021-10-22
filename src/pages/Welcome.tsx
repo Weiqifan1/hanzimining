@@ -45,7 +45,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
             if (srscalculationResult.currentContent) {
                 //save the calculated Content object to a component variable
                 currentContent = srscalculationResult.currentContent
-                contentOrNotEnough = <TodoItem content={srscalculationResult.currentContent}/>
+                contentOrNotEnough = <TodoItem content={srscalculationResult.currentContent} show={true}/>
             }else {
                 contentOrNotEnough = <p>Content type is undefined!!! this is an error</p>
             }
