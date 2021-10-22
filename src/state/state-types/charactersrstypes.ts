@@ -12,4 +12,5 @@ export interface Content {
 export interface CharactersSRS {
     characterset: string;
     content: Content[];
+    previousCharacters: Content[]
 }

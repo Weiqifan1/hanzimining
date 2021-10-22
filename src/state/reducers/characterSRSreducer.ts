@@ -3,6 +3,7 @@ import {CharacterSRSactionTypes} from "../action-types/characterSRSactionTypes";
 import {CharactersSRS, Content} from "../state-types/charactersrstypes";
 
 const initialState: CharactersSRS = {
+    previousCharacters: [],
     characterset: '',
     content: []
 }
@@ -20,6 +21,7 @@ const editListItem = (newContent: Content, characterSRSObject: CharactersSRS): C
     newContentList.push(...lateIndexMembers)
 
     const result: CharactersSRS = {
+        ...characterSRSObject,
         characterset: characterSRSObject.characterset,
         content: newContentList
     }
@@ -32,6 +34,7 @@ const editListItemsInBulk = (newContentInBulk: Content[], characterSRSObject: Ch
     const characterList: Content[] = characterSRSObject.content.filter(each => !allNewNumbers.includes(each.number))
     const redoneArray: Content[] = characterList.concat(newContentInBulk)
     const result: CharactersSRS = {
+        ...characterSRSObject,
         characterset: characterSRSObject.characterset,
         content: redoneArray
     }

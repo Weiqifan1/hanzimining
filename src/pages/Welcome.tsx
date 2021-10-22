@@ -12,6 +12,7 @@ import TodoItem from "../components/TodoItem";
 const Welcome: React.FunctionComponent<IPage> = props => {
 
     var currentContent: Content;
+    var previousCharacters: Content[];
     const [showCharacterSRSContentElement, setShowCharacterSRSContentElement] = useState<boolean>(false)
     const [addMoreCharactersTextField, setAddMoreCharactersTextField] = useState<string>("");
 
@@ -27,7 +28,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
         const srslogic: characterSRSlogic = {
             characterSRS: characterSRSstate,
             currentContent: undefined,
-            mostRecentContentObjects: [],
+            mostRecentContentObjects: previousCharacters,
             notEnoughCharacters: false
         }
         const srscalculationResult: characterSRSlogic = calculateNextCharacter(srslogic)
@@ -37,6 +38,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
             if (srscalculationResult.currentContent) {
                 //save the calculated Content object to a component variable
                 currentContent = srscalculationResult.currentContent
+                previousCharacters = srscalculationResult.characterSRS.previousCharacters ? srscalculationResult.characterSRS.previousCharacters : []
                 contentOrNotEnough = <TodoItem content={srscalculationResult.currentContent} show={showCharacterSRSContentElement}/>
             }else {
                 contentOrNotEnough = <p>Content type is undefined!!! this is an error</p>
@@ -120,6 +122,8 @@ const Welcome: React.FunctionComponent<IPage> = props => {
     const decreaseReviewValueWithOne = () => {
         console.log("minus 1")
     }
+
+
     const buttonsToShowAndHandleCharacterSRSContentElement = (): ReactElement => {
 
         let buttonsToReturn: ReactElement;
@@ -129,8 +133,8 @@ const Welcome: React.FunctionComponent<IPage> = props => {
             </section>
         }else {
             buttonsToReturn = <section>
-                <button type="button" onClick={increaseReviewValueWithOne}>reviewValue-1</button>
-                <button type="button" onClick={decreaseReviewValueWithOne}>reviewValue+1</button>
+                <button type="button" onClick={decreaseReviewValueWithOne}>reviewValue-1</button>
+                <button type="button" onClick={increaseReviewValueWithOne}>reviewValue+1</button>
             </section>
         }
         return buttonsToReturn
