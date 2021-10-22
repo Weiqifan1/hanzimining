@@ -12,7 +12,16 @@ import TodoItem from "../components/TodoItem";
 const Welcome: React.FunctionComponent<IPage> = props => {
 
     var currentContent: Content;
-    const [addMoreCharactersTextField, setAddMoreCharactersTextField] = useState("");
+    /*
+    const [currentStateContentObject, setCurrentStateContentObject] = useState<Content>({
+        number: 0,
+        character: "",
+        keyword: "",
+        story: "",
+        dateOfLastReview: "",
+        reviewValue: 0
+    })*/
+    const [addMoreCharactersTextField, setAddMoreCharactersTextField] = useState<string>("");
 
     const dispatch = useDispatch();
     const {editListItemInBulk} = bindActionCreators(characterSRSactionCreators, dispatch)
@@ -36,7 +45,6 @@ const Welcome: React.FunctionComponent<IPage> = props => {
             if (srscalculationResult.currentContent) {
                 //save the calculated Content object to a component variable
                 currentContent = srscalculationResult.currentContent
-                //create the appropriate diaplay
                 contentOrNotEnough = <TodoItem content={srscalculationResult.currentContent}/>
             }else {
                 contentOrNotEnough = <p>Content type is undefined!!! this is an error</p>
@@ -110,10 +118,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
         </section>
     }
 
-    /*{(e: React.FormEvent<HTMLInputElement>) => {
-                addMoreCharactersTextField = e.currentTarget.value
-                console.log(e.currentTarget.value);
-            }}*/
+
 
     return <section>
         <h1> The Welcome page </h1>
