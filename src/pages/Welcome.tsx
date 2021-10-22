@@ -15,7 +15,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
     const [addMoreCharactersTextField, setAddMoreCharactersTextField] = useState("");
 
     const dispatch = useDispatch();
-    const {editListItem} = bindActionCreators(characterSRSactionCreators, dispatch)
+    const {editListItemInBulk} = bindActionCreators(characterSRSactionCreators, dispatch)
     const characterSRSstate = useSelector(
         (state: State) => state.characterSRS
     )
@@ -49,14 +49,29 @@ const Welcome: React.FunctionComponent<IPage> = props => {
     const displayNumberOfCharacters = (): ReactElement => {
         const charactersYouWantToAdd: number = Number(addMoreCharactersTextField) ? Number(addMoreCharactersTextField) : 0
         const finalCharValue: number = getNewFinalCharValue(charactersYouWantToAdd, characterSRSstate.content)
-        return <p>highest character: {finalCharValue}</p>
+        const allCharacters: number = characterSRSstate.content.filter(eachContent => {
+            return eachContent.reviewValue > 0
+        }).length
+        return <p>highest character: {finalCharValue} all characters: {allCharacters}</p>
     }
-    const getNewChars = (charactersToAdd: number, allCharacter: Content[]): Content[] => {
-        const sortedCharactersLowestToHighest: Content[] = characterSRSstate.content.sort(function sort(a: Content, b: Content){if (a.number < b.number) {return -1; }if (a.number > b.number) {return 1;}return 0;})
-        const onlyCharactersWithReviewValueAt0: Content[] = sortedCharactersLowestToHighest.filter(eachContent => eachContent.reviewValue === 0)
-        const charsToAdd: Content[] = onlyCharactersWithReviewValueAt0.slice(0,charactersToAdd)
-        //const sortedCharsReviewValueAbove0WithNewChars: Content[] = sortedCharactersLowestToHighest.filter(eachContent => eachContent.reviewValue > 0).concat(charsToAdd)
-        //const sortetAgain
+    //used to either add new character or delete old ones (remove it from the deck)
+    const getCharsToEdit = (charactersToAdd: number, zeroToDeleteElseAddNew: number, allCharacter: Content[]): Content[] => {
+        let charsToAdd: Content[];
+        if (zeroToDeleteElseAddNew > 0) {
+            const sortedCharactersLowestToHighest: Content[] = characterSRSstate.content.sort(function sort(a: Content, b: Content){if (a.number < b.number) {return -1; }if (a.number > b.number) {return 1;}return 0;})
+            const onlyCharactersWithReviewValueAt0: Content[] = sortedCharactersLowestToHighest.filter(eachContent => eachContent.reviewValue === 0)
+            charsToAdd = onlyCharactersWithReviewValueAt0.slice(0,charactersToAdd).map(eachContent => {
+                const updatedContent: Content = {...eachContent, reviewValue: zeroToDeleteElseAddNew}
+                return updatedContent
+            })
+        }else {
+            const sortedCharactersHighestToLowest: Content[] = characterSRSstate.content.sort(function sortReverse(a: Content, b: Content){if (a.number > b.number) {return -1; }if (a.number < b.number) {return 1;}return 0;})
+            const charactersWithReviewValueAbove0ReverseSorted: Content[] = sortedCharactersHighestToLowest.filter(eachContent => eachContent.reviewValue > 0)
+            charsToAdd = charactersWithReviewValueAbove0ReverseSorted.slice(0,charactersToAdd).map(eachContent => {
+                const updatedContent: Content = {...eachContent, reviewValue: zeroToDeleteElseAddNew}
+                return updatedContent
+            })
+        }
         return charsToAdd
     }
     const getNewFinalCharValue = (charactersToAdd: number, allCharacter: Content[]): number => {
@@ -69,27 +84,29 @@ const Welcome: React.FunctionComponent<IPage> = props => {
     }
 
 
-    const addANumberOfCharacters = () => {
-
+    const deleteANumberOfCharacters = () => {
         const charactersYouWantToAdd: number = Number(addMoreCharactersTextField) ? Number(addMoreCharactersTextField) : 0
-        const newCharactersToBeAdded: Content[] = getNewChars(charactersYouWantToAdd, characterSRSstate.content)
-        const test = "test"
-        /*
-        newCharactersToBeAdded.map(eachNewContent => {
-            const newContentItem: Content = {...eachNewContent, reviewValue: 1}
-            editListItem(newContentItem, characterSRSstate)
-        })*/
-        console.log("button pressed")
+        const charactersToDelete: Content[] = getCharsToEdit(charactersYouWantToAdd, 0, characterSRSstate.content)
+        setAddMoreCharactersTextField("")
+        editListItemInBulk(charactersToDelete, characterSRSstate)
+    }
+    const addANumberOfCharacters = () => {
+        const charactersYouWantToAdd: number = Number(addMoreCharactersTextField) ? Number(addMoreCharactersTextField) : 0
+        const newCharactersToBeAdded: Content[] = getCharsToEdit(charactersYouWantToAdd, 1, characterSRSstate.content)
+        setAddMoreCharactersTextField("")
+        editListItemInBulk(newCharactersToBeAdded, characterSRSstate)
     }
     const changeOnNewCharacterInputField = (e: React.FormEvent<HTMLInputElement>) => {
         setAddMoreCharactersTextField(e.currentTarget.value)
         console.log(addMoreCharactersTextField);
     }
 
+
     const addCharactersPageContent = (): ReactElement => {
         return <section>
             <button type="button" onClick={addANumberOfCharacters}>addNewChars</button>
-            <input type="text" id="addMoreCharacters" placeholder="addCharacters" onInput={changeOnNewCharacterInputField}></input>
+            <input type="text" value={addMoreCharactersTextField} id="addMoreCharacters" placeholder="addCharacters" onInput={changeOnNewCharacterInputField}></input>
+            <button type="button" onClick={deleteANumberOfCharacters}>deleteLatestCharacters</button>
         </section>
     }
 

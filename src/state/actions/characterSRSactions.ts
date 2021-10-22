@@ -5,7 +5,7 @@ interface CreateSRSobject {
     type: CharacterSRSactionTypes.CREATESRSOBJECT
     payload: {
         CharactersSRS: CharactersSRS,
-        Content: Content
+        Content: Content[]
     }
 }
 
@@ -13,8 +13,16 @@ interface EditListItem {
     type: CharacterSRSactionTypes.EDITLISTITEM
     payload: {
         CharactersSRS: CharactersSRS,
-        Content: Content
+        Content: Content[]
     }
 }
 
-export type CharacterSRSaction = CreateSRSobject | EditListItem
+interface EditListItemsInBulk {
+    type: CharacterSRSactionTypes.EDITLISTITEMINBULK
+    payload: {
+        CharactersSRS: CharactersSRS,
+        Content: Content[]
+    }
+}
+
+export type CharacterSRSaction = CreateSRSobject | EditListItem | EditListItemsInBulk

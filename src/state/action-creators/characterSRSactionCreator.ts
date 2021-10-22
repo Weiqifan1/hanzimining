@@ -10,14 +10,14 @@ export const createSRSobject = (characterSRSobject: CharactersSRS) => {
             type: CharacterSRSactionTypes.CREATESRSOBJECT,
             payload: {
                 CharactersSRS: characterSRSobject,
-                Content: {
+                Content: [{
                     number: 0,
                     character: "",
                     keyword: "",
                     story: "",
                     dateOfLastReview: "",
                     reviewValue: 0,
-                }
+                }]
             }
         })
     }
@@ -29,7 +29,19 @@ export const editListItem = (listItem: Content, characterSRSobject: CharactersSR
             type: CharacterSRSactionTypes.EDITLISTITEM,
             payload: {
                 CharactersSRS: characterSRSobject,
-                Content: listItem
+                Content: [listItem]
+            }
+        })
+    }
+}
+
+export const editListItemInBulk = (listItemsInBulk: Content[], characterSRSobject: CharactersSRS) => {
+    return (dispatch: Dispatch<CharacterSRSaction>) => {
+        dispatch({
+            type: CharacterSRSactionTypes.EDITLISTITEMINBULK,
+            payload: {
+                CharactersSRS: characterSRSobject,
+                Content: listItemsInBulk
             }
         })
     }

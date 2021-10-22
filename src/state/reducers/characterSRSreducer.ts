@@ -26,12 +26,26 @@ const editListItem = (newContent: Content, characterSRSObject: CharactersSRS): C
     return result
 }
 
+const editListItemsInBulk = (newContentInBulk: Content[], characterSRSObject: CharactersSRS): CharactersSRS => {
+    //remove all charactersThatHasTheSameNumbers
+    const allNewNumbers: number[] = newContentInBulk.map(each => each.number)
+    const characterList: Content[] = characterSRSObject.content.filter(each => !allNewNumbers.includes(each.number))
+    const redoneArray: Content[] = characterList.concat(newContentInBulk)
+    const result: CharactersSRS = {
+        characterset: characterSRSObject.characterset,
+        content: redoneArray
+    }
+    return result
+}
+
 const characterSRSreducer = (state: CharactersSRS = initialState, action: CharacterSRSaction): CharactersSRS => {
     switch (action.type) {
         case CharacterSRSactionTypes.CREATESRSOBJECT:
             return action.payload.CharactersSRS
         case CharacterSRSactionTypes.EDITLISTITEM:
-            return editListItem(action.payload.Content, action.payload.CharactersSRS)
+            return editListItem(action.payload.Content[0], action.payload.CharactersSRS)
+        case CharacterSRSactionTypes.EDITLISTITEMINBULK:
+            return editListItemsInBulk(action.payload.Content, action.payload.CharactersSRS)
         default:
             return state
     }
