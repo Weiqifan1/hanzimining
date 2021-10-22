@@ -110,6 +110,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
     }
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        console.log(event.key.toString())
         if (event.key.toString() === ' ' || event.key.toString() === "ArrowRight") {
             setAddMoreCharactersTextField("")
             if (showCharacterSRSContentElement) {
@@ -121,6 +122,8 @@ const Welcome: React.FunctionComponent<IPage> = props => {
             setAddMoreCharactersTextField("")
             if (showCharacterSRSContentElement) {
                 decreaseReviewValueWithOne()
+            }else {
+                changeShowCharacter()
             }
         }
     };
@@ -138,8 +141,14 @@ const Welcome: React.FunctionComponent<IPage> = props => {
     const changeShowCharacter = () => {
         setShowCharacterSRSContentElement(true);
     }
+    const increaseReviewValueWithFive = () => {
+        respondToAPresentedCharacterSRSObject(5)
+    }
     const increaseReviewValueWithOne = () => {
         respondToAPresentedCharacterSRSObject(1)
+    }
+    const decreaseReviewValueWithFive = () => {
+        respondToAPresentedCharacterSRSObject(-5)
     }
     const decreaseReviewValueWithOne = () => {
         respondToAPresentedCharacterSRSObject(-1)
@@ -166,8 +175,10 @@ const Welcome: React.FunctionComponent<IPage> = props => {
             </section>
         }else {
             buttonsToReturn = <section>
+                <button id="decreaseByFive" type="button" onClick={decreaseReviewValueWithFive}>reviewValue-5</button>
                 <button id="decreaseByOne" type="button" onClick={decreaseReviewValueWithOne}>reviewValue-1</button>
                 <button id="increaseByOne" type="button" onClick={increaseReviewValueWithOne}>reviewValue+1</button>
+                <button id="increaseByOne" type="button" onClick={increaseReviewValueWithFive}>reviewValue+5</button>
             </section>
         }
         return buttonsToReturn
@@ -179,8 +190,9 @@ const Welcome: React.FunctionComponent<IPage> = props => {
         if (!mostRecentCharacter || mostRecentCharacter.length === 0) {
             resultString = "No previous characters yet"
         }else {
-            const charactersList: string[] = mostRecentCharacter.map(each => each.character)
-            resultString = "previous: " + charactersList.join()
+            const shortList: Content[] = mostRecentCharacter.length<5 ? mostRecentCharacter : mostRecentCharacter.slice(0,5)
+            const stringList: string = shortList.map(each => each.character+each.number).join()
+            resultString = "previous: " + stringList + " totalRepetitions: " + mostRecentCharacter.length
         }
         return <section>{resultString}</section>
     }
