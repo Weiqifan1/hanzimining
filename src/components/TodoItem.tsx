@@ -1,5 +1,5 @@
 import classes from "./TodoItem.module.css"
-import {FormEvent} from "react";
+import {FormEvent, PropsWithChildren} from "react";
 import React from "react";
 import IPage from "../interfaces/page";
 import {CharactersSRS, Content} from "../state/state-types/charactersrstypes";
@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {bindActionCreators} from "redux";
 import { characterSRSactionCreators, State } from '../state/index';
 
-const TodoItem: React.FC<{content: Content}> = (props) => {
+const TodoItem: React.FC<{content: Content}> = (props: PropsWithChildren<{content: Content}>) => {//PropsWithChildren<{content: Content}>
     const content: Content = props.content
     var tempReviewValue: number = props.content.reviewValue
     var tempDateOfLastReview: string = props.content.dateOfLastReview
