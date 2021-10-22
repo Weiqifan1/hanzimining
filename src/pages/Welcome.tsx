@@ -13,6 +13,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
 
     var currentContent: Content;
     var previousCharacters: Content[];
+    var displayPreviousCharacters: ReactElement = <p></p>
     const [showCharacterSRSContentElement, setShowCharacterSRSContentElement] = useState<boolean>(false)
     const [addMoreCharactersTextField, setAddMoreCharactersTextField] = useState<string>("");
 
@@ -24,6 +25,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
 
 
     const todoPageContent = (): ReactElement => {
+        //previousCharacters = characterSRSstate.previousCharacters
         let contentOrNotEnough;
         const srslogic: characterSRSlogic = {
             characterSRS: characterSRSstate,
@@ -38,12 +40,13 @@ const Welcome: React.FunctionComponent<IPage> = props => {
             if (srscalculationResult.currentContent) {
                 //save the calculated Content object to a component variable
                 currentContent = srscalculationResult.currentContent
-                previousCharacters = srscalculationResult.characterSRS.previousCharacters ? srscalculationResult.characterSRS.previousCharacters : []
+                //previousCharacters = srscalculationResult.characterSRS.previousCharacters ? srscalculationResult.characterSRS.previousCharacters : []
                 contentOrNotEnough = <TodoItem content={srscalculationResult.currentContent} show={showCharacterSRSContentElement}/>
             }else {
                 contentOrNotEnough = <p>Content type is undefined!!! this is an error</p>
             }
         }
+        //displayPreviousCharacters = displayMostRecentCharacters(characterSRSstate.previousCharacters)
         return contentOrNotEnough
     }
 
@@ -149,8 +152,8 @@ const Welcome: React.FunctionComponent<IPage> = props => {
         return buttonsToReturn
     }
 
-    const displayMostRecentCharacters = (): ReactElement => {
-        const mostRecentCharacter: Content[] = previousCharacters ? previousCharacters : []
+    const displayMostRecentCharacters = (listToDisplay: Content[]): ReactElement => {
+        const mostRecentCharacter: Content[] = listToDisplay ? listToDisplay : []
         let resultString: string;
         if (!mostRecentCharacter || mostRecentCharacter.length === 0) {
             resultString = "No previous characters yet"
@@ -163,7 +166,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
 
     return <section>
         <h1> The Welcome page </h1>
-        {displayMostRecentCharacters()}
+        {displayMostRecentCharacters(characterSRSstate.previousCharacters)}
         {displayNumberOfCharacters()}
         {addCharactersPageContent()}
         {buttonsToShowAndHandleCharacterSRSContentElement()}
