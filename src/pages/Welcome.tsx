@@ -1,5 +1,5 @@
 
-import React, {ReactElement, useState} from "react";
+import React, {ReactElement, useEffect, useRef, useState} from "react";
 import IPage from "../interfaces/page";
 import {useDispatch, useSelector} from "react-redux";
 import {bindActionCreators} from "redux";
@@ -10,6 +10,9 @@ import {calculateNextCharacter} from "../applogic/characterSRSlogic/calculateCha
 import TodoItem from "../components/TodoItem";
 
 const Welcome: React.FunctionComponent<IPage> = props => {
+
+    const addCharactersReference = useRef<HTMLInputElement | null>(null);
+    useEffect(()=>{addCharactersReference.current?.focus();},[])
 
     var currentContent: Content;
     var previousCharacters: Content[];
@@ -106,11 +109,27 @@ const Welcome: React.FunctionComponent<IPage> = props => {
         console.log(addMoreCharactersTextField);
     }
 
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key.toString() === ' ' || event.key.toString() === "ArrowRight") {
+            setAddMoreCharactersTextField("")
+            if (showCharacterSRSContentElement) {
+                increaseReviewValueWithOne()
+            }else {
+                changeShowCharacter()
+            }
+        }else if(event.key.toString() === "ArrowLeft"){
+            setAddMoreCharactersTextField("")
+            if (showCharacterSRSContentElement) {
+                decreaseReviewValueWithOne()
+            }
+        }
+    };
+
 
     const addCharactersPageContent = (): ReactElement => {
         return <section>
             <button type="button" onClick={addANumberOfCharacters}>addNewChars</button>
-            <input type="text" value={addMoreCharactersTextField} id="addMoreCharacters" placeholder="addCharacters" onInput={changeOnNewCharacterInputField}></input>
+            <input ref={addCharactersReference} type="text" onKeyDown={handleKeyDown} value={addMoreCharactersTextField} id="addMoreCharacters" placeholder="addCharacters" onInput={changeOnNewCharacterInputField}></input>
             <button type="button" onClick={deleteANumberOfCharacters}>deleteLatestCharacters</button>
         </section>
     }
@@ -138,6 +157,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
     }
 
 
+
     const buttonsToShowAndHandleCharacterSRSContentElement = (): ReactElement => {
         let buttonsToReturn: ReactElement;
         if (!showCharacterSRSContentElement) {
@@ -146,8 +166,8 @@ const Welcome: React.FunctionComponent<IPage> = props => {
             </section>
         }else {
             buttonsToReturn = <section>
-                <button type="button" onClick={decreaseReviewValueWithOne}>reviewValue-1</button>
-                <button type="button" onClick={increaseReviewValueWithOne}>reviewValue+1</button>
+                <button id="decreaseByOne" type="button" onClick={decreaseReviewValueWithOne}>reviewValue-1</button>
+                <button id="increaseByOne" type="button" onClick={increaseReviewValueWithOne}>reviewValue+1</button>
             </section>
         }
         return buttonsToReturn

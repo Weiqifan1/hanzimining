@@ -20,7 +20,7 @@ export const calculateNextCharacter = (input: characterSRSlogic): characterSRSlo
         const firstPriority: Content = reviewPrioritySorted[0]
         const returnObject: characterSRSlogic = {
             currentContent: firstPriority,
-            mostRecentContentObjects: updatedMostRecentlyPracticed,
+            mostRecentContentObjects: input.mostRecentContentObjects,
             characterSRS: input.characterSRS,
             notEnoughCharacters: false
         }
