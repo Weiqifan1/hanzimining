@@ -66,16 +66,16 @@ const TodoItem: React.FC<{content: Content, show: boolean}> = (props: PropsWithC
     return <section>
         <button type="button" onClick={() => saveEdit()}>saveEditOn {content.number}</button>
         <ul>
-            <li className={classes.characterListElement}>{props.content.character}</li>
-            <li>{content.number}</li>
-            <li onInput={(e) => tempReviewValue = editNumberValue(e, props.content.reviewValue)} id="reviewValue" contentEditable="true">
-                {content.reviewValue}</li>
-            <li onInput={(e) => tempDateOfLastReview = editStringvalue(e, props.content.dateOfLastReview)} id="dateOfLastReview" contentEditable="true">
-                {content.dateOfLastReview}</li>
+            { props.show ? <li className={classes.characterListElement}>{props.content.character}</li> : <li className={classes.characterListElement}></li>}
+            { props.show ? <li>{content.number}</li> : <li></li>}
+            { props.show ? <li onInput={(e) => tempReviewValue = editNumberValue(e, props.content.reviewValue)} id="reviewValue" contentEditable="true">
+                {content.reviewValue}</li> : <li></li>}
+            { props.show ? <li onInput={(e) => tempDateOfLastReview = editStringvalue(e, props.content.dateOfLastReview)} id="dateOfLastReview" contentEditable="true">
+                {content.dateOfLastReview}</li> : <li></li>}
             <li onInput={(e) => tempKeyword = editStringvalue(e, props.content.keyword)} id="keyword" contentEditable="true">
                 {content.keyword}</li>
-            <li onInput={(e) => tempStory = editStringvalue(e, props.content.story)} id="story" contentEditable="true">
-                {content.story}</li>
+            { props.show ? <li onInput={(e) => tempStory = editStringvalue(e, props.content.story)} id="story" contentEditable="true">
+                {content.story}</li> : <li></li>}
         </ul>
     </section>
 

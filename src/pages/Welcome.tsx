@@ -12,15 +12,7 @@ import TodoItem from "../components/TodoItem";
 const Welcome: React.FunctionComponent<IPage> = props => {
 
     var currentContent: Content;
-    /*
-    const [currentStateContentObject, setCurrentStateContentObject] = useState<Content>({
-        number: 0,
-        character: "",
-        keyword: "",
-        story: "",
-        dateOfLastReview: "",
-        reviewValue: 0
-    })*/
+    const [showCharacterSRSContentElement, setShowCharacterSRSContentElement] = useState<boolean>(false)
     const [addMoreCharactersTextField, setAddMoreCharactersTextField] = useState<string>("");
 
     const dispatch = useDispatch();
@@ -45,7 +37,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
             if (srscalculationResult.currentContent) {
                 //save the calculated Content object to a component variable
                 currentContent = srscalculationResult.currentContent
-                contentOrNotEnough = <TodoItem content={srscalculationResult.currentContent} show={true}/>
+                contentOrNotEnough = <TodoItem content={srscalculationResult.currentContent} show={showCharacterSRSContentElement}/>
             }else {
                 contentOrNotEnough = <p>Content type is undefined!!! this is an error</p>
             }
@@ -119,11 +111,22 @@ const Welcome: React.FunctionComponent<IPage> = props => {
     }
 
 
+    const changeShowCharacter = () => {
+        setShowCharacterSRSContentElement(true);
+    }
+    const buttonsToShowAndHandleCharacterSRSContentElement = () => {
+        return <section>
+            <button type="button" onClick={changeShowCharacter}>showCharacter</button>
+        </section>
+    }
+
+
 
     return <section>
         <h1> The Welcome page </h1>
         {displayNumberOfCharacters()}
         {addCharactersPageContent()}
+        {buttonsToShowAndHandleCharacterSRSContentElement()}
         {todoPageContent()}
     </section>
     //return <h1> The Welcome page </h1>
