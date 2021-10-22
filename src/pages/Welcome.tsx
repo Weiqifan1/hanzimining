@@ -13,7 +13,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
 
     var currentContent: Content;
     var previousCharacters: Content[];
-    var displayPreviousCharacters: ReactElement = <p></p>
+    //var displayPreviousCharacters: ReactElement = <p></p>
     const [showCharacterSRSContentElement, setShowCharacterSRSContentElement] = useState<boolean>(false)
     const [addMoreCharactersTextField, setAddMoreCharactersTextField] = useState<string>("");
 
@@ -30,7 +30,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
         const srslogic: characterSRSlogic = {
             characterSRS: characterSRSstate,
             currentContent: undefined,
-            mostRecentContentObjects: previousCharacters,
+            mostRecentContentObjects: characterSRSstate.previousCharacters,
             notEnoughCharacters: false
         }
         const srscalculationResult: characterSRSlogic = calculateNextCharacter(srslogic)
@@ -46,7 +46,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
                 contentOrNotEnough = <p>Content type is undefined!!! this is an error</p>
             }
         }
-        //displayPreviousCharacters = displayMostRecentCharacters(characterSRSstate.previousCharacters)
+        previousCharacters = characterSRSstate.previousCharacters//displayPreviousCharacters = displayMostRecentCharacters(characterSRSstate.previousCharacters)
         return contentOrNotEnough
     }
 
@@ -133,6 +133,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
 
         const updatedContent: Content = {...current, reviewValue: updatedReviewValue, dateOfLastReview: updatedDate}
         const updatedCharacterSRS: CharactersSRS = {...characterSRSstate, previousCharacters: updatedPrevious}
+        setShowCharacterSRSContentElement(false)
         editListItemInBulk([updatedContent], updatedCharacterSRS)
     }
 
