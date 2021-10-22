@@ -4,7 +4,7 @@ import IPage from "../interfaces/page";
 import {useDispatch, useSelector} from "react-redux";
 import {bindActionCreators} from "redux";
 import { characterSRSactionCreators, State } from '../state/index';
-import {Content} from "../state/state-types/charactersrstypes";
+import {CharactersSRS, Content} from "../state/state-types/charactersrstypes";
 import characterSRSlogic from "../interfaces/characterSRSlogic";
 import {calculateNextCharacter} from "../applogic/characterSRSlogic/calculateCharacterSRSorder";
 import TodoItem from "../components/TodoItem";
@@ -117,15 +117,24 @@ const Welcome: React.FunctionComponent<IPage> = props => {
         setShowCharacterSRSContentElement(true);
     }
     const increaseReviewValueWithOne = () => {
-        console.log("plus 1")
+        respondToAPresentedCharacterSRSObject(1)
     }
     const decreaseReviewValueWithOne = () => {
-        console.log("minus 1")
+        respondToAPresentedCharacterSRSObject(-1)
+    }
+    const respondToAPresentedCharacterSRSObject = (increaseOrDecreaseReviewValue: number) => {
+        const current: Content = currentContent
+        const updatedPrevious: Content[] = previousCharacters ? [current, ...previousCharacters] : [current]
+        const updatedDate: string = new Date().toISOString().slice(0,10)
+        const updatedReviewValue: number = current.reviewValue+increaseOrDecreaseReviewValue > 0 ? current.reviewValue+increaseOrDecreaseReviewValue : 1
+
+        const updatedContent: Content = {...current, reviewValue: updatedReviewValue, dateOfLastReview: updatedDate}
+        const updatedCharacterSRS: CharactersSRS = {...characterSRSstate, previousCharacters: updatedPrevious}
+        editListItemInBulk([updatedContent], updatedCharacterSRS)
     }
 
 
     const buttonsToShowAndHandleCharacterSRSContentElement = (): ReactElement => {
-
         let buttonsToReturn: ReactElement;
         if (!showCharacterSRSContentElement) {
             buttonsToReturn =  <section>
@@ -141,7 +150,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
     }
 
     const displayMostRecentCharacters = (): ReactElement => {
-        const mostRecentCharacter: Content[] = []//mostRecentContentObjects ? mostRecentContentObjects : []
+        const mostRecentCharacter: Content[] = previousCharacters ? previousCharacters : []
         let resultString: string;
         if (!mostRecentCharacter || mostRecentCharacter.length === 0) {
             resultString = "No previous characters yet"
