@@ -114,10 +114,26 @@ const Welcome: React.FunctionComponent<IPage> = props => {
     const changeShowCharacter = () => {
         setShowCharacterSRSContentElement(true);
     }
-    const buttonsToShowAndHandleCharacterSRSContentElement = () => {
-        return <section>
-            <button type="button" onClick={changeShowCharacter}>showCharacter</button>
-        </section>
+    const increaseReviewValueWithOne = () => {
+        console.log("plus 1")
+    }
+    const decreaseReviewValueWithOne = () => {
+        console.log("minus 1")
+    }
+    const buttonsToShowAndHandleCharacterSRSContentElement = (): ReactElement => {
+
+        let buttonsToReturn: ReactElement;
+        if (!showCharacterSRSContentElement) {
+            buttonsToReturn =  <section>
+                <button type="button" onClick={changeShowCharacter}>showCharacter</button>
+            </section>
+        }else {
+            buttonsToReturn = <section>
+                <button type="button" onClick={increaseReviewValueWithOne}>reviewValue-1</button>
+                <button type="button" onClick={decreaseReviewValueWithOne}>reviewValue+1</button>
+            </section>
+        }
+        return buttonsToReturn
     }
 
 
@@ -129,7 +145,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
         {buttonsToShowAndHandleCharacterSRSContentElement()}
         {todoPageContent()}
     </section>
-    //return <h1> The Welcome page </h1>
+
 };
 
 export default Welcome;
