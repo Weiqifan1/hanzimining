@@ -34,6 +34,12 @@ const PasteHeisig: React.FunctionComponent<IPage> = props => {
     const clearInputField = () => {
         const insertHanzi = (document.getElementById("inserthanzi") as HTMLInputElement)
         insertHanzi.value = ""
+        const blankInput: CharactersSRS = {
+            characterset: "",
+            content: [],
+            previousCharacters: []
+        }
+        createSRSobject(blankInput)
     }
 
     const testchr = (filename: string, text: string) => {
@@ -56,7 +62,7 @@ const PasteHeisig: React.FunctionComponent<IPage> = props => {
         <h1> The paste heisig page </h1>
         <button type="button" onClick={() => downloadCharacterSRSobject()}>downloadCharacterSRS</button>
         <button type="button" onClick={() => processJsonInput()}>processJson</button>
-        <button type="button" onClick={() => clearInputField()}>ClearInput</button>
+        <button type="button" onClick={() => clearInputField()}>ClearContent</button>
         <p>{characterSRSstate.content.length}</p>
         <p>***</p>
         <input type="text" id="inserthanzi" placeholder="paste character json file content"></input>
