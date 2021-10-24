@@ -20,18 +20,18 @@ const DisplayAllHeisig: React.FunctionComponent<IPage> = props => {
     }
 
     const [displayChars, setDisplayChars] = useState<FlashCard[]>([])
-    const [numberToDisplay, setNumberToDisplay] = useState<number>(prepareNumberToDisplaySize(characterSRSstate.content.length))
+    const [numberToDisplay, setNumberToDisplay] = useState<number>(prepareNumberToDisplaySize(characterSRSstate.cards.length))
 
     function sortbyIndexNumber() {
-        const sortedByNumber: FlashCard[] = characterSRSstate.content.sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.number < b.number) {return -1; }if (a.number > b.number) {return 1;}return 0;})
+        const sortedByNumber: FlashCard[] = characterSRSstate.cards.sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.cardNumber < b.cardNumber) {return -1; }if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
         setDisplayChars(sortedByNumber.slice(0,numberToDisplay))
     }
     function sortByReviewNumber() {
-        const sortedByReviewValue: FlashCard[] = characterSRSstate.content.sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.reviewValue < b.reviewValue) {return -1; }if (a.reviewValue > b.reviewValue) {return 1;}return 0;})
+        const sortedByReviewValue: FlashCard[] = characterSRSstate.cards.sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.repetitionValue < b.repetitionValue) {return -1; }if (a.repetitionValue > b.repetitionValue) {return 1;}return 0;})
         setDisplayChars(sortedByReviewValue.slice(0,numberToDisplay))
     }
     function sortByLastReviewDate() {
-        const sortedByLastReviewDate: FlashCard[] = characterSRSstate.content.sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.dateOfLastReview < b.dateOfLastReview) {return -1; }if (a.dateOfLastReview > b.dateOfLastReview) {return 1;}return 0;})
+        const sortedByLastReviewDate: FlashCard[] = characterSRSstate.cards.sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.dateOfLastReview < b.dateOfLastReview) {return -1; }if (a.dateOfLastReview > b.dateOfLastReview) {return 1;}return 0;})
         setDisplayChars(sortedByLastReviewDate.slice(0,numberToDisplay))
     }
 
@@ -39,8 +39,8 @@ const DisplayAllHeisig: React.FunctionComponent<IPage> = props => {
         setDisplayChars([])
     }
     function toggleSize() {
-        if (numberToDisplay < characterSRSstate.content.length) {
-            setNumberToDisplay(characterSRSstate.content.length)
+        if (numberToDisplay < characterSRSstate.cards.length) {
+            setNumberToDisplay(characterSRSstate.cards.length)
         }else {
             setNumberToDisplay(100)
         }
@@ -48,7 +48,7 @@ const DisplayAllHeisig: React.FunctionComponent<IPage> = props => {
 
     return <section>
         <h1> The display all heisig page </h1>
-        <p>number of heisig items: {characterSRSstate.content.length}</p>
+        <p>number of heisig items: {characterSRSstate.cards.length}</p>
         <button type="button" onClick={toggleSize}>toggleSize{numberToDisplay}</button>
         <button type="button" onClick={clearData}>clearData</button>
         <button type="button" onClick={sortbyIndexNumber}>sortByCharNumber</button>

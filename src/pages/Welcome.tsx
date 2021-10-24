@@ -33,7 +33,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
         const srslogic: characterSRSlogic = {
             characterSRS: characterSRSstate,
             currentContent: undefined,
-            mostRecentContentObjects: characterSRSstate.previousCharacters,
+            mostRecentContentObjects: characterSRSstate.previousCardsViewed,
             notEnoughCharacters: false
         }
         const srscalculationResult: characterSRSlogic = calculateNextCharacter(srslogic)
@@ -49,16 +49,16 @@ const Welcome: React.FunctionComponent<IPage> = props => {
                 contentOrNotEnough = <p>Content type is undefined!!! this is an error</p>
             }
         }
-        previousCharacters = characterSRSstate.previousCharacters//displayPreviousCharacters = displayMostRecentCharacters(characterSRSstate.previousCharacters)
+        previousCharacters = characterSRSstate.previousCardsViewed//displayPreviousCharacters = displayMostRecentCharacters(characterSRSstate.previousCharacters)
         return contentOrNotEnough
     }
 
 
     const displayNumberOfCharacters = (): ReactElement => {
         const charactersYouWantToAdd: number = Number(addMoreCharactersTextField) ? Number(addMoreCharactersTextField) : 0
-        const finalCharValue: number = getNewFinalCharValue(charactersYouWantToAdd, characterSRSstate.content)
-        const allCharacters: number = characterSRSstate.content.filter(eachContent => {
-            return eachContent.reviewValue > 0
+        const finalCharValue: number = getNewFinalCharValue(charactersYouWantToAdd, characterSRSstate.cards)
+        const allCharacters: number = characterSRSstate.cards.filter(eachContent => {
+            return eachContent.repetitionValue > 0
         }).length
         return <p>highest character: {finalCharValue} all characters: {allCharacters}</p>
     }
@@ -66,41 +66,41 @@ const Welcome: React.FunctionComponent<IPage> = props => {
     const getCharsToEdit = (charactersToAdd: number, zeroToDeleteElseAddNew: number, allCharacter: FlashCard[]): FlashCard[] => {
         let charsToAdd: FlashCard[];
         if (zeroToDeleteElseAddNew > 0) {
-            const sortedCharactersLowestToHighest: FlashCard[] = characterSRSstate.content.sort(function sort(a: FlashCard, b: FlashCard){if (a.number < b.number) {return -1; }if (a.number > b.number) {return 1;}return 0;})
-            const onlyCharactersWithReviewValueAt0: FlashCard[] = sortedCharactersLowestToHighest.filter(eachContent => eachContent.reviewValue === 0)
+            const sortedCharactersLowestToHighest: FlashCard[] = characterSRSstate.cards.sort(function sort(a: FlashCard, b: FlashCard){if (a.cardNumber < b.cardNumber) {return -1; }if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
+            const onlyCharactersWithReviewValueAt0: FlashCard[] = sortedCharactersLowestToHighest.filter(eachContent => eachContent.repetitionValue === 0)
             charsToAdd = onlyCharactersWithReviewValueAt0.slice(0,charactersToAdd).map(eachContent => {
-                const updatedContent: FlashCard = {...eachContent, reviewValue: zeroToDeleteElseAddNew}
+                const updatedContent: FlashCard = {...eachContent, repetitionValue: zeroToDeleteElseAddNew}
                 return updatedContent
             })
         }else {
-            const sortedCharactersHighestToLowest: FlashCard[] = characterSRSstate.content.sort(function sortReverse(a: FlashCard, b: FlashCard){if (a.number > b.number) {return -1; }if (a.number < b.number) {return 1;}return 0;})
-            const charactersWithReviewValueAbove0ReverseSorted: FlashCard[] = sortedCharactersHighestToLowest.filter(eachContent => eachContent.reviewValue > 0)
+            const sortedCharactersHighestToLowest: FlashCard[] = characterSRSstate.cards.sort(function sortReverse(a: FlashCard, b: FlashCard){if (a.cardNumber > b.cardNumber) {return -1; }if (a.cardNumber < b.cardNumber) {return 1;}return 0;})
+            const charactersWithReviewValueAbove0ReverseSorted: FlashCard[] = sortedCharactersHighestToLowest.filter(eachContent => eachContent.repetitionValue > 0)
             charsToAdd = charactersWithReviewValueAbove0ReverseSorted.slice(0,charactersToAdd).map(eachContent => {
-                const updatedContent: FlashCard = {...eachContent, reviewValue: zeroToDeleteElseAddNew}
+                const updatedContent: FlashCard = {...eachContent, repetitionValue: zeroToDeleteElseAddNew}
                 return updatedContent
             })
         }
         return charsToAdd
     }
     const getNewFinalCharValue = (charactersToAdd: number, allCharacter: FlashCard[]): number => {
-        const sortedCharactersLowestToHighest: FlashCard[] = characterSRSstate.content.sort(function sort(a: FlashCard, b: FlashCard){if (a.number < b.number) {return -1; }if (a.number > b.number) {return 1;}return 0;})
-        const onlyCharactersWithReviewValueAt0: FlashCard[] = sortedCharactersLowestToHighest.filter(eachContent => eachContent.reviewValue === 0)
+        const sortedCharactersLowestToHighest: FlashCard[] = characterSRSstate.cards.sort(function sort(a: FlashCard, b: FlashCard){if (a.cardNumber < b.cardNumber) {return -1; }if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
+        const onlyCharactersWithReviewValueAt0: FlashCard[] = sortedCharactersLowestToHighest.filter(eachContent => eachContent.repetitionValue === 0)
         const charsToAdd: FlashCard[] = onlyCharactersWithReviewValueAt0.slice(0,charactersToAdd)
-        const sortedCharsReviewValueAbove0WithNewChars: FlashCard[] = sortedCharactersLowestToHighest.filter(eachContent => eachContent.reviewValue > 0).concat(charsToAdd)
-        const sortetReverse: FlashCard[] = sortedCharsReviewValueAbove0WithNewChars.sort(function sortReverse(a: FlashCard, b: FlashCard){if (a.number > b.number) {return -1; }if (a.number < b.number) {return 1;}return 0;})
-        return sortetReverse[0] ? sortetReverse[0].number : 0
+        const sortedCharsReviewValueAbove0WithNewChars: FlashCard[] = sortedCharactersLowestToHighest.filter(eachContent => eachContent.repetitionValue > 0).concat(charsToAdd)
+        const sortetReverse: FlashCard[] = sortedCharsReviewValueAbove0WithNewChars.sort(function sortReverse(a: FlashCard, b: FlashCard){if (a.cardNumber > b.cardNumber) {return -1; }if (a.cardNumber < b.cardNumber) {return 1;}return 0;})
+        return sortetReverse[0] ? sortetReverse[0].cardNumber : 0
     }
 
 
     const deleteANumberOfCharacters = () => {
         const charactersYouWantToAdd: number = Number(addMoreCharactersTextField) ? Number(addMoreCharactersTextField) : 0
-        const charactersToDelete: FlashCard[] = getCharsToEdit(charactersYouWantToAdd, 0, characterSRSstate.content)
+        const charactersToDelete: FlashCard[] = getCharsToEdit(charactersYouWantToAdd, 0, characterSRSstate.cards)
         setAddMoreCharactersTextField("")
         editListItemInBulk(charactersToDelete, characterSRSstate)
     }
     const addANumberOfCharacters = () => {
         const charactersYouWantToAdd: number = Number(addMoreCharactersTextField) ? Number(addMoreCharactersTextField) : 0
-        const newCharactersToBeAdded: FlashCard[] = getCharsToEdit(charactersYouWantToAdd, 1, characterSRSstate.content)
+        const newCharactersToBeAdded: FlashCard[] = getCharsToEdit(charactersYouWantToAdd, 1, characterSRSstate.cards)
         setAddMoreCharactersTextField("")
         editListItemInBulk(newCharactersToBeAdded, characterSRSstate)
     }
@@ -157,10 +157,10 @@ const Welcome: React.FunctionComponent<IPage> = props => {
         const current: FlashCard = currentContent
         const updatedPrevious: FlashCard[] = previousCharacters ? [current, ...previousCharacters] : [current]
         const updatedDate: string = new Date().toISOString().slice(0,10)
-        const updatedReviewValue: number = current.reviewValue+increaseOrDecreaseReviewValue > 0 ? current.reviewValue+increaseOrDecreaseReviewValue : 1
+        const updatedReviewValue: number = current.repetitionValue+increaseOrDecreaseReviewValue > 0 ? current.repetitionValue+increaseOrDecreaseReviewValue : 1
 
-        const updatedContent: FlashCard = {...current, reviewValue: updatedReviewValue, dateOfLastReview: updatedDate}
-        const updatedCharacterSRS: FlashCardDeck = {...characterSRSstate, previousCharacters: updatedPrevious}
+        const updatedContent: FlashCard = {...current, repetitionValue: updatedReviewValue, dateOfLastReview: updatedDate}
+        const updatedCharacterSRS: FlashCardDeck = {...characterSRSstate, previousCardsViewed: updatedPrevious}
         setShowCharacterSRSContentElement(false)
         editListItemInBulk([updatedContent], updatedCharacterSRS)
     }
@@ -191,7 +191,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
             resultString = "No previous characters yet"
         }else {
             const shortList: FlashCard[] = mostRecentCharacter.length<5 ? mostRecentCharacter : mostRecentCharacter.slice(0,5)
-            const stringList: string = shortList.map(each => each.character+each.number).join()
+            const stringList: string = shortList.map(each => each.backSide+each.cardNumber).join()
             resultString = "previous: " + stringList + " totalRepetitions: " + mostRecentCharacter.length
         }
         return <section>{resultString}</section>
@@ -199,7 +199,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
 
     return <section>
         <h1> The Welcome page </h1>
-        {displayMostRecentCharacters(characterSRSstate.previousCharacters)}
+        {displayMostRecentCharacters(characterSRSstate.previousCardsViewed)}
         {displayNumberOfCharacters()}
         {addCharactersPageContent()}
         {buttonsToShowAndHandleCharacterSRSContentElement()}

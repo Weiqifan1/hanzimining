@@ -37,9 +37,9 @@ const PasteHeisig: React.FunctionComponent<IPage> = props => {
         const insertHanzi = (document.getElementById("inserthanzi") as HTMLInputElement)
         insertHanzi.value = ""
         const blankInput: FlashCardDeck = {
-            characterset: "",
-            content: [],
-            previousCharacters: []
+            deckName: "",
+            cards: [],
+            previousCardsViewed: []
         }
         createSRSobject(blankInput)
         setUploadData({
@@ -85,7 +85,7 @@ const PasteHeisig: React.FunctionComponent<IPage> = props => {
         <button type="button" onClick={() => downloadCharacterSRSobject()}>downloadCharacterSRS</button>
         <button type="button" onClick={() => processJsonInput()}>processJson</button>
         <button type="button" onClick={() => clearInputField()}>ClearContent</button>
-        <p>{characterSRSstate.content.length}</p>
+        <p>{characterSRSstate.cards.length}</p>
         <p>***</p>
         <input type="text" id="inserthanzi" placeholder="paste character json file content"></input>
         <p>***</p>

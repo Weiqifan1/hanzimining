@@ -11,14 +11,32 @@ export const createSRSobject = (characterSRSobject: FlashCardDeck) => {
             payload: {
                 CharactersSRS: characterSRSobject,
                 Content: [{
-                    number: 0,
-                    character: "",
-                    keyword: "",
-                    story: "",
+                    cardNumber: 0,
+                    cardName: "",
+                    frontSide: "",
+                    backSide: "",
+                    infoPrimary: "",
+                    infoSecondary: "",
+                    notableCards: [],
                     dateOfLastReview: "",
-                    reviewValue: 0,
+                    repetitionValue: 0,
                 }]
             }
+            /*
+            deckName: string;
+    cards: FlashCard[];
+    previousCardsViewed: FlashCard[]
+
+            cardNumber: number;
+    cardName: string;
+    frontSide: string;
+    backSide: string;
+    infoPrimary: string;
+    infoSecondary: string;
+    notableCards: number[];
+    dateOfLastReview: string;
+    repetitionValue: number;
+            */
         })
     }
 }

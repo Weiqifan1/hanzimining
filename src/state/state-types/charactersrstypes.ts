@@ -1,16 +1,19 @@
 
 
 export interface FlashCard {
-    number: number;
-    character: string;
-    keyword: string;
-    story: string;
+    cardNumber: number;
+    cardName: string;
+    frontSide: string;
+    backSide: string;
+    infoPrimary: string;
+    infoSecondary: string;
+    notableCards: number[];
     dateOfLastReview: string;
-    reviewValue: number;
+    repetitionValue: number;
 }
 
 export interface FlashCardDeck {
-    characterset: string;
-    content: FlashCard[];
-    previousCharacters: FlashCard[]
+    deckName: string;
+    cards: FlashCard[];
+    previousCardsViewed: FlashCard[]
 }

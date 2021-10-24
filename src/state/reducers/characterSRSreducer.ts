@@ -3,15 +3,15 @@ import {CharacterSRSactionTypes} from "../action-types/characterSRSactionTypes";
 import {FlashCardDeck, FlashCard} from "../state-types/charactersrstypes";
 
 const initialState: FlashCardDeck = {
-    previousCharacters: [],
-    characterset: '',
-    content: []
+    previousCardsViewed: [],
+    deckName: '',
+    cards: []
 }
 
 const editListItem = (newContent: FlashCard, characterSRSObject: FlashCardDeck): FlashCardDeck => {
-    const characterList: FlashCard[] = characterSRSObject.content
-    const newContentNumber: number = newContent.number
-    const index = characterList.map(function(e) { return e.number; }).indexOf(newContentNumber);
+    const characterList: FlashCard[] = characterSRSObject.cards
+    const newContentNumber: number = newContent.cardNumber
+    const index = characterList.map(function(e) { return e.cardNumber; }).indexOf(newContentNumber);
 
     const earlyIndexMembers: FlashCard[] = characterList.slice(0, index);
     const lateIndexMembers: FlashCard[] = characterList.slice(index+1, characterList.length)
@@ -22,21 +22,21 @@ const editListItem = (newContent: FlashCard, characterSRSObject: FlashCardDeck):
 
     const result: FlashCardDeck = {
         ...characterSRSObject,
-        characterset: characterSRSObject.characterset,
-        content: newContentList
+        deckName: characterSRSObject.deckName,
+        cards: newContentList
     }
     return result
 }
 
 const editListItemsInBulk = (newContentInBulk: FlashCard[], characterSRSObject: FlashCardDeck): FlashCardDeck => {
     //remove all charactersThatHasTheSameNumbers
-    const allNewNumbers: number[] = newContentInBulk.map(each => each.number)
-    const characterList: FlashCard[] = characterSRSObject.content.filter(each => !allNewNumbers.includes(each.number))
+    const allNewNumbers: number[] = newContentInBulk.map(each => each.cardNumber)
+    const characterList: FlashCard[] = characterSRSObject.cards.filter(each => !allNewNumbers.includes(each.cardNumber))
     const redoneArray: FlashCard[] = characterList.concat(newContentInBulk)
     const result: FlashCardDeck = {
         ...characterSRSObject,
-        characterset: characterSRSObject.characterset,
-        content: redoneArray
+        deckName: characterSRSObject.deckName,
+        cards: redoneArray
     }
     return result
 }

@@ -2,10 +2,10 @@ import {FlashCard} from "../../state/state-types/charactersrstypes";
 
 //characters added to deck (reviewNumber > 0) and not forbidden, sorted by review priority
 export const getReviewPriority = (allContentItems: FlashCard[], forbiddenCharacters: FlashCard[]): FlashCard[] => {
-    const forbiddenCharacterNumbers: number[] = forbiddenCharacters.map(eachContent => eachContent.number)
-    const contentAddedToDeck: FlashCard[] = allContentItems.filter(eachContent => eachContent.reviewValue > 0)
+    const forbiddenCharacterNumbers: number[] = forbiddenCharacters.map(eachContent => eachContent.cardNumber)
+    const contentAddedToDeck: FlashCard[] = allContentItems.filter(eachContent => eachContent.repetitionValue > 0)
     const nonProhibited: FlashCard[] = contentAddedToDeck.filter(eachContent => {
-        return (forbiddenCharacterNumbers && forbiddenCharacterNumbers.indexOf(eachContent.number) === -1)
+        return (forbiddenCharacterNumbers && forbiddenCharacterNumbers.indexOf(eachContent.cardNumber) === -1)
     })
     const nonProhibitedSorted: FlashCard[] = calculateReviewPriority(nonProhibited)
     return nonProhibitedSorted
@@ -21,9 +21,9 @@ const calculateReviewPriority = (input: FlashCard[]): FlashCard[] => {
 }
 
 const splitIntoReviewNumbers = (contentThatCanBePracticed: FlashCard[]): FlashCard[][] => {
-    const allReviewNumbers: number[] = Array.from(new Set(contentThatCanBePracticed.map((item=> item.reviewValue)))).sort()
+    const allReviewNumbers: number[] = Array.from(new Set(contentThatCanBePracticed.map((item=> item.repetitionValue)))).sort()
     const resultArray: FlashCard[][] = allReviewNumbers.map(eachNumber => {
-        return contentThatCanBePracticed.filter(item => item.reviewValue === eachNumber)
+        return contentThatCanBePracticed.filter(item => item.repetitionValue === eachNumber)
     })
     return resultArray;
 }
@@ -40,9 +40,9 @@ const splitIntoDateStrings = (contentThatCanBePracticed: FlashCard[]): FlashCard
 }
 
 const splitIntoCharacterNumbers = (contentThatCanBePracticed: FlashCard[]): FlashCard[][] => {
-    const allCharacterNumbers: number[] = Array.from(new Set(contentThatCanBePracticed.map((item=> item.number)))).sort()
+    const allCharacterNumbers: number[] = Array.from(new Set(contentThatCanBePracticed.map((item=> item.cardNumber)))).sort()
     const resultArray: FlashCard[][] = allCharacterNumbers.map(eachNumber => {
-        return contentThatCanBePracticed.filter(item => item.number === eachNumber)
+        return contentThatCanBePracticed.filter(item => item.cardNumber === eachNumber)
     })
     return resultArray;
 }
