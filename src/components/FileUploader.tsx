@@ -8,10 +8,9 @@ export class FileUploader extends React.Component<DragAndDropProps, DragAndDropS
 
     constructor(props: DragAndDropProps) {
         super(props);
-        this.state = { dragging: false, file: null };
+        this.state = props.paraList;
 
     }
-    // this.props.editParaList(this.state)
 
 
     dragEventCounter = 0;

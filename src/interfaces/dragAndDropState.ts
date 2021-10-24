@@ -3,4 +3,6 @@ export type DragAndDropState = {
     file: File | null;
 }
 
-export type DragAndDropProps = {editParaList: (data: DragAndDropState) => void}//(data: DragAndDropState) => void
+export type DragAndDropProps = {
+    paraList: DragAndDropState;
+    editParaList: (data: DragAndDropState) => void}

@@ -21,15 +21,10 @@ const PasteHeisig: React.FunctionComponent<IPage> = props => {
     
     const processJsonInput = () => {
         const content: string = ((document.getElementById("inserthanzi") as HTMLInputElement).value);
-        //console.log("process json content");
-        //console.log(content.length);
-        //console.log(typeof content)
-
         try {
             let characterSRSobj: CharactersSRS = JSON.parse(content);
             createSRSobject(characterSRSobj)
             console.log("no error")
-            //console.log(characterSRSobj.content.length)
         }
         catch(e){
             console.log("error:")
@@ -94,17 +89,8 @@ const PasteHeisig: React.FunctionComponent<IPage> = props => {
         <p>***</p>
         <input type="text" id="inserthanzi" placeholder="paste character json file content"></input>
         <p>***</p>
-        <FileUploader editParaList={handleDragAndDrop}/>
-
+        <FileUploader editParaList={handleDragAndDrop} paraList={uploadData}/>
     </section>
-
-    /*
-    interface Props {
-  pokemonItem: PokemonItem;
-}
-const CardComponent = (props: Props) => {
-  const { pokemonItem } = props;
-    */
 };
 
 export default PasteHeisig;
