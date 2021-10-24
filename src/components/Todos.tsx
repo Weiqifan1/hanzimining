@@ -1,8 +1,8 @@
 import React, {useState} from "react";
-import {CharactersSRS, Content} from "../state/state-types/charactersrstypes";
+import {FlashCardDeck, FlashCard} from "../state/state-types/charactersrstypes";
 import TodoItem from "./TodoItem";
 
-const Todos: React.FC<{data: Content[]}> = (props) => {
+const Todos: React.FC<{data: FlashCard[]}> = (props) => {
     return (
         <ul>
             {props.data.map((item) =>(

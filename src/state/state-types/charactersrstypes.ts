@@ -1,6 +1,6 @@
 
 
-export interface Content {
+export interface FlashCard {
     number: number;
     character: string;
     keyword: string;
@@ -9,8 +9,8 @@ export interface Content {
     reviewValue: number;
 }
 
-export interface CharactersSRS {
+export interface FlashCardDeck {
     characterset: string;
-    content: Content[];
-    previousCharacters: Content[]
+    content: FlashCard[];
+    previousCharacters: FlashCard[]
 }

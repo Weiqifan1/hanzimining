@@ -1,26 +1,26 @@
 import {CharacterSRSaction} from "../actions/characterSRSactions";
 import {CharacterSRSactionTypes} from "../action-types/characterSRSactionTypes";
-import {CharactersSRS, Content} from "../state-types/charactersrstypes";
+import {FlashCardDeck, FlashCard} from "../state-types/charactersrstypes";
 
-const initialState: CharactersSRS = {
+const initialState: FlashCardDeck = {
     previousCharacters: [],
     characterset: '',
     content: []
 }
 
-const editListItem = (newContent: Content, characterSRSObject: CharactersSRS): CharactersSRS => {
-    const characterList: Content[] = characterSRSObject.content
+const editListItem = (newContent: FlashCard, characterSRSObject: FlashCardDeck): FlashCardDeck => {
+    const characterList: FlashCard[] = characterSRSObject.content
     const newContentNumber: number = newContent.number
     const index = characterList.map(function(e) { return e.number; }).indexOf(newContentNumber);
 
-    const earlyIndexMembers: Content[] = characterList.slice(0, index);
-    const lateIndexMembers: Content[] = characterList.slice(index+1, characterList.length)
+    const earlyIndexMembers: FlashCard[] = characterList.slice(0, index);
+    const lateIndexMembers: FlashCard[] = characterList.slice(index+1, characterList.length)
 
-    const newContentList: Content[] = earlyIndexMembers
+    const newContentList: FlashCard[] = earlyIndexMembers
     newContentList.push(newContent)
     newContentList.push(...lateIndexMembers)
 
-    const result: CharactersSRS = {
+    const result: FlashCardDeck = {
         ...characterSRSObject,
         characterset: characterSRSObject.characterset,
         content: newContentList
@@ -28,12 +28,12 @@ const editListItem = (newContent: Content, characterSRSObject: CharactersSRS): C
     return result
 }
 
-const editListItemsInBulk = (newContentInBulk: Content[], characterSRSObject: CharactersSRS): CharactersSRS => {
+const editListItemsInBulk = (newContentInBulk: FlashCard[], characterSRSObject: FlashCardDeck): FlashCardDeck => {
     //remove all charactersThatHasTheSameNumbers
     const allNewNumbers: number[] = newContentInBulk.map(each => each.number)
-    const characterList: Content[] = characterSRSObject.content.filter(each => !allNewNumbers.includes(each.number))
-    const redoneArray: Content[] = characterList.concat(newContentInBulk)
-    const result: CharactersSRS = {
+    const characterList: FlashCard[] = characterSRSObject.content.filter(each => !allNewNumbers.includes(each.number))
+    const redoneArray: FlashCard[] = characterList.concat(newContentInBulk)
+    const result: FlashCardDeck = {
         ...characterSRSObject,
         characterset: characterSRSObject.characterset,
         content: redoneArray
@@ -41,7 +41,7 @@ const editListItemsInBulk = (newContentInBulk: Content[], characterSRSObject: Ch
     return result
 }
 
-const characterSRSreducer = (state: CharactersSRS = initialState, action: CharacterSRSaction): CharactersSRS => {
+const characterSRSreducer = (state: FlashCardDeck = initialState, action: CharacterSRSaction): FlashCardDeck => {
     switch (action.type) {
         case CharacterSRSactionTypes.CREATESRSOBJECT:
             return action.payload.CharactersSRS

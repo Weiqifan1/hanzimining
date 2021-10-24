@@ -1,11 +1,11 @@
 import characterSRSlogic from "../../interfaces/characterSRSlogic";
-import {Content} from "../../state/state-types/charactersrstypes";
+import {FlashCard} from "../../state/state-types/charactersrstypes";
 import {getReviewPriority} from "./calculateContentReviewPriority";
 
 
 export const calculateNextCharacter = (input: characterSRSlogic): characterSRSlogic => {
-    const fiveMostRecent: Content[] = getMostRecentlyPracticed(input, 5)
-    const reviewPrioritySorted: Content[] = getReviewPriority(input.characterSRS.content, fiveMostRecent)
+    const fiveMostRecent: FlashCard[] = getMostRecentlyPracticed(input, 5)
+    const reviewPrioritySorted: FlashCard[] = getReviewPriority(input.characterSRS.content, fiveMostRecent)
     if (reviewPrioritySorted.length === 0){
         //there are no characters that can be shown
         const returnObject: characterSRSlogic = {
@@ -16,8 +16,8 @@ export const calculateNextCharacter = (input: characterSRSlogic): characterSRSlo
         }
         return returnObject
     }else {
-        const updatedMostRecentlyPracticed: Content[] = addCurrentContentToPreviousContentList(input)
-        const firstPriority: Content = reviewPrioritySorted[0]
+        const updatedMostRecentlyPracticed: FlashCard[] = addCurrentContentToPreviousContentList(input)
+        const firstPriority: FlashCard = reviewPrioritySorted[0]
         const returnObject: characterSRSlogic = {
             currentContent: firstPriority,
             mostRecentContentObjects: input.mostRecentContentObjects,
@@ -29,9 +29,9 @@ export const calculateNextCharacter = (input: characterSRSlogic): characterSRSlo
 }
 
 
-const getMostRecentlyPracticed = (input: characterSRSlogic, maxLengthInteger: number): Content[] => {
-    const recentlyPracticed: Content[] = input.mostRecentContentObjects
-    let result: Content[] = new Array()
+const getMostRecentlyPracticed = (input: characterSRSlogic, maxLengthInteger: number): FlashCard[] => {
+    const recentlyPracticed: FlashCard[] = input.mostRecentContentObjects
+    let result: FlashCard[] = new Array()
     if (!recentlyPracticed) {
         result = []
     }else if (recentlyPracticed.length < maxLengthInteger) {
@@ -43,9 +43,9 @@ const getMostRecentlyPracticed = (input: characterSRSlogic, maxLengthInteger: nu
 }
 
 
-const addCurrentContentToPreviousContentList = (input: characterSRSlogic): Content[] => {
+const addCurrentContentToPreviousContentList = (input: characterSRSlogic): FlashCard[] => {
     if (input.currentContent){
-        const listToBeUpdated: Content[] = input.mostRecentContentObjects
+        const listToBeUpdated: FlashCard[] = input.mostRecentContentObjects
         listToBeUpdated.unshift(input.currentContent)
         return listToBeUpdated
     }else {

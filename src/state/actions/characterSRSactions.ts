@@ -1,27 +1,27 @@
 import {CharacterSRSactionTypes} from "../action-types/characterSRSactionTypes";
-import {CharactersSRS, Content} from "../state-types/charactersrstypes";
+import {FlashCardDeck, FlashCard} from "../state-types/charactersrstypes";
 
 interface CreateSRSobject {
     type: CharacterSRSactionTypes.CREATESRSOBJECT
     payload: {
-        CharactersSRS: CharactersSRS,
-        Content: Content[]
+        CharactersSRS: FlashCardDeck,
+        Content: FlashCard[]
     }
 }
 
 interface EditListItem {
     type: CharacterSRSactionTypes.EDITLISTITEM
     payload: {
-        CharactersSRS: CharactersSRS,
-        Content: Content[]
+        CharactersSRS: FlashCardDeck,
+        Content: FlashCard[]
     }
 }
 
 interface EditListItemsInBulk {
     type: CharacterSRSactionTypes.EDITLISTITEMINBULK
     payload: {
-        CharactersSRS: CharactersSRS,
-        Content: Content[]
+        CharactersSRS: FlashCardDeck,
+        Content: FlashCard[]
     }
 }
 

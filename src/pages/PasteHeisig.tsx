@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import IPage from "../interfaces/page";
-import {CharactersSRS, Content} from "../state/state-types/charactersrstypes";
+import {FlashCardDeck, FlashCard} from "../state/state-types/charactersrstypes";
 import { useDispatch, useSelector } from "react-redux";
 import {bindActionCreators} from "redux";
 import { characterSRSactionCreators, State } from '../state/index';
@@ -22,7 +22,7 @@ const PasteHeisig: React.FunctionComponent<IPage> = props => {
     const processJsonInput = () => {
         const content: string = ((document.getElementById("inserthanzi") as HTMLInputElement).value);
         try {
-            let characterSRSobj: CharactersSRS = JSON.parse(content);
+            let characterSRSobj: FlashCardDeck = JSON.parse(content);
             createSRSobject(characterSRSobj)
             console.log("no error")
         }
@@ -36,7 +36,7 @@ const PasteHeisig: React.FunctionComponent<IPage> = props => {
 
         const insertHanzi = (document.getElementById("inserthanzi") as HTMLInputElement)
         insertHanzi.value = ""
-        const blankInput: CharactersSRS = {
+        const blankInput: FlashCardDeck = {
             characterset: "",
             content: [],
             previousCharacters: []
@@ -59,7 +59,7 @@ const PasteHeisig: React.FunctionComponent<IPage> = props => {
     }
 
     const downloadCharacterSRSobject = () => {
-        const characterSRSobject: CharactersSRS = characterSRSstate
+        const characterSRSobject: FlashCardDeck = characterSRSstate
         const result: string = JSON.stringify(characterSRSobject)
         testchr("updatedList", result)
     }

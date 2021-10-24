@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {bindActionCreators} from "redux";
 import { characterSRSactionCreators, State } from '../state/index';
 import Todos from "../components/Todos"
-import {Content} from "../state/state-types/charactersrstypes";
+import {FlashCard} from "../state/state-types/charactersrstypes";
 
 const DisplayAllHeisig: React.FunctionComponent<IPage> = props => {
 
@@ -19,19 +19,19 @@ const DisplayAllHeisig: React.FunctionComponent<IPage> = props => {
         return data > 100 ? 100 : data
     }
 
-    const [displayChars, setDisplayChars] = useState<Content[]>([])
+    const [displayChars, setDisplayChars] = useState<FlashCard[]>([])
     const [numberToDisplay, setNumberToDisplay] = useState<number>(prepareNumberToDisplaySize(characterSRSstate.content.length))
 
     function sortbyIndexNumber() {
-        const sortedByNumber: Content[] = characterSRSstate.content.sort(function sortSmallToLarge(a: Content, b: Content){if (a.number < b.number) {return -1; }if (a.number > b.number) {return 1;}return 0;})
+        const sortedByNumber: FlashCard[] = characterSRSstate.content.sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.number < b.number) {return -1; }if (a.number > b.number) {return 1;}return 0;})
         setDisplayChars(sortedByNumber.slice(0,numberToDisplay))
     }
     function sortByReviewNumber() {
-        const sortedByReviewValue: Content[] = characterSRSstate.content.sort(function sortSmallToLarge(a: Content, b: Content){if (a.reviewValue < b.reviewValue) {return -1; }if (a.reviewValue > b.reviewValue) {return 1;}return 0;})
+        const sortedByReviewValue: FlashCard[] = characterSRSstate.content.sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.reviewValue < b.reviewValue) {return -1; }if (a.reviewValue > b.reviewValue) {return 1;}return 0;})
         setDisplayChars(sortedByReviewValue.slice(0,numberToDisplay))
     }
     function sortByLastReviewDate() {
-        const sortedByLastReviewDate: Content[] = characterSRSstate.content.sort(function sortSmallToLarge(a: Content, b: Content){if (a.dateOfLastReview < b.dateOfLastReview) {return -1; }if (a.dateOfLastReview > b.dateOfLastReview) {return 1;}return 0;})
+        const sortedByLastReviewDate: FlashCard[] = characterSRSstate.content.sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.dateOfLastReview < b.dateOfLastReview) {return -1; }if (a.dateOfLastReview > b.dateOfLastReview) {return 1;}return 0;})
         setDisplayChars(sortedByLastReviewDate.slice(0,numberToDisplay))
     }
 

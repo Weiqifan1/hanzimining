@@ -1,10 +1,10 @@
-import {CharactersSRS, Content} from "../state-types/charactersrstypes";
+import {FlashCardDeck, FlashCard} from "../state-types/charactersrstypes";
 import {Dispatch} from "redux";
 import {CharacterSRSaction} from "../actions/characterSRSactions";
 import {CharacterSRSactionTypes} from "../action-types/characterSRSactionTypes";
 
 
-export const createSRSobject = (characterSRSobject: CharactersSRS) => {
+export const createSRSobject = (characterSRSobject: FlashCardDeck) => {
     return (dispatch: Dispatch<CharacterSRSaction>) => {
         dispatch({
             type: CharacterSRSactionTypes.CREATESRSOBJECT,
@@ -23,7 +23,7 @@ export const createSRSobject = (characterSRSobject: CharactersSRS) => {
     }
 }
 
-export const editListItem = (listItem: Content, characterSRSobject: CharactersSRS) => {
+export const editListItem = (listItem: FlashCard, characterSRSobject: FlashCardDeck) => {
     return (dispatch: Dispatch<CharacterSRSaction>) => {
         dispatch({
             type: CharacterSRSactionTypes.EDITLISTITEM,
@@ -35,7 +35,7 @@ export const editListItem = (listItem: Content, characterSRSobject: CharactersSR
     }
 }
 
-export const editListItemInBulk = (listItemsInBulk: Content[], characterSRSobject: CharactersSRS) => {
+export const editListItemInBulk = (listItemsInBulk: FlashCard[], characterSRSobject: FlashCardDeck) => {
     return (dispatch: Dispatch<CharacterSRSaction>) => {
         dispatch({
             type: CharacterSRSactionTypes.EDITLISTITEMINBULK,
