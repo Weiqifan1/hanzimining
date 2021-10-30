@@ -41,9 +41,18 @@ const Products: React.FunctionComponent<IPage> = props => {
         <p>******</p>
         <button type="button" onClick={() => testchr("tretre.txt", "en ny text")}>downloadText</button>
         <p>******</p>
-        <button type="button" onClick={() => getCharactersJson("heisigKanjiV5-3030noKeys.json", "https://weiqifan1.github.io/hanzimining_data/heisigKanjiV5-3030noKeys.json")}>DownloadKanji</button>
-        <button type="button" onClick={() => getCharactersJson("heisigTraditionalV1-3035noKeys.json", "https://weiqifan1.github.io/hanzimining_data/heisigTraditionalV1-3035noKeys.json")}>DownloadTraditional</button>
-        <button type="button" onClick={() => getCharactersJson("heisigSimplifiedV1-3018noKeys.json", "https://weiqifan1.github.io/hanzimining_data/heisigSimplifiedV1-3018noKeys.json")}>DownloadSimplified</button>
+        <button type="button" onClick={() => getCharactersJson(
+            "heisigKanjiV5-3030noKeys.json",
+            "https://weiqifan1.github.io/hanzimining_data/heisigKanjiV5-3030noKeys.json")}>
+            heisigKanjiV5-3030noKeys</button>
+        <button type="button" onClick={() => getCharactersJson(
+            "heisigTraditionalV1-3035noKeys.json",
+            "https://weiqifan1.github.io/hanzimining_data/heisigTraditionalV1-3035noKeys.json")}>
+            heisigTraditionalV1-3035noKeys</button>
+        <button type="button" onClick={() => getCharactersJson(
+            "heisigSimplifiedV1-3018noKeys.json",
+            "https://weiqifan1.github.io/hanzimining_data/heisigSimplifiedV1-3018noKeys.json")}>
+            heisigSimplifiedV1-3018noKeys</button>
         <ul>
             {allProducts.map(meal => <li>{meal.name}</li>)}
         </ul>
