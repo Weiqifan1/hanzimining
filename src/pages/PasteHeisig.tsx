@@ -38,9 +38,14 @@ const PasteHeisig: React.FunctionComponent<IPage> = props => {
         insertHanzi.value = ""
         const blankInput: FlashCardDeck = {
             deckName: "",
-            cards: [],
-            previousCardsViewed: []
+            deckInfo: "",
+            settings: new Map<string, string>(),
+            cards: []
         }
+        /*deckName: string;
+    deckInfo: string;
+    settings: Map<string, string>;
+    cards: FlashCard[];*/
         createSRSobject(blankInput)
         setUploadData({
             dragging: false,

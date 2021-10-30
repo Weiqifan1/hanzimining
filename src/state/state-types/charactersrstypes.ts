@@ -5,8 +5,8 @@ export interface FlashCard {
     cardName: string;
     frontSide: string;
     backSide: string;
-    infoPrimary: string;
-    infoSecondary: string;
+    primaryInfo: string;
+    secondaryInfo: string;
     notableCards: number[];
     dateOfLastReview: string;
     repetitionValue: number;
@@ -14,6 +14,7 @@ export interface FlashCard {
 
 export interface FlashCardDeck {
     deckName: string;
+    deckInfo: string;
+    settings: Map<string, string>;
     cards: FlashCard[];
-    previousCardsViewed: FlashCard[]
 }

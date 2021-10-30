@@ -3,10 +3,16 @@ import {CharacterSRSactionTypes} from "../action-types/characterSRSactionTypes";
 import {FlashCardDeck, FlashCard} from "../state-types/charactersrstypes";
 
 const initialState: FlashCardDeck = {
-    previousCardsViewed: [],
     deckName: '',
+    deckInfo: '',
+    settings: new Map(),
     cards: []
 }
+
+/*  deckName: string;
+    deckInfo: string;
+    settings: Map<string, string>;
+    cards: FlashCard[];*/
 
 const editListItem = (newContent: FlashCard, characterSRSObject: FlashCardDeck): FlashCardDeck => {
     const characterList: FlashCard[] = characterSRSObject.cards

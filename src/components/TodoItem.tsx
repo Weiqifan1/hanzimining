@@ -12,7 +12,7 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean}> = (props: PropsWit
     var tempReviewValue: number = props.content.repetitionValue
     var tempDateOfLastReview: string = props.content.dateOfLastReview
     var tempKeyword: string = props.content.frontSide
-    var tempStory: string = props.content.infoPrimary
+    var tempStory: string = props.content.primaryInfo
 
     const dispatch = useDispatch();
     const {editListItem} = bindActionCreators(characterSRSactionCreators, dispatch)
@@ -25,14 +25,14 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean}> = (props: PropsWit
         if (!(tempReviewValue === props.content.repetitionValue)) {changesMade = true}
         if (!(tempDateOfLastReview === props.content.dateOfLastReview)) {changesMade = true}
         if (!(tempKeyword === props.content.frontSide)) {changesMade = true}
-        if (!(tempStory === props.content.infoPrimary)) {changesMade = true}
+        if (!(tempStory === props.content.primaryInfo)) {changesMade = true}
         const newContentObject: FlashCard = {
             cardNumber: props.content.cardNumber,
             cardName: props.content.cardName,
             frontSide: tempKeyword,
             backSide: props.content.backSide,
-            infoPrimary: tempStory,
-            infoSecondary: props.content.infoSecondary,
+            primaryInfo: tempStory,
+            secondaryInfo: props.content.secondaryInfo,
             notableCards: props.content.notableCards,
             dateOfLastReview: tempDateOfLastReview,
             repetitionValue: tempReviewValue
@@ -88,8 +88,8 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean}> = (props: PropsWit
                 {content.dateOfLastReview}</li> : <li></li>}
             <li onInput={(e) => tempKeyword = editStringvalue(e, props.content.frontSide)} id="keyword" contentEditable="true">
                 {content.frontSide}</li>
-            { props.show ? <li onInput={(e) => tempStory = editStringvalue(e, props.content.infoPrimary)} id="story" contentEditable="true">
-                {content.infoPrimary}</li> : <li></li>}
+            { props.show ? <li onInput={(e) => tempStory = editStringvalue(e, props.content.primaryInfo)} id="story" contentEditable="true">
+                {content.primaryInfo}</li> : <li></li>}
         </ul>
     </section>
 

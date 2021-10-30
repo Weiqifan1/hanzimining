@@ -33,7 +33,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
         const srslogic: characterSRSlogic = {
             characterSRS: characterSRSstate,
             currentContent: undefined,
-            mostRecentContentObjects: characterSRSstate.previousCardsViewed,
+            mostRecentContentObjects: [], //characterSRSstate.previousCardsViewed,
             notEnoughCharacters: false
         }
         const srscalculationResult: characterSRSlogic = calculateNextCharacter(srslogic)
@@ -49,7 +49,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
                 contentOrNotEnough = <p>Content type is undefined!!! this is an error</p>
             }
         }
-        previousCharacters = characterSRSstate.previousCardsViewed//displayPreviousCharacters = displayMostRecentCharacters(characterSRSstate.previousCharacters)
+        previousCharacters = []//characterSRSstate.previousCardsViewed//displayPreviousCharacters = displayMostRecentCharacters(characterSRSstate.previousCharacters)
         return contentOrNotEnough
     }
 
@@ -160,7 +160,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
         const updatedReviewValue: number = current.repetitionValue+increaseOrDecreaseReviewValue > 0 ? current.repetitionValue+increaseOrDecreaseReviewValue : 1
 
         const updatedContent: FlashCard = {...current, repetitionValue: updatedReviewValue, dateOfLastReview: updatedDate}
-        const updatedCharacterSRS: FlashCardDeck = {...characterSRSstate, previousCardsViewed: updatedPrevious}
+        const updatedCharacterSRS: FlashCardDeck = {...characterSRSstate}
         setShowCharacterSRSContentElement(false)
         editListItemInBulk([updatedContent], updatedCharacterSRS)
     }
@@ -197,9 +197,9 @@ const Welcome: React.FunctionComponent<IPage> = props => {
         return <section>{resultString}</section>
     }
 
+    //{displayMostRecentCharacters()}
     return <section>
         <h1> The Welcome page </h1>
-        {displayMostRecentCharacters(characterSRSstate.previousCardsViewed)}
         {displayNumberOfCharacters()}
         {addCharactersPageContent()}
         {buttonsToShowAndHandleCharacterSRSContentElement()}
