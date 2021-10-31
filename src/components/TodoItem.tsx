@@ -93,7 +93,7 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
                 {content.frontSide}</li>
             { props.show ? <li onInput={(e) => tempPrimaryInfo = editStringvalue(e, props.content.primaryInfo)} contentEditable="true">
                 {content.primaryInfo}</li> : <li></li>}
-            { props.show ? <li onInput={(e) => tempPrimaryInfo = editStringvalue(e, props.content.secondaryInfo)} contentEditable="true">
+            { props.show&&props.showSecondary ? <li onInput={(e) => tempPrimaryInfo = editStringvalue(e, props.content.secondaryInfo)} contentEditable="true">
                 {content.secondaryInfo}</li> : <li></li>}
         </ul>
     </section>
