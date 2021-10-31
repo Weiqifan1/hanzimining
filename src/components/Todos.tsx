@@ -6,7 +6,7 @@ const Todos: React.FC<{data: FlashCard[]}> = (props) => {
     return (
         <ul>
             {props.data.map((item) =>(
-                <TodoItem content={item} show={true}/>
+                <TodoItem content={item} show={true} showSecondary={true}/>
             ))}
         </ul>
     )

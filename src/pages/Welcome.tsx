@@ -3,7 +3,7 @@ import React, {ReactElement, useEffect, useRef, useState} from "react";
 import IPage from "../interfaces/page";
 import {useDispatch, useSelector} from "react-redux";
 import {bindActionCreators} from "redux";
-import { characterSRSactionCreators, previousCharactersActionCreators,  State } from '../state/index';
+import { characterSRSactionCreators, previousCharactersActionCreators, showSecondaryFlashcardInfoActionCreator,  State } from '../state/index';
 import {FlashCardDeck, FlashCard} from "../state/state-types/charactersrstypes";
 import characterSRSlogic from "../interfaces/characterSRSlogic";
 import {calculateNextCharacter} from "../applogic/characterSRSlogic/calculateCharacterSRSorder";
@@ -17,6 +17,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
     var currentContent: FlashCard;
     //var displayPreviousCharacters: ReactElement = <p></p>
     const [showCharacterSRSContentElement, setShowCharacterSRSContentElement] = useState<boolean>(false)
+    //const [showSecondaryInformation, setShowSecondaryInformation] = useState<boolean>(true)
     const [addMoreCharactersTextField, setAddMoreCharactersTextField] = useState<string>("");
 
     const dispatch = useDispatch();
@@ -32,6 +33,11 @@ const Welcome: React.FunctionComponent<IPage> = props => {
     )
     var previousCharacters: FlashCard[] = previousCharactersState;
 
+    const{setShowSecondaryFlashCardInfo} = bindActionCreators(showSecondaryFlashcardInfoActionCreator, dispatch)
+    const showSecondaryFlashCardInfoState: boolean = useSelector(
+        (state: State) => state.showSecondaryFlashCardInfo
+    )
+    var showSecondaryInformationLocalState: boolean = showSecondaryFlashCardInfoState
 
     const todoPageContent = (): ReactElement => {
         //previousCharacters = characterSRSstate.previousCharacters
@@ -51,7 +57,8 @@ const Welcome: React.FunctionComponent<IPage> = props => {
                 currentContent = srscalculationResult.currentContent
                 //previousCharacters = srscalculationResult.characterSRS.previousCharacters ? srscalculationResult.characterSRS.previousCharacters : []
                 contentOrNotEnough = <TodoItem content={srscalculationResult.currentContent}
-                                               show={showCharacterSRSContentElement}/>
+                                               show={showCharacterSRSContentElement}
+                                               showSecondary={showSecondaryInformationLocalState}/>
             }else {
                 contentOrNotEnough = <p>Content type is undefined!!! this is an error</p>
             }
@@ -215,13 +222,32 @@ const Welcome: React.FunctionComponent<IPage> = props => {
         return <section>{resultString}</section>
     }
 
+
+    const changeShowSecondaryInformationValue = () => {
+        setShowSecondaryFlashCardInfo(!showSecondaryInformationLocalState)
+        //showSecondaryInformation = !showSecondaryInformation
+        //const currentValue: boolean = showSecondaryInformation
+        //setShowSecondaryInformation(!currentValue)
+        console.log("hello this is changeShowSecondary")
+        console.log("show secondary: " + showSecondaryInformationLocalState)
+    }
+
+    const showSecondaryInformationReactElement = (): ReactElement => {
+        return <section>
+            <button type="button" onClick={changeShowSecondaryInformationValue}>showSecondary:{showSecondaryInformationLocalState.toString()}</button>
+        </section>
+    }
+
     //{displayMostRecentCharacters()}
     return <section>
         <h1> The Welcome page </h1>
         {displayMostRecentCharacters(previousCharacters)}
         {displayNumberOfCharacters()}
         {addCharactersPageContent()}
+        {showSecondaryInformationReactElement()}
+        <p>***</p>
         {buttonsToShowAndHandleCharacterSRSContentElement()}
+        <p>***</p>
         {todoPageContent()}
     </section>
 

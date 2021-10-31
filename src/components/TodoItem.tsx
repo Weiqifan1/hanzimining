@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {bindActionCreators} from "redux";
 import { characterSRSactionCreators, State } from '../state/index';
 
-const TodoItem: React.FC<{content: FlashCard, show: boolean}> = (props: PropsWithChildren<{content: FlashCard, show: boolean}>) => {//PropsWithChildren<{content: Content}>
+const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: boolean}> =
+    (props: PropsWithChildren<{content: FlashCard, show: boolean, showSecondary: boolean}>) => {//PropsWithChildren<{content: Content}>
     const content: FlashCard = props.content
     var tempReviewValue: number = props.content.repetitionValue
     var tempDateOfLastReview: string = props.content.dateOfLastReview
