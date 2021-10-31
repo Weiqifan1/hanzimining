@@ -66,7 +66,7 @@ const PasteHeisig: React.FunctionComponent<IPage> = props => {
     const downloadCharacterSRSobject = () => {
         const characterSRSobject: FlashCardDeck = characterSRSstate
         const result: string = JSON.stringify(characterSRSobject)
-        testchr("updatedList", result)
+        testchr("updatedList.json", result)
     }
 
     const handleDragAndDrop = (data: DragAndDropState) => {

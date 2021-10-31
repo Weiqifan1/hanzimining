@@ -26,7 +26,6 @@ const Welcome: React.FunctionComponent<IPage> = props => {
         (state: State) => state.characterSRS
     )
 
-
     const todoPageContent = (): ReactElement => {
         //previousCharacters = characterSRSstate.previousCharacters
         let contentOrNotEnough;
@@ -44,7 +43,8 @@ const Welcome: React.FunctionComponent<IPage> = props => {
                 //save the calculated Content object to a component variable
                 currentContent = srscalculationResult.currentContent
                 //previousCharacters = srscalculationResult.characterSRS.previousCharacters ? srscalculationResult.characterSRS.previousCharacters : []
-                contentOrNotEnough = <TodoItem content={srscalculationResult.currentContent} show={showCharacterSRSContentElement}/>
+                contentOrNotEnough = <TodoItem content={srscalculationResult.currentContent}
+                                               show={showCharacterSRSContentElement}/>
             }else {
                 contentOrNotEnough = <p>Content type is undefined!!! this is an error</p>
             }
@@ -116,14 +116,14 @@ const Welcome: React.FunctionComponent<IPage> = props => {
             if (showCharacterSRSContentElement) {
                 increaseReviewValueWithOne()
             }else {
-                changeShowCharacter()
+                setShowCharacterSRSContentElementFunc()
             }
         }else if(event.key.toString() === "ArrowLeft"){
             setAddMoreCharactersTextField("")
             if (showCharacterSRSContentElement) {
                 decreaseReviewValueWithOne()
             }else {
-                changeShowCharacter()
+                setShowCharacterSRSContentElementFunc()
             }
         }
     };
@@ -132,13 +132,20 @@ const Welcome: React.FunctionComponent<IPage> = props => {
     const addCharactersPageContent = (): ReactElement => {
         return <section>
             <button type="button" onClick={addANumberOfCharacters}>addNewChars</button>
-            <input ref={addCharactersReference} type="text" onKeyDown={handleKeyDown} value={addMoreCharactersTextField} id="addMoreCharacters" placeholder="addCharacters" onInput={changeOnNewCharacterInputField}></input>
+            <input
+                ref={addCharactersReference}
+                type="text"
+                onKeyDown={handleKeyDown}
+                value={addMoreCharactersTextField} id="addMoreCharacters"
+                placeholder="addCharacters"
+                onInput={changeOnNewCharacterInputField}>
+            </input>
             <button type="button" onClick={deleteANumberOfCharacters}>deleteLatestCharacters</button>
         </section>
     }
 
 
-    const changeShowCharacter = () => {
+    const setShowCharacterSRSContentElementFunc = () => {
         setShowCharacterSRSContentElement(true);
     }
     const increaseReviewValueWithFive = () => {
@@ -171,7 +178,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
         let buttonsToReturn: ReactElement;
         if (!showCharacterSRSContentElement) {
             buttonsToReturn =  <section>
-                <button type="button" onClick={changeShowCharacter}>showCharacter</button>
+                <button type="button" onClick={setShowCharacterSRSContentElementFunc}>showCharacter</button>
             </section>
         }else {
             buttonsToReturn = <section>
