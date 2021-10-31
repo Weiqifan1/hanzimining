@@ -12,7 +12,8 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean}> = (props: PropsWit
     var tempReviewValue: number = props.content.repetitionValue
     var tempDateOfLastReview: string = props.content.dateOfLastReview
     var tempKeyword: string = props.content.frontSide
-    var tempStory: string = props.content.primaryInfo
+    var tempPrimaryInfo: string = props.content.primaryInfo
+    var tempSecondaryInfo: string = props.content.secondaryInfo
 
     const dispatch = useDispatch();
     const {editListItem} = bindActionCreators(characterSRSactionCreators, dispatch)
@@ -25,14 +26,15 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean}> = (props: PropsWit
         if (!(tempReviewValue === props.content.repetitionValue)) {changesMade = true}
         if (!(tempDateOfLastReview === props.content.dateOfLastReview)) {changesMade = true}
         if (!(tempKeyword === props.content.frontSide)) {changesMade = true}
-        if (!(tempStory === props.content.primaryInfo)) {changesMade = true}
+        if (!(tempPrimaryInfo === props.content.primaryInfo)) {changesMade = true}
+        if (!(tempSecondaryInfo === props.content.secondaryInfo)) {changesMade = true}
         const newContentObject: FlashCard = {
             cardNumber: props.content.cardNumber,
             cardName: props.content.cardName,
             frontSide: tempKeyword,
             backSide: props.content.backSide,
-            primaryInfo: tempStory,
-            secondaryInfo: props.content.secondaryInfo,
+            primaryInfo: tempPrimaryInfo,
+            secondaryInfo: tempSecondaryInfo,
             notableCards: props.content.notableCards,
             dateOfLastReview: tempDateOfLastReview,
             repetitionValue: tempReviewValue
@@ -82,17 +84,39 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean}> = (props: PropsWit
         <ul>
             { props.show ? <li className={classes.characterListElement}>{props.content.backSide}</li> : <li className={classes.characterListElement}></li>}
             { props.show ? <li>{content.cardNumber}</li> : <li></li>}
+            { props.show ? <li onInput={(e) => tempReviewValue = editNumberValue(e, props.content.repetitionValue)} contentEditable="true">
+                {content.repetitionValue}</li> : <li></li>}
+            { props.show ? <li onInput={(e) => tempDateOfLastReview = editStringvalue(e, props.content.dateOfLastReview)} contentEditable="true">
+                {content.dateOfLastReview}</li> : <li></li>}
+            <li onInput={(e) => tempKeyword = editStringvalue(e, props.content.frontSide)} contentEditable="true">
+                {content.frontSide}</li>
+            { props.show ? <li onInput={(e) => tempPrimaryInfo = editStringvalue(e, props.content.primaryInfo)} contentEditable="true">
+                {content.primaryInfo}</li> : <li></li>}
+            { props.show ? <li onInput={(e) => tempPrimaryInfo = editStringvalue(e, props.content.secondaryInfo)} contentEditable="true">
+                {content.secondaryInfo}</li> : <li></li>}
+        </ul>
+    </section>
+
+}
+
+/*
+return <section>
+        <button type="button" onClick={() => saveEdit()}>saveEditOn {content.cardNumber}</button>
+        <ul>
+            { props.show ? <li className={classes.characterListElement}>{props.content.backSide}</li> : <li className={classes.characterListElement}></li>}
+            { props.show ? <li>{content.cardNumber}</li> : <li></li>}
             { props.show ? <li onInput={(e) => tempReviewValue = editNumberValue(e, props.content.repetitionValue)} id="reviewValue" contentEditable="true">
                 {content.repetitionValue}</li> : <li></li>}
             { props.show ? <li onInput={(e) => tempDateOfLastReview = editStringvalue(e, props.content.dateOfLastReview)} id="dateOfLastReview" contentEditable="true">
                 {content.dateOfLastReview}</li> : <li></li>}
             <li onInput={(e) => tempKeyword = editStringvalue(e, props.content.frontSide)} id="keyword" contentEditable="true">
                 {content.frontSide}</li>
-            { props.show ? <li onInput={(e) => tempStory = editStringvalue(e, props.content.primaryInfo)} id="story" contentEditable="true">
+            { props.show ? <li onInput={(e) => tempPrimaryInfo = editStringvalue(e, props.content.primaryInfo)} id="story" contentEditable="true">
                 {content.primaryInfo}</li> : <li></li>}
+            { props.show ? <li onInput={(e) => tempPrimaryInfo = editStringvalue(e, props.content.secondaryInfo)} id="story" contentEditable="true">
+                {content.secondaryInfo}</li> : <li></li>}
         </ul>
     </section>
-
-}
+*/
 
 export default TodoItem
