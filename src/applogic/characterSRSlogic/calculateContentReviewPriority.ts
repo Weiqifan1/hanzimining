@@ -3,8 +3,8 @@ import {FlashCard} from "../../state/state-types/charactersrstypes";
 //characters added to deck (reviewNumber > 0) and not forbidden, sorted by review priority
 export const getReviewPriority = (allContentItems: FlashCard[], forbiddenCharacters: FlashCard[]): FlashCard[] => {
     const forbiddenCharacterNumbers: number[] = forbiddenCharacters.map(eachContent => eachContent.cardNumber)
-    const contentAddedToDeck: FlashCard[] = allContentItems.filter(eachContent => eachContent.repetitionValue > 0)
-    const nonProhibited: FlashCard[] = contentAddedToDeck.filter(eachContent => {
+    const contentThatCanBepracticed: FlashCard[] = allContentItems.filter(eachContent => eachContent.repetitionValue > 0)
+    const nonProhibited: FlashCard[] = contentThatCanBepracticed.filter(eachContent => {
         return (forbiddenCharacterNumbers && forbiddenCharacterNumbers.indexOf(eachContent.cardNumber) === -1)
     })
     const nonProhibitedSorted: FlashCard[] = calculateReviewPriority(nonProhibited)

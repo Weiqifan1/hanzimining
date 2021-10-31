@@ -16,7 +16,7 @@ export const calculateNextCharacter = (input: characterSRSlogic): characterSRSlo
         }
         return returnObject
     }else {
-        const updatedMostRecentlyPracticed: FlashCard[] = addCurrentContentToPreviousContentList(input)
+        //const updatedMostRecentlyPracticed: FlashCard[] = addCurrentContentToPreviousContentList(input)
         const firstPriority: FlashCard = reviewPrioritySorted[0]
         const returnObject: characterSRSlogic = {
             currentContent: firstPriority,
@@ -27,7 +27,6 @@ export const calculateNextCharacter = (input: characterSRSlogic): characterSRSlo
         return returnObject
     }
 }
-
 
 const getMostRecentlyPracticed = (input: characterSRSlogic, maxLengthInteger: number): FlashCard[] => {
     const recentlyPracticed: FlashCard[] = input.mostRecentContentObjects
@@ -41,7 +40,6 @@ const getMostRecentlyPracticed = (input: characterSRSlogic, maxLengthInteger: nu
     }
     return result
 }
-
 
 const addCurrentContentToPreviousContentList = (input: characterSRSlogic): FlashCard[] => {
     if (input.currentContent){
