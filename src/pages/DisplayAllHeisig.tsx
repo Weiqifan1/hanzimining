@@ -1,5 +1,5 @@
 
-import React, {ReactElement, useState} from "react";
+import React, {MouseEventHandler, ReactElement, useState} from "react";
 import IPage from "../interfaces/page";
 import {useDispatch, useSelector} from "react-redux";
 import {bindActionCreators} from "redux";
@@ -22,16 +22,30 @@ const DisplayAllHeisig: React.FunctionComponent<IPage> = props => {
     const [displayChars, setDisplayChars] = useState<FlashCard[]>([])
     const [numberToDisplay, setNumberToDisplay] = useState<number>(prepareNumberToDisplaySize(characterSRSstate.cards.length))
 
-    function sortbyIndexNumber() {
+    function sortbyIndexNumberAscending() {
         const sortedByNumber: FlashCard[] = characterSRSstate.cards.sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.cardNumber < b.cardNumber) {return -1; }if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
         setDisplayChars(sortedByNumber.slice(0,numberToDisplay))
     }
-    function sortByReviewNumber() {
+    function sortbyIndexNumberDescending() {
+        const sortedByNumber: FlashCard[] = characterSRSstate.cards.sort(function sortToLargeToSmall(a: FlashCard, b: FlashCard){if (a.cardNumber < b.cardNumber) {return 1; }if (a.cardNumber > b.cardNumber) {return -1;}return 0;})
+        setDisplayChars(sortedByNumber.slice(0,numberToDisplay))
+    }
+
+    function sortByReviewNumberAscending() {
         const sortedByReviewValue: FlashCard[] = characterSRSstate.cards.sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.repetitionValue < b.repetitionValue) {return -1; }if (a.repetitionValue > b.repetitionValue) {return 1;}return 0;})
         setDisplayChars(sortedByReviewValue.slice(0,numberToDisplay))
     }
-    function sortByLastReviewDate() {
+    function sortByReviewNumberDescending() {
+        const sortedByReviewValue: FlashCard[] = characterSRSstate.cards.sort(function sortLargeToSmall(a: FlashCard, b: FlashCard){if (a.repetitionValue < b.repetitionValue) {return 1; }if (a.repetitionValue > b.repetitionValue) {return -1;}return 0;})
+        setDisplayChars(sortedByReviewValue.slice(0,numberToDisplay))
+    }
+
+    function sortByLastReviewDateAscending() {
         const sortedByLastReviewDate: FlashCard[] = characterSRSstate.cards.sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.dateOfLastReview < b.dateOfLastReview) {return -1; }if (a.dateOfLastReview > b.dateOfLastReview) {return 1;}return 0;})
+        setDisplayChars(sortedByLastReviewDate.slice(0,numberToDisplay))
+    }
+    function sortByLastReviewDateDescending() {
+        const sortedByLastReviewDate: FlashCard[] = characterSRSstate.cards.sort(function sortLargeToSmall(a: FlashCard, b: FlashCard){if (a.dateOfLastReview < b.dateOfLastReview) {return 1; }if (a.dateOfLastReview > b.dateOfLastReview) {return -1;}return 0;})
         setDisplayChars(sortedByLastReviewDate.slice(0,numberToDisplay))
     }
 
@@ -51,9 +65,14 @@ const DisplayAllHeisig: React.FunctionComponent<IPage> = props => {
         <p>number of heisig items: {characterSRSstate.cards.length}</p>
         <button type="button" onClick={toggleSize}>toggleSize{numberToDisplay}</button>
         <button type="button" onClick={clearData}>clearData</button>
-        <button type="button" onClick={sortbyIndexNumber}>sortByCharNumber</button>
-        <button type="button" onClick={sortByReviewNumber}>sortByReviewValue</button>
-        <button type="button" onClick={sortByLastReviewDate}>sortByLastReviewDate</button>
+        <p></p>
+        <button type="button" onClick={sortbyIndexNumberAscending}>sortByCharNumberAscending</button>
+        <button type="button" onClick={sortByReviewNumberAscending}>sortByReviewValueAscending</button>
+        <button type="button" onClick={sortByLastReviewDateAscending}>sortByLastReviewDateAscending</button>
+        <p></p>
+        <button type="button" onClick={sortbyIndexNumberDescending}>sortByCharNumberDescending</button>
+        <button type="button" onClick={sortByReviewNumberDescending}>sortByReviewValueDescending</button>
+        <button type="button" onClick={sortByLastReviewDateDescending}>sortByLastReviewDateDescending</button>
         <Todos data={displayChars}/>
     </section>
     //return <h1> The display all heisig page </h1>
