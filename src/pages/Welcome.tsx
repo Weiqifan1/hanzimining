@@ -3,7 +3,7 @@ import React, {ReactElement, useEffect, useRef, useState} from "react";
 import IPage from "../interfaces/page";
 import {useDispatch, useSelector} from "react-redux";
 import {bindActionCreators} from "redux";
-import { characterSRSactionCreators, State } from '../state/index';
+import { characterSRSactionCreators, previousCharactersActionCreators,  State } from '../state/index';
 import {FlashCardDeck, FlashCard} from "../state/state-types/charactersrstypes";
 import characterSRSlogic from "../interfaces/characterSRSlogic";
 import {calculateNextCharacter} from "../applogic/characterSRSlogic/calculateCharacterSRSorder";
@@ -15,16 +15,23 @@ const Welcome: React.FunctionComponent<IPage> = props => {
     useEffect(()=>{addCharactersReference.current?.focus();},[])
 
     var currentContent: FlashCard;
-    var previousCharacters: FlashCard[];
+    var previousCharacters: [];
     //var displayPreviousCharacters: ReactElement = <p></p>
     const [showCharacterSRSContentElement, setShowCharacterSRSContentElement] = useState<boolean>(false)
     const [addMoreCharactersTextField, setAddMoreCharactersTextField] = useState<string>("");
 
     const dispatch = useDispatch();
+    //characterSRS
     const {editListItemInBulk} = bindActionCreators(characterSRSactionCreators, dispatch)
-    const characterSRSstate = useSelector(
+    const characterSRSstate: FlashCardDeck = useSelector(
         (state: State) => state.characterSRS
     )
+    //previousCharacters
+    const {addToPreviousCharacters} = bindActionCreators(previousCharactersActionCreators, dispatch)
+    const previousCharactersState: FlashCard[] = useSelector(
+        (state: State) => state.previousCharacters
+    )
+
 
     const todoPageContent = (): ReactElement => {
         //previousCharacters = characterSRSstate.previousCharacters
@@ -32,7 +39,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
         const srslogic: characterSRSlogic = {
             characterSRS: characterSRSstate,
             currentContent: undefined,
-            mostRecentContentObjects: [], //characterSRSstate.previousCardsViewed,
+            mostRecentContentObjects: previousCharactersState, //characterSRSstate.previousCardsViewed,
             notEnoughCharacters: false
         }
         const srscalculationResult: characterSRSlogic = calculateNextCharacter(srslogic)
@@ -49,7 +56,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
                 contentOrNotEnough = <p>Content type is undefined!!! this is an error</p>
             }
         }
-        previousCharacters = []//characterSRSstate.previousCardsViewed//displayPreviousCharacters = displayMostRecentCharacters(characterSRSstate.previousCharacters)
+        //previousCharacters = []//characterSRSstate.previousCardsViewed//displayPreviousCharacters = displayMostRecentCharacters(characterSRSstate.previousCharacters)
         return contentOrNotEnough
     }
 
