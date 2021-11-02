@@ -15,6 +15,8 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
     var tempKeyword: string = props.content.frontSide
     var tempPrimaryInfo: string = props.content.primaryInfo
     var tempSecondaryInfo: string = props.content.secondaryInfo
+    var tempNotableCards: number[] = props.content.notableCards
+    var tempCardName: string = props.content.cardName
 
     const dispatch = useDispatch();
     const {editListItem} = bindActionCreators(characterSRSactionCreators, dispatch)
@@ -29,14 +31,16 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
         if (!(tempKeyword === props.content.frontSide)) {changesMade = true}
         if (!(tempPrimaryInfo === props.content.primaryInfo)) {changesMade = true}
         if (!(tempSecondaryInfo === props.content.secondaryInfo)) {changesMade = true}
+        if (!(tempNotableCards === props.content.notableCards)) {changesMade = true}
+        if (!(tempCardName === props.content.cardName)) {changesMade = true}
         const newContentObject: FlashCard = {
             cardNumber: props.content.cardNumber,
-            cardName: props.content.cardName,
+            cardName: tempCardName,
             frontSide: tempKeyword,
             backSide: props.content.backSide,
             primaryInfo: tempPrimaryInfo,
             secondaryInfo: tempSecondaryInfo,
-            notableCards: props.content.notableCards,
+            notableCards: tempNotableCards,
             dateOfLastReview: tempDateOfLastReview,
             repetitionValue: tempReviewValue
         }
@@ -78,6 +82,37 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
         }
     }
 
+    const editNumberList = (htmlelement: FormEvent<HTMLElement>, defaultValue: number[]): number[] => {
+        const rawValue: string = htmlelement.currentTarget.textContent ? htmlelement.currentTarget.textContent : ""
+        console.log(rawValue)
+        const textvalue = parseNumberListInput(rawValue)
+        console.log(textvalue)
+        if (!textvalue) {
+            //console.log("not a string: " + htmlelement.currentTarget.textContent)
+            return defaultValue
+        }else {
+            //const finalresult: string = textvalue ? textvalue : defaultValue
+            return textvalue
+        }
+    }
+    const displayNumberList = (input: number[]): string => {
+        if (input.length > 0) {
+            const display: string = input.map(x => x.toString()).join(",")
+            return display
+        }else {
+            return ""
+        }
+    }
+    const parseNumberListInput = (input: string): number[] => {
+        const split: string[] = input.split(",")//split on comma
+        const numberlist: number[] = split.filter(x => Number(x)).map(x=>Number(x))
+        if (numberlist.length > 0) {
+            return numberlist
+        }else {
+            return []
+        }
+    }
+
     //TODO: create a editDate function that verifies that the text entered has the right format
 
     return <section>
@@ -91,9 +126,11 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
                 {content.dateOfLastReview}</li> : <li></li>}
             <li onInput={(e) => tempKeyword = editStringvalue(e, props.content.frontSide)} contentEditable="true">
                 {content.frontSide}</li>
+            <li onInput={(e) => tempNotableCards = editNumberList(e, props.content.notableCards)} contentEditable="true">
+                {displayNumberList(content.notableCards)}</li>
             { props.show ? <li onInput={(e) => tempPrimaryInfo = editStringvalue(e, props.content.primaryInfo)} contentEditable="true">
                 {content.primaryInfo}</li> : <li></li>}
-            { props.show&&props.showSecondary ? <li onInput={(e) => tempPrimaryInfo = editStringvalue(e, props.content.secondaryInfo)} contentEditable="true">
+            { props.show&&props.showSecondary ? <li onInput={(e) => tempSecondaryInfo = editStringvalue(e, props.content.secondaryInfo)} contentEditable="true">
                 {content.secondaryInfo}</li> : <li></li>}
         </ul>
     </section>
