@@ -1,5 +1,5 @@
-import characterSRSlogic from "../../interfaces/characterSRSlogic";
-import {FlashCard} from "../../state/state-types/charactersrstypes";
+import characterSRSlogic from "../../../interfaces/characterSRSlogic";
+import {FlashCard} from "../../../state/state-types/charactersrstypes";
 import {getReviewPriority} from "./calculateContentReviewPriority";
 
 
