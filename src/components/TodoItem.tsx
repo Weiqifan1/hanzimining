@@ -51,36 +51,63 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
 
     }
 
+
+    const displayOriginalCharacter = (): JSX.Element => {
+        const display: JSX.Element = <section>
+            <ul>
+                { props.show ? <li className={classes.characterListElement}>{props.content.backSide}</li> : <li className={classes.characterListElement}></li>}
+                { props.show ? <li>{content.cardNumber}</li> : <li></li>}
+                { props.show ? <li onInput={(e) =>
+                    tempReviewValue = FlashCardStateManipulation.editNumberValue(e, props.content.repetitionValue)}
+                                   contentEditable="true">
+                    {content.repetitionValue}</li> : <li></li>}
+                { props.show ? <li onInput={(e) =>
+                    tempDateOfLastReview = FlashCardStateManipulation.editStringvalue(e, props.content.dateOfLastReview)}
+                                   contentEditable="true">
+                    {content.dateOfLastReview}</li> : <li></li>}
+                <li onInput={(e) =>
+                    tempKeyword = FlashCardStateManipulation.editStringvalue(e, props.content.frontSide)}
+                    contentEditable="true">
+                    {content.frontSide}</li>
+                <li onInput={(e) =>
+                    tempNotableCards = FlashCardStateManipulation.editNumberList(e, props.content.notableCards)}
+                    contentEditable="true">
+                    {FlashCardStateManipulation.displayNumberList(content.notableCards)}</li>
+                { props.show ? <li onInput={(e) =>
+                    tempPrimaryInfo = FlashCardStateManipulation.editStringvalue(e, props.content.primaryInfo)}
+                                   contentEditable="true">
+                    {content.primaryInfo}</li> : <li></li>}
+                { props.show&&props.showSecondary ? <li onInput={(e) =>
+                    tempSecondaryInfo = FlashCardStateManipulation.editStringvalue(e, props.content.secondaryInfo)}
+                                                        contentEditable="true">
+                    {content.secondaryInfo}</li> : <li></li>}
+            </ul>
+        </section>
+        return display
+    }
+
+    const displayNotableCard = (input: FlashCard): JSX.Element  => {
+        const display: JSX.Element = <section>
+            <ul>
+                <li className={classes.characterListElement}>{input.backSide}</li>
+                <li>{input.cardNumber}</li>
+                <li>{input.repetitionValue}</li>
+                <li>{input.dateOfLastReview}</li>
+                <li>{input.frontSide}</li>
+                <li>{FlashCardStateManipulation.displayNumberList(input.notableCards)}</li>
+               <li>{input.primaryInfo}</li>
+                {props.showSecondary ? <li>{input.secondaryInfo}</li> : <li></li>}
+            </ul>
+        </section>
+        return display
+    }
+
+    //{displayOriginalCharacter()}
+        //{displayNotableCard(content)}
     return <section>
         <button type="button" onClick={() => saveEdit()}>saveEditOn {content.cardNumber}</button>
-        <ul>
-            { props.show ? <li className={classes.characterListElement}>{props.content.backSide}</li> : <li className={classes.characterListElement}></li>}
-            { props.show ? <li>{content.cardNumber}</li> : <li></li>}
-            { props.show ? <li onInput={(e) =>
-                tempReviewValue = FlashCardStateManipulation.editNumberValue(e, props.content.repetitionValue)}
-                contentEditable="true">
-                {content.repetitionValue}</li> : <li></li>}
-            { props.show ? <li onInput={(e) =>
-                tempDateOfLastReview = FlashCardStateManipulation.editStringvalue(e, props.content.dateOfLastReview)}
-                contentEditable="true">
-                {content.dateOfLastReview}</li> : <li></li>}
-            <li onInput={(e) =>
-                tempKeyword = FlashCardStateManipulation.editStringvalue(e, props.content.frontSide)}
-                contentEditable="true">
-                {content.frontSide}</li>
-            <li onInput={(e) =>
-                tempNotableCards = FlashCardStateManipulation.editNumberList(e, props.content.notableCards)}
-                contentEditable="true">
-                {FlashCardStateManipulation.displayNumberList(content.notableCards)}</li>
-            { props.show ? <li onInput={(e) =>
-                tempPrimaryInfo = FlashCardStateManipulation.editStringvalue(e, props.content.primaryInfo)}
-                contentEditable="true">
-                {content.primaryInfo}</li> : <li></li>}
-            { props.show&&props.showSecondary ? <li onInput={(e) =>
-                tempSecondaryInfo = FlashCardStateManipulation.editStringvalue(e, props.content.secondaryInfo)}
-                contentEditable="true">
-                {content.secondaryInfo}</li> : <li></li>}
-        </ul>
+        {displayOriginalCharacter()}
+
     </section>
 
 }
