@@ -6,7 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import {bindActionCreators} from "redux";
 import { characterSRSactionCreators, State } from '../state/index';
 import FlashCardStateManipulation from "../applogic/FlashcardDisplayLogic/FlashCardDisplayBoundary";
-import {cardExistInDeck, getFlashCard} from "../applogic/characterSRSlogic/flashcardHelperFunctions/gettingFlashCards";
+import {
+    cardExistInDeck,
+    getCardSimpleDisplayInfo,
+    getFlashCard
+} from "../applogic/characterSRSlogic/flashcardHelperFunctions/gettingFlashCards";
 
 const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: boolean}> =
     (props: PropsWithChildren<{content: FlashCard, show: boolean, showSecondary: boolean}>) => {//PropsWithChildren<{content: Content}>
@@ -124,7 +128,9 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
     }
     const generateListOfCardButtons = (currentCard: number, cardNumberList: number[]): JSX.Element => {
         const localList: JSX.Element[] = cardNumberList.map(x=>{
-            return <button type="button" onClick={() => setCardToDisplay(x)}>{x.toString()}</button>
+            //generate card string
+            const cardstring: string = getCardSimpleDisplayInfo(x, characterSRSstate)
+            return <button type="button" onClick={() => setCardToDisplay(x)}>{cardstring}</button>
         })
         const result: JSX.Element = <section><ul>
             <li><button type="button" onClick={() => setCardToDisplay(-1)}>{currentCard.toString()}</button></li>
