@@ -1,5 +1,5 @@
 import classes from "./TodoItem.module.css"
-import {FormEvent, PropsWithChildren} from "react";
+import {FormEvent, PropsWithChildren, useState} from "react";
 import React from "react";
 import IPage from "../interfaces/page";
 import {FlashCardDeck, FlashCard} from "../state/state-types/charactersrstypes";
@@ -10,6 +10,16 @@ import FlashCardStateManipulation from "../applogic/FlashcardDisplayLogic/FlashC
 
 const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: boolean}> =
     (props: PropsWithChildren<{content: FlashCard, show: boolean, showSecondary: boolean}>) => {//PropsWithChildren<{content: Content}>
+
+    const dispatch = useDispatch();
+    const {editListItem} = bindActionCreators(characterSRSactionCreators, dispatch)
+    const characterSRSstate = useSelector(
+        (state: State) => state.characterSRS
+    )
+
+    const [cardToDisplay, setCardToDisplay] = useState<number>(-1)
+    const [showNotableChardButtons, setShowNotableChardButtons] = useState<boolean>(false)
+
     const content: FlashCard = props.content
     var tempReviewValue: number = props.content.repetitionValue
     var tempDateOfLastReview: string = props.content.dateOfLastReview
@@ -19,11 +29,6 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
     var tempNotableCards: number[] = props.content.notableCards
     var tempCardName: string = props.content.cardName
 
-    const dispatch = useDispatch();
-    const {editListItem} = bindActionCreators(characterSRSactionCreators, dispatch)
-    const characterSRSstate = useSelector(
-        (state: State) => state.characterSRS
-    )
 
     const saveEdit = () => {
         var changesMade: boolean = false
@@ -112,24 +117,5 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
 
 }
 
-/*
-return <section>
-        <button type="button" onClick={() => saveEdit()}>saveEditOn {content.cardNumber}</button>
-        <ul>
-            { props.show ? <li className={classes.characterListElement}>{props.content.backSide}</li> : <li className={classes.characterListElement}></li>}
-            { props.show ? <li>{content.cardNumber}</li> : <li></li>}
-            { props.show ? <li onInput={(e) => tempReviewValue = editNumberValue(e, props.content.repetitionValue)} id="reviewValue" contentEditable="true">
-                {content.repetitionValue}</li> : <li></li>}
-            { props.show ? <li onInput={(e) => tempDateOfLastReview = editStringvalue(e, props.content.dateOfLastReview)} id="dateOfLastReview" contentEditable="true">
-                {content.dateOfLastReview}</li> : <li></li>}
-            <li onInput={(e) => tempKeyword = editStringvalue(e, props.content.frontSide)} id="keyword" contentEditable="true">
-                {content.frontSide}</li>
-            { props.show ? <li onInput={(e) => tempPrimaryInfo = editStringvalue(e, props.content.primaryInfo)} id="story" contentEditable="true">
-                {content.primaryInfo}</li> : <li></li>}
-            { props.show ? <li onInput={(e) => tempPrimaryInfo = editStringvalue(e, props.content.secondaryInfo)} id="story" contentEditable="true">
-                {content.secondaryInfo}</li> : <li></li>}
-        </ul>
-    </section>
-*/
 
 export default TodoItem
