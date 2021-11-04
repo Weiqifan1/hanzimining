@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {bindActionCreators} from "redux";
 import { characterSRSactionCreators, State } from '../state/index';
 import FlashCardStateManipulation from "../applogic/FlashcardDisplayLogic/FlashCardDisplayBoundary";
+import {getFlashCard} from "../applogic/characterSRSlogic/flashcardHelperFunctions/gettingFlashCards";
 
 const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: boolean}> =
     (props: PropsWithChildren<{content: FlashCard, show: boolean, showSecondary: boolean}>) => {//PropsWithChildren<{content: Content}>
@@ -56,6 +57,14 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
 
     }
 
+    const displayController = (): JSX.Element => {
+        if (cardToDisplay > -1) {
+            const newCard: FlashCard = getFlashCard(cardToDisplay, characterSRSstate);
+            return displayNotableCard(newCard)
+        }else {
+            return displayOriginalCharacter()
+        }
+    }
 
     const displayOriginalCharacter = (): JSX.Element => {
         const display: JSX.Element = <section>
@@ -107,11 +116,26 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
         return display
     }
 
+    const toggleShowNotableCards = () => {
+        setShowNotableChardButtons(!showNotableChardButtons)
+        console.log("showNotableButtons: " + showNotableChardButtons)
+    }
+    const toggleCardToDisplay = () => {
+        if (cardToDisplay === -1) {
+            setCardToDisplay(0)
+        }else {
+            setCardToDisplay(-1)
+        }
+        console.log("cardToDisplay: " + cardToDisplay)
+    }
+
     //{displayOriginalCharacter()}
         //{displayNotableCard(content)}
     return <section>
         <button type="button" onClick={() => saveEdit()}>saveEditOn {content.cardNumber}</button>
-        {displayOriginalCharacter()}
+        <button type="button" onClick={() => toggleShowNotableCards()}>showNotableCardButtons {showNotableChardButtons}</button>
+        <button type="button" onClick={() => toggleCardToDisplay()}>cardToDisplay {cardToDisplay.toString()}</button>
+        {displayController()}
 
     </section>
 
