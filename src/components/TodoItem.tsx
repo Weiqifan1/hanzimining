@@ -128,9 +128,8 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
     }
     const generateListOfCardButtons = (currentCard: number, cardNumberList: number[]): JSX.Element => {
         const localList: JSX.Element[] = cardNumberList.map(x=>{
-            //generate card string
-            const cardstring: string = getCardSimpleDisplayInfo(x, characterSRSstate)
-            return <button type="button" onClick={() => setCardToDisplay(x)}>{cardstring}</button>
+            return <button type="button" onClick={() => setCardToDisplay(x)}>
+                {getCardSimpleDisplayInfo(x, characterSRSstate)}</button>
         })
         const result: JSX.Element = <section><ul>
             <li><button type="button" onClick={() => setCardToDisplay(-1)}>{currentCard.toString()}</button></li>
