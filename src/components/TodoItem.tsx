@@ -1,13 +1,12 @@
 import classes from "./TodoItem.module.css"
 import {FormEvent, PropsWithChildren, useState} from "react";
 import React from "react";
-import IPage from "../interfaces/page";
 import {FlashCardDeck, FlashCard} from "../state/state-types/charactersrstypes";
 import { useDispatch, useSelector } from "react-redux";
 import {bindActionCreators} from "redux";
 import { characterSRSactionCreators, State } from '../state/index';
 import FlashCardStateManipulation from "../applogic/FlashcardDisplayLogic/FlashCardDisplayBoundary";
-import {getFlashCard} from "../applogic/characterSRSlogic/flashcardHelperFunctions/gettingFlashCards";
+import {cardExistInDeck, getFlashCard} from "../applogic/characterSRSlogic/flashcardHelperFunctions/gettingFlashCards";
 
 const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: boolean}> =
     (props: PropsWithChildren<{content: FlashCard, show: boolean, showSecondary: boolean}>) => {//PropsWithChildren<{content: Content}>
@@ -29,7 +28,6 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
     var tempSecondaryInfo: string = props.content.secondaryInfo
     var tempNotableCards: number[] = props.content.notableCards
     var tempCardName: string = props.content.cardName
-
 
     const saveEdit = () => {
         var changesMade: boolean = false
@@ -55,15 +53,6 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
         //TDOD: create an action that can save a content object
         editListItem(newContentObject, characterSRSstate)
 
-    }
-
-    const displayController = (): JSX.Element => {
-        if (cardToDisplay > -1) {
-            const newCard: FlashCard = getFlashCard(cardToDisplay, characterSRSstate);
-            return displayNotableCard(newCard)
-        }else {
-            return displayOriginalCharacter()
-        }
     }
 
     const displayOriginalCharacter = (): JSX.Element => {
@@ -117,25 +106,48 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
     }
 
     const toggleShowNotableCards = () => {
+        if (showNotableChardButtons) {
+            setCardToDisplay(-1)
+            setShowNotableChardButtons(!showNotableChardButtons)
+        }
         setShowNotableChardButtons(!showNotableChardButtons)
         console.log("showNotableButtons: " + showNotableChardButtons)
     }
-    const toggleCardToDisplay = () => {
-        if (cardToDisplay === -1) {
-            setCardToDisplay(0)
+
+    const displayNotableCardButtons = (): JSX.Element => {
+        if (showNotableChardButtons) {
+            const result: JSX.Element = <section>{generateListOfCardButtons(props.content.cardNumber, tempNotableCards)}</section>
+            return result
         }else {
-            setCardToDisplay(-1)
+            return <section></section>
         }
-        console.log("cardToDisplay: " + cardToDisplay)
+    }
+    const generateListOfCardButtons = (currentCard: number, cardNumberList: number[]): JSX.Element => {
+        const localList: JSX.Element[] = cardNumberList.map(x=>{
+            return <button type="button" onClick={() => setCardToDisplay(x)}>{x.toString()}</button>
+        })
+        const result: JSX.Element = <section><ul>
+            <li><button type="button" onClick={() => setCardToDisplay(-1)}>{currentCard.toString()}</button></li>
+            {
+            localList
+        }</ul></section>
+        return result
     }
 
-    //{displayOriginalCharacter()}
-        //{displayNotableCard(content)}
+    const displayCard = (): JSX.Element => {
+        if (cardToDisplay > -1 && cardExistInDeck(cardToDisplay, characterSRSstate)) {
+            const newCard: FlashCard = getFlashCard(cardToDisplay, characterSRSstate);
+            return displayNotableCard(newCard)
+        }else {
+            return displayOriginalCharacter()
+        }
+    }
+
     return <section>
         <button type="button" onClick={() => saveEdit()}>saveEditOn {content.cardNumber}</button>
-        <button type="button" onClick={() => toggleShowNotableCards()}>showNotableCardButtons {showNotableChardButtons}</button>
-        <button type="button" onClick={() => toggleCardToDisplay()}>cardToDisplay {cardToDisplay.toString()}</button>
-        {displayController()}
+        <button type="button" onClick={() => toggleShowNotableCards()}>showNotableCardButtons{showNotableChardButtons.valueOf()}</button>
+        {displayNotableCardButtons()}
+        {displayCard()}
 
     </section>
 
