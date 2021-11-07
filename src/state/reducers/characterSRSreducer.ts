@@ -6,13 +6,27 @@ const initialState: FlashCardDeck = {
     deckName: '',
     deckInfo: '',
     settings: new Map(),
+    tags: new Map(),
     cards: []
 }
 
-/*  deckName: string;
-    deckInfo: string;
-    settings: Map<string, string>;
-    cards: FlashCard[];*/
+//deckName: string;
+//     deckInfo: string;
+//     settings: Map<string, string>;
+//     tags:  Map<string, string>;
+//     cards: FlashCard[];
+
+/*  cardNumber: number;
+    cardName: string;
+    frontSide: string;
+    backSide: string;
+    primaryInfo: string;
+    secondaryInfo: string;
+    notableCards: number[];
+    dateOfLastReview: string;
+    repetitionValue: number;
+    repetitionHistory: number[];
+    tags: string[];*/
 
 const editListItem = (newContent: FlashCard, characterSRSObject: FlashCardDeck): FlashCardDeck => {
     const characterList: FlashCard[] = characterSRSObject.cards

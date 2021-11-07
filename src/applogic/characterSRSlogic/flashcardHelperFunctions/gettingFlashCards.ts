@@ -33,27 +33,31 @@ export const getFlashCard = (cardNumber: number, currentState: FlashCardDeck): F
        return cardCandidates[0]
    } else {
        const newCard: FlashCard = {
-           backSide: "",
-           cardName: "",
            cardNumber: 0,
-           dateOfLastReview: "",
+           cardName: "",
            frontSide: "",
-           notableCards: [],
+           backSide: "",
            primaryInfo: "",
+           secondaryInfo: "",
+           notableCards: [],
+           dateOfLastReview: "",
            repetitionValue: 0,
-           secondaryInfo: ""
+           repetitionHistory: [],
+           tags: []
        }
        return newCard
    }
 }
-
-
-//cardNumber: number;
-//cardName: string;
-//frontSide: string;
-//backSide: string;
-//primaryInfo: string;
-//secondaryInfo: string;
-//notableCards: number[];
-//dateOfLastReview: string;
-//repetitionValue: number;
+//export interface FlashCard {
+//     cardNumber: number;
+//     cardName: string;
+//     frontSide: string;
+//     backSide: string;
+//     primaryInfo: string;
+//     secondaryInfo: string;
+//     notableCards: number[];
+//     dateOfLastReview: string;
+//     repetitionValue: number;
+//     repetitionHistory: number[];
+//     tags: string[];
+// }

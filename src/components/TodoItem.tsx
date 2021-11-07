@@ -32,6 +32,7 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
     var tempSecondaryInfo: string = props.content.secondaryInfo
     var tempNotableCards: number[] = props.content.notableCards
     var tempCardName: string = props.content.cardName
+    var tempTagsOnCard: string[] = props.content.tags
 
     const saveEdit = () => {
         var changesMade: boolean = false
@@ -51,8 +52,22 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
             secondaryInfo: tempSecondaryInfo,
             notableCards: tempNotableCards,
             dateOfLastReview: tempDateOfLastReview,
-            repetitionValue: tempReviewValue
+            repetitionValue: tempReviewValue,
+            repetitionHistory: props.content.repetitionHistory,
+            tags: tempTagsOnCard
+
         }
+        //cardNumber: 0,
+        //            cardName: "",
+        //            frontSide: "",
+        //            backSide: "",
+        //            primaryInfo: "",
+        //            secondaryInfo: "",
+        //            notableCards: [],
+        //            dateOfLastReview: "",
+        //            repetitionValue: 0,
+        //            repetitionHistory: [],
+        //            tags: []
 
         //TDOD: create an action that can save a content object
         editListItem(newContentObject, characterSRSstate)

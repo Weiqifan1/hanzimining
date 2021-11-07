@@ -20,23 +20,27 @@ export const createSRSobject = (characterSRSobject: FlashCardDeck) => {
                     notableCards: [],
                     dateOfLastReview: "",
                     repetitionValue: 0,
+                    repetitionHistory: [],
+                    tags: []
                 }]
             }
-            /*
-            deckName: string;
-    cards: FlashCard[];
-    previousCardsViewed: FlashCard[]
+            //deckName: string;
+//     deckInfo: string;
+//     settings: Map<string, string>;
+//     tags:  Map<string, string>;
+//     cards: FlashCard[];
 
-            cardNumber: number;
-    cardName: string;
-    frontSide: string;
-    backSide: string;
-    infoPrimary: string;
-    infoSecondary: string;
-    notableCards: number[];
-    dateOfLastReview: string;
-    repetitionValue: number;
-            */
+            /*  cardNumber: number;
+                cardName: string;
+                frontSide: string;
+                backSide: string;
+                primaryInfo: string;
+                secondaryInfo: string;
+                notableCards: number[];
+                dateOfLastReview: string;
+                repetitionValue: number;
+                repetitionHistory: number[];
+                tags: string[];*/
         })
     }
 }

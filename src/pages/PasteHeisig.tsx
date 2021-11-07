@@ -40,12 +40,16 @@ const PasteHeisig: React.FunctionComponent<IPage> = props => {
             deckName: "",
             deckInfo: "",
             settings: new Map<string, string>(),
+            tags: new Map<string, string>(),
             cards: []
         }
-        /*deckName: string;
+        /*export interface FlashCardDeck {
+    deckName: string;
     deckInfo: string;
     settings: Map<string, string>;
-    cards: FlashCard[];*/
+    tags:  Map<string, string>;
+    cards: FlashCard[];
+}*/
         createSRSobject(blankInput)
         setUploadData({
             dragging: false,
@@ -85,6 +89,12 @@ const PasteHeisig: React.FunctionComponent<IPage> = props => {
         }
     }
 
+    const getCharactersJson = (filename: string, url: string) => {
+        fetch(url)
+            .then(res => res.json())
+            .then(data => testchr(filename, JSON.stringify(data)))
+    }
+
     return <section>
         <h1> The paste heisig page </h1>
         <button type="button" onClick={() => downloadCharacterSRSobject()}>downloadCharacterSRS</button>
@@ -95,6 +105,19 @@ const PasteHeisig: React.FunctionComponent<IPage> = props => {
         <input type="text" id="inserthanzi" placeholder="paste character json file content"></input>
         <p>***</p>
         <FileUploader editParaList={handleDragAndDrop} paraList={uploadData}/>
+        <p>******** Heisig example decks that can be download (keywords has to be added by the user) **********</p>
+        <button type="button" onClick={() => getCharactersJson(
+            "heisigKanjiV5-3030noKeys.json",
+            "https://weiqifan1.github.io/hanzimining_data/heisigKanjiV5-3030noKeys.json")}>
+            heisigKanjiV5-3030noKeys</button>
+        <button type="button" onClick={() => getCharactersJson(
+            "heisigTraditionalV1-3035noKeys.json",
+            "https://weiqifan1.github.io/hanzimining_data/heisigTraditionalV1-3035noKeys.json")}>
+            heisigTraditionalV1-3035noKeys</button>
+        <button type="button" onClick={() => getCharactersJson(
+            "heisigSimplifiedV1-3018noKeys.json",
+            "https://weiqifan1.github.io/hanzimining_data/heisigSimplifiedV1-3018noKeys.json")}>
+            heisigSimplifiedV1-3018noKeys</button>
     </section>
 };
 
