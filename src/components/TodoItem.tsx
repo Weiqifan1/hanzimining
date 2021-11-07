@@ -120,15 +120,17 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
 
     const displayNotableCardButtons = (): JSX.Element => {
         if (showNotableChardButtons) {
-            const result: JSX.Element = <section>{generateListOfCardButtons(props.content.cardNumber, tempNotableCards)}</section>
+            const result: JSX.Element = <section>{generateListOfCardButtons(props.content.cardNumber)}</section>
             return result
         }else {
             return <section></section>
         }
     }
-    const generateListOfCardButtons = (currentCard: number, cardNumberList: number[]): JSX.Element => {
-        if (cardNumberList.length > 0) {
-            const localList: JSX.Element[] = cardNumberList.map(x=>{
+    const generateListOfCardButtons = (currentCard: number): JSX.Element => {
+        //export const getFlashCard = (cardNumber: number, currentState: FlashCardDeck): FlashCard => {
+        let localCard = getFlashCard(currentCard, characterSRSstate)//characterSRSstate
+        if (localCard.notableCards.length > 0) {
+            const localList: JSX.Element[] = localCard.notableCards.map(x=>{
                 return <button type="button" onClick={() => setCardToDisplay(x)}>
                     {getCardSimpleDisplayInfo(x, characterSRSstate)}</button>
             })

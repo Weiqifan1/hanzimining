@@ -178,7 +178,9 @@ const Welcome: React.FunctionComponent<IPage> = props => {
         const current: FlashCard = currentContent
         const updatedPrevious: FlashCard[] = previousCharacters ? [current, ...previousCharacters] : [current]
         const updatedDate: string = new Date().toISOString().slice(0,10)
-        const updatedReviewValue: number = current.repetitionValue+increaseOrDecreaseReviewValue > 0 ? current.repetitionValue+increaseOrDecreaseReviewValue : 1
+        const updatedReviewValue: number =
+            (current && current.repetitionValue && current.repetitionValue+increaseOrDecreaseReviewValue > 0)
+                ? current.repetitionValue+increaseOrDecreaseReviewValue : 1
 
         const updatedContent: FlashCard = {...current, repetitionValue: updatedReviewValue, dateOfLastReview: updatedDate}
         const updatedCharacterSRS: FlashCardDeck = {...characterSRSstate}
@@ -209,7 +211,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
     }
 
     const displayMostRecentCharacters = (listToDisplay: FlashCard[]): ReactElement => {
-        console.log(listToDisplay.map(each=>each.backSide))
+        //console.log(listToDisplay.map(each=>each.backSide))
         const mostRecentCharacter: FlashCard[] = listToDisplay ? listToDisplay : []
         let resultString: string;
         if (!mostRecentCharacter || mostRecentCharacter.length === 0) {
