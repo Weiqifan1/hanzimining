@@ -43,6 +43,7 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
         if (!(tempSecondaryInfo === props.content.secondaryInfo)) {changesMade = true}
         if (!(tempNotableCards === props.content.notableCards)) {changesMade = true}
         if (!(tempCardName === props.content.cardName)) {changesMade = true}
+        if (!(tempTagsOnCard === props.content.tags)) {changesMade = true}
         const newContentObject: FlashCard = {
             cardNumber: props.content.cardNumber,
             cardName: tempCardName,
@@ -55,20 +56,7 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
             repetitionValue: tempReviewValue,
             repetitionHistory: props.content.repetitionHistory,
             tags: tempTagsOnCard
-
         }
-        //cardNumber: 0,
-        //            cardName: "",
-        //            frontSide: "",
-        //            backSide: "",
-        //            primaryInfo: "",
-        //            secondaryInfo: "",
-        //            notableCards: [],
-        //            dateOfLastReview: "",
-        //            repetitionValue: 0,
-        //            repetitionHistory: [],
-        //            tags: []
-
         //TDOD: create an action that can save a content object
         editListItem(newContentObject, characterSRSstate)
 
@@ -95,6 +83,10 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
                     tempNotableCards = FlashCardStateManipulation.editNumberList(e, props.content.notableCards)}
                     contentEditable="true">
                     {FlashCardStateManipulation.displayNumberList(content.notableCards)}</li>
+                <li onInput={(e) =>
+                    tempTagsOnCard = FlashCardStateManipulation.editStringList(e, props.content.tags)}
+                    contentEditable="true">
+                    {FlashCardStateManipulation.displayStringList(content.tags)}</li>
                 { props.show ? <li onInput={(e) =>
                     tempPrimaryInfo = FlashCardStateManipulation.editStringvalue(e, props.content.primaryInfo)}
                                    contentEditable="true">
