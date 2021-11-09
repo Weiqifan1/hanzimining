@@ -24,26 +24,11 @@ export const createSRSobject = (characterSRSobject: FlashCardDeck) => {
                     tags: []
                 }]
             }
-            //deckName: string;
-//     deckInfo: string;
-//     settings: Map<string, string>;
-//     tags:  Map<string, string>;
-//     cards: FlashCard[];
-
-            /*  cardNumber: number;
-                cardName: string;
-                frontSide: string;
-                backSide: string;
-                primaryInfo: string;
-                secondaryInfo: string;
-                notableCards: number[];
-                dateOfLastReview: string;
-                repetitionValue: number;
-                repetitionHistory: number[];
-                tags: string[];*/
         })
     }
 }
+
+
 
 export const editListItem = (listItem: FlashCard, characterSRSobject: FlashCardDeck) => {
     return (dispatch: Dispatch<CharacterSRSaction>) => {
