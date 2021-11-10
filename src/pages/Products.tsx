@@ -2,25 +2,26 @@ import IPage from "../interfaces/page";
 import {useDispatch, useSelector} from "react-redux";
 import DisplayTags from "../components/DisplayTags";
 import {bindActionCreators} from "redux";
-import {FlashCardDeck} from "../state/state-types/charactersrstypes";
+import {FlashCard, FlashCardDeck} from "../state/state-types/charactersrstypes";
 import { characterSRSactionCreators, previousCharactersActionCreators, showSecondaryFlashcardInfoActionCreator,  State } from '../state/index';
 import FlashCardStateManipulation from "../applogic/FlashcardDisplayLogic/FlashCardDisplayBoundary";
-import {useState} from "react";
+import {PropsWithChildren, useState} from "react";
 
 const Products: React.FunctionComponent<IPage> = props => {
 
     //const [tagTitle, setTagTitle] = useState<string>("");
     //const [tagBody, setTagBody] = useState<string>("");
+    //export const addNewTag = (updatedtags: Map<string, string>, characterSRSobject: FlashCardDeck) => {
 
     const dispatch = useDispatch();
-    const {createSRSobject} = bindActionCreators(characterSRSactionCreators, dispatch)
+    const {addNewTag} = bindActionCreators(characterSRSactionCreators, dispatch)
     const characterSRSstate: FlashCardDeck = useSelector(
         (state: State) => state.characterSRS
     )
     var tagTitle: string = ""
     var tagBody: string = ""
     //var currentCharacterSRSstate = characterSRSstate
-    const [currentCharacterSRSstate, setCurrentCharacterSRSstate] = useState<FlashCardDeck>(characterSRSstate);
+    const [displayTagsBoolean, setDisplayTagsBoolean] = useState<boolean>(true);
 
     const addToTagList = () => {
         if (tagTitle) {
@@ -41,16 +42,32 @@ const Products: React.FunctionComponent<IPage> = props => {
                 const updatedDeck: FlashCardDeck = {
                     ...characterSRSstate, tags: typeMap
                 }
-                createSRSobject(updatedDeck)
-                setCurrentCharacterSRSstate(updatedDeck)//currentCharacterSRSstate = updatedDeck
+                addNewTag(typeMap, characterSRSstate)
+                //setCurrentCharacterSRSstate(updatedDeck)//currentCharacterSRSstate = updatedDeck
             }
         }
+    }
+
+    const displayTags = (deckState: FlashCardDeck, showState: boolean) => {
+        if (showState) {
+            return <section>
+                <DisplayTags content={deckState}/>
+            </section>
+        }else {
+            return <section><p>No tags shown</p></section>
+        }
+    }
+
+    const toggleDisplayTags = () => {
+        const test = "hello"
+        setDisplayTagsBoolean(!displayTagsBoolean)
     }
 
     return (
     <section>
         <h1> The Products page </h1>
-        <button id="decreaseByFive" type="button" onClick={addToTagList}>createNewTag</button>
+        <button id="createtags" type="button" onClick={addToTagList}>createNewTag</button>
+        <button id="showtags" type="button" onClick={toggleDisplayTags}>displaytags:{displayTagsBoolean.valueOf()}</button>
         <ul>
             <li onInput={(e) =>
                 tagTitle = FlashCardStateManipulation.editStringvalue(e, "tagTitle")}
@@ -61,7 +78,7 @@ const Products: React.FunctionComponent<IPage> = props => {
                 contentEditable="true">
                 "tagBody"</li>
         </ul>
-        <DisplayTags data={currentCharacterSRSstate}/>
+        {displayTags(characterSRSstate, displayTagsBoolean)}
     </section>
     );
 

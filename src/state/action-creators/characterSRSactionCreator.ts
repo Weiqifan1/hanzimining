@@ -10,6 +10,7 @@ export const createSRSobject = (characterSRSobject: FlashCardDeck) => {
             type: CharacterSRSactionTypes.CREATESRSOBJECT,
             payload: {
                 CharactersSRS: characterSRSobject,
+                Tags: new Map(),
                 Content: [{
                     cardNumber: 0,
                     cardName: "",
@@ -28,6 +29,18 @@ export const createSRSobject = (characterSRSobject: FlashCardDeck) => {
     }
 }
 
+export const addNewTag = (updatedtags: Map<string, string>, characterSRSobject: FlashCardDeck) => {
+    return (dispatch: Dispatch<CharacterSRSaction>) => {
+        dispatch({
+            type: CharacterSRSactionTypes.ADDNEWTAG,
+            payload: {
+                CharactersSRS: characterSRSobject,
+                Tags: updatedtags,
+                Content: characterSRSobject.cards
+            }
+        })
+    }
+}
 
 
 export const editListItem = (listItem: FlashCard, characterSRSobject: FlashCardDeck) => {

@@ -61,10 +61,21 @@ const editListItemsInBulk = (newContentInBulk: FlashCard[], characterSRSObject: 
     return result
 }
 
+const addNewTag = (updatedTags: Map<string, string>, characterSRSObject: FlashCardDeck): FlashCardDeck => {
+    const result: FlashCardDeck = {
+        ...characterSRSObject,
+        tags: updatedTags
+    }
+    return result
+}
+
+
 const characterSRSreducer = (state: FlashCardDeck = initialState, action: CharacterSRSaction): FlashCardDeck => {
     switch (action.type) {
         case CharacterSRSactionTypes.CREATESRSOBJECT:
             return action.payload.CharactersSRS
+        case CharacterSRSactionTypes.ADDNEWTAG:
+            return addNewTag(action.payload.Tags, action.payload.CharactersSRS)
         case CharacterSRSactionTypes.EDITLISTITEM:
             return editListItem(action.payload.Content[0], action.payload.CharactersSRS)
         case CharacterSRSactionTypes.EDITLISTITEMINBULK:
