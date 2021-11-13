@@ -1,6 +1,6 @@
 import {CharacterSRSaction} from "../actions/characterSRSactions";
 import {CharacterSRSactionTypes} from "../action-types/characterSRSactionTypes";
-import {FlashCardDeck, FlashCard} from "../state-types/charactersrstypes";
+import {FlashCard, FlashCardDeck} from "../state-types/charactersrstypes";
 
 const initialState: FlashCardDeck = {
     deckName: '',
@@ -51,6 +51,14 @@ const addNewTag = (updatedTags: Record<string, string>, characterSRSObject: Flas
     return result
 }
 
+const removeTag = (updatedTags: Record<string, string>, characterSRSObject: FlashCardDeck): FlashCardDeck => {
+    const result: FlashCardDeck = {
+        ...characterSRSObject,
+        tags: updatedTags
+    }
+    return result
+}
+
 
 const characterSRSreducer = (state: FlashCardDeck = initialState, action: CharacterSRSaction): FlashCardDeck => {
     switch (action.type) {
@@ -58,6 +66,8 @@ const characterSRSreducer = (state: FlashCardDeck = initialState, action: Charac
             return action.payload.CharactersSRS
         case CharacterSRSactionTypes.ADDNEWTAG:
             return addNewTag(action.payload.Tags, action.payload.CharactersSRS)
+        case CharacterSRSactionTypes.REMOVETAG:
+            return removeTag(action.payload.Tags, action.payload.CharactersSRS)
         case CharacterSRSactionTypes.EDITLISTITEM:
             return editListItem(action.payload.Content[0], action.payload.CharactersSRS)
         case CharacterSRSactionTypes.EDITLISTITEMINBULK:

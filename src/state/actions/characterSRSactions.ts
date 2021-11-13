@@ -34,4 +34,12 @@ interface AddNewTag {
     }
 }
 
-export type CharacterSRSaction = CreateSRSobject | EditListItem | EditListItemsInBulk | AddNewTag
+interface RemoveTag {
+    type: CharacterSRSactionTypes.REMOVETAG
+    payload: {
+        CharactersSRS: FlashCardDeck,
+        Tags: Record<string, string>
+    }
+}
+
+export type CharacterSRSaction = CreateSRSobject | EditListItem | EditListItemsInBulk | AddNewTag | RemoveTag

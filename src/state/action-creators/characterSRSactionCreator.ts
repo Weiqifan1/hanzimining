@@ -42,6 +42,19 @@ export const addNewTag = (updatedtags: Record<string, string>, characterSRSobjec
     }
 }
 
+export const removeTag = (updatedtags: Record<string, string>, characterSRSobject: FlashCardDeck) => {
+    return (dispatch: Dispatch<CharacterSRSaction>) => {
+        dispatch({
+            type: CharacterSRSactionTypes.REMOVETAG,
+            payload: {
+                CharactersSRS: characterSRSobject,
+                Tags: updatedtags,
+                Content: characterSRSobject.cards
+            }
+        })
+    }
+}
+
 
 export const editListItem = (listItem: FlashCard, characterSRSobject: FlashCardDeck) => {
     return (dispatch: Dispatch<CharacterSRSaction>) => {

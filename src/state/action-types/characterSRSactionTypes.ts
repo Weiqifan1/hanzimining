@@ -2,5 +2,6 @@ export enum CharacterSRSactionTypes{
     CREATESRSOBJECT = "createsrsobject",
     EDITLISTITEM = "editlistitem",
     EDITLISTITEMINBULK = "editlistiteminbult",
-    ADDNEWTAG = "addnewtag"
+    ADDNEWTAG = "addnewtag",
+    REMOVETAG = "removetag"
 }
