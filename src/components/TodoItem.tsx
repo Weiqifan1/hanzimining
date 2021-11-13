@@ -58,8 +58,9 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
             tags: tempTagsOnCard
         }
         //TDOD: create an action that can save a content object
-        editListItem(newContentObject, characterSRSstate)
-
+        if (changesMade) {
+            editListItem(newContentObject, characterSRSstate)
+        }
     }
 
     const displayOriginalCharacter = (): JSX.Element => {
@@ -84,7 +85,7 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
                     contentEditable="true">
                     {FlashCardStateManipulation.displayNumberList(content.notableCards)}</li>
                 <li onInput={(e) =>
-                    tempTagsOnCard = FlashCardStateManipulation.editStringList(e, props.content.tags,
+                    tempTagsOnCard = FlashCardStateManipulation.editTagList2(e, props.content.tags,
                         Object.keys(characterSRSstate.tags))}
                     contentEditable="true">
                     {FlashCardStateManipulation.displayStringList(content.tags)}</li>

@@ -20,6 +20,26 @@ function parseStringListInput(input: string): string[] {
     }
 }
 
+export const editTagList2 = (htmlelement: React.FormEvent<HTMLLIElement>, defaultValue: string[], mustBeIn: string[]): string[] => {
+    const rawValue: string = htmlelement.currentTarget.textContent ? htmlelement.currentTarget.textContent : ""
+    console.log(rawValue)
+    const textvalue: string[] = parseStringListInput(rawValue)
+    console.log(textvalue)
+    const onlyLegitimateTextValues: string[] = textvalue
+        .filter(x=>mustBeIn.includes(x))
+        .filter(function(elem, index, self) {
+            return index === self.indexOf(elem);
+        }).sort()
+    if (textvalue.length === 0){
+        return []
+    }else if (textvalue.length > onlyLegitimateTextValues.length) {
+        return defaultValue
+    }else {
+        return onlyLegitimateTextValues
+    }
+}
+
+//(e: React.FormEvent<HTMLLIElement>, tags: string[], strings: string[])
 export const editTagList = (htmlelement: React.FormEvent<HTMLLIElement>, defaultValue: string[], mustBeIn: string[]): string[] => {
     const rawValue: string = htmlelement.currentTarget.textContent ? htmlelement.currentTarget.textContent : ""
     console.log(rawValue)
@@ -78,6 +98,8 @@ export const editNumberValue = (htmlelement: FormEvent<HTMLElement>, defaultValu
     }
 }
 
+//
+//export const editTagList = (htmlelement: React.FormEvent<HTMLLIElement>, defaultValue: string[], mustBeIn: string[]): string[] => {
 export const editStringvalue = (htmlelement: FormEvent<HTMLElement>, defaultValue: string): string => {
     const textvalue = htmlelement.currentTarget.textContent
     if (!textvalue) {
