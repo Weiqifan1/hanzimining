@@ -5,5 +5,5 @@ import {editNumberValue, editStringvalue, editNumberList, displayNumberList, par
 //export * as FlashCardStateManipulation from "./FlashCardStateManipulation";
 
 export default {editNumberValue, editStringvalue, editNumberList, displayNumberList, parseNumberListInput, displayStringList,
-    editTagList2: editTagList
+    editTagList
 }

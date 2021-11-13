@@ -85,7 +85,7 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
                     contentEditable="true">
                     {FlashCardStateManipulation.displayNumberList(content.notableCards)}</li>
                 <li onInput={(e) =>
-                    tempTagsOnCard = FlashCardStateManipulation.editTagList2(e, props.content.tags,
+                    tempTagsOnCard = FlashCardStateManipulation.editTagList(e, props.content.tags,
                         Object.keys(characterSRSstate.tags))}
                     contentEditable="true">
                     {FlashCardStateManipulation.displayStringList(content.tags)}</li>
