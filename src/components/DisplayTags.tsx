@@ -7,26 +7,17 @@ import {mkdtemp} from "fs";
 //Products: React.FC<{content: FlashCard}> = (props: PropsWithChildren<{content: FlashCard}>) => {
 const DisplayTags: React.FC<{content: FlashCardDeck}> = (props: PropsWithChildren<{content: FlashCardDeck}>) => {
 
-    const getNestedArray = (tagMap: Map<string, string>): string[][] => {
+    const getNestedArray = (tagMap: Record<string, string>): string[][] => {
 
         let nestedElems: string[][] = new Array()
-        let elems = tagMap.forEach(function(value, key) {
-            let temp: string[] = [key,value]
-            nestedElems.push(temp)
-            //return [key,value]
-        })
-        return nestedElems
-        /*
-        let mykeys = Array.from(Object.keys(tagMap))
-        let myvalues = Array.from(Object.values(tagMap))
-        let result: string[][] = new Array()
-
+        let allkeys: string[] = Object.keys(tagMap)
+        let allvalues: string[] = Object.values(tagMap)
         var num:number = 0
-        for(num=0;num < mykeys.length;num++) {
-            const temparray: string[] = [mykeys[num], myvalues[num]]
-            result.push(temparray)
+        for(num=0;num < allkeys.length;num++) {
+            const temparray: string[] = [allkeys[num], allvalues[num]]
+            nestedElems.push(temparray)
         }
-        return result*/
+        return nestedElems
     }
 
     const nestedArray: string[][] = getNestedArray(props.content.tags)
@@ -40,8 +31,9 @@ const DisplayTags: React.FC<{content: FlashCardDeck}> = (props: PropsWithChildre
         </ul>
     </section>
 
-            return display
+    return display
 }
+
 export default DisplayTags
 
 /*

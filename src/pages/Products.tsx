@@ -5,13 +5,9 @@ import {bindActionCreators} from "redux";
 import {FlashCard, FlashCardDeck} from "../state/state-types/charactersrstypes";
 import { characterSRSactionCreators, previousCharactersActionCreators, showSecondaryFlashcardInfoActionCreator,  State } from '../state/index';
 import FlashCardStateManipulation from "../applogic/FlashcardDisplayLogic/FlashCardDisplayBoundary";
-import {PropsWithChildren, useState} from "react";
+import React, {PropsWithChildren, useState} from "react";
 
 const Products: React.FunctionComponent<IPage> = props => {
-
-    //const [tagTitle, setTagTitle] = useState<string>("");
-    //const [tagBody, setTagBody] = useState<string>("");
-    //export const addNewTag = (updatedtags: Map<string, string>, characterSRSobject: FlashCardDeck) => {
 
     const dispatch = useDispatch();
     const {addNewTag} = bindActionCreators(characterSRSactionCreators, dispatch)
@@ -20,7 +16,6 @@ const Products: React.FunctionComponent<IPage> = props => {
     )
     var tagTitle: string = ""
     var tagBody: string = ""
-    //var currentCharacterSRSstate = characterSRSstate
     const [displayTagsBoolean, setDisplayTagsBoolean] = useState<boolean>(true);
 
     const addToTagList = () => {
@@ -28,22 +23,21 @@ const Products: React.FunctionComponent<IPage> = props => {
             const cleanTagTittle: string = tagTitle.replace(/ /g,'').replace(/,/g, "").trim();
             if (cleanTagTittle.length > 0) {
                 var currentDecktags = characterSRSstate.tags
-                let typeMap = new Map()
+                let typeMap: Record<string, string> = {}
 
-                let mykeys = Array.from(Object.keys(currentDecktags))
-                let myvalues = Array.from(Object.values(currentDecktags))
+                let mykeys: string[] = Array.from(Object.keys(currentDecktags))
+                let myvalues: string[] = Array.from(Object.values(currentDecktags))
 
                 var num:number = 0
                 for(num=0;num < mykeys.length;num++) {
-                    typeMap.set(mykeys[num], myvalues[num])
+                    typeMap[mykeys[num]]  = myvalues[num]
                 }
-                typeMap.set(tagTitle, tagBody);
+                typeMap[tagTitle] = tagBody;
 
                 const updatedDeck: FlashCardDeck = {
                     ...characterSRSstate, tags: typeMap
                 }
                 addNewTag(typeMap, characterSRSstate)
-                //setCurrentCharacterSRSstate(updatedDeck)//currentCharacterSRSstate = updatedDeck
             }
         }
     }

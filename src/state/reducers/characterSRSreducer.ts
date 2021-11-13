@@ -5,28 +5,10 @@ import {FlashCardDeck, FlashCard} from "../state-types/charactersrstypes";
 const initialState: FlashCardDeck = {
     deckName: '',
     deckInfo: '',
-    settings: new Map(),
-    tags: new Map(),
+    settings: {} as Record<string, string>,
+    tags: {} as Record<string, string>,
     cards: []
 }
-
-//deckName: string;
-//     deckInfo: string;
-//     settings: Map<string, string>;
-//     tags:  Map<string, string>;
-//     cards: FlashCard[];
-
-/*  cardNumber: number;
-    cardName: string;
-    frontSide: string;
-    backSide: string;
-    primaryInfo: string;
-    secondaryInfo: string;
-    notableCards: number[];
-    dateOfLastReview: string;
-    repetitionValue: number;
-    repetitionHistory: number[];
-    tags: string[];*/
 
 const editListItem = (newContent: FlashCard, characterSRSObject: FlashCardDeck): FlashCardDeck => {
     const characterList: FlashCard[] = characterSRSObject.cards
@@ -61,7 +43,7 @@ const editListItemsInBulk = (newContentInBulk: FlashCard[], characterSRSObject: 
     return result
 }
 
-const addNewTag = (updatedTags: Map<string, string>, characterSRSObject: FlashCardDeck): FlashCardDeck => {
+const addNewTag = (updatedTags: Record<string, string>, characterSRSObject: FlashCardDeck): FlashCardDeck => {
     const result: FlashCardDeck = {
         ...characterSRSObject,
         tags: updatedTags

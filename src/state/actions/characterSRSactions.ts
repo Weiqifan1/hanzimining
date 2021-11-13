@@ -30,7 +30,7 @@ interface AddNewTag {
     type: CharacterSRSactionTypes.ADDNEWTAG
     payload: {
         CharactersSRS: FlashCardDeck,
-        Tags: Map<string, string>
+        Tags: Record<string, string>
     }
 }
 

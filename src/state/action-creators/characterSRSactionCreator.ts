@@ -29,7 +29,7 @@ export const createSRSobject = (characterSRSobject: FlashCardDeck) => {
     }
 }
 
-export const addNewTag = (updatedtags: Map<string, string>, characterSRSobject: FlashCardDeck) => {
+export const addNewTag = (updatedtags: Record<string, string>, characterSRSobject: FlashCardDeck) => {
     return (dispatch: Dispatch<CharacterSRSaction>) => {
         dispatch({
             type: CharacterSRSactionTypes.ADDNEWTAG,

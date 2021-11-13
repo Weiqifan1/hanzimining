@@ -39,17 +39,11 @@ const PasteHeisig: React.FunctionComponent<IPage> = props => {
         const blankInput: FlashCardDeck = {
             deckName: "",
             deckInfo: "",
-            settings: new Map<string, string>(),
-            tags: new Map<string, string>(),
+            settings: {},
+            tags: {},
             cards: []
         }
-        /*export interface FlashCardDeck {
-    deckName: string;
-    deckInfo: string;
-    settings: Map<string, string>;
-    tags:  Map<string, string>;
-    cards: FlashCard[];
-}*/
+
         createSRSobject(blankInput)
         setUploadData({
             dragging: false,

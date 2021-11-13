@@ -14,11 +14,10 @@ export interface FlashCard {
     tags: string[];
 }
 
-//case class HeisigCollection(deckName: String, tags:Map[String, String], cards: Array[HeisigObj])
 export interface FlashCardDeck {
     deckName: string;
     deckInfo: string;
-    settings: Map<string, string>;
-    tags:  Map<string, string>;
+    settings: Record<string, string>;
+    tags:  Record<string, string>;
     cards: FlashCard[];
 }
