@@ -14,7 +14,7 @@ export const getReviewPriority = (allContentItems: FlashCard[], forbiddenCharact
 const calculateReviewPriority = (input: FlashCard[]): FlashCard[] => {
     const sortContent: FlashCard[] = splitIntoReviewNumbers(input).map(eachByReview =>
         splitIntoDateStrings(eachByReview).map(eachByDate =>
-            splitIntoCharacterNumbers(eachByDate).flat(1)
+            splitIntoRandomSorted(eachByDate).flat(1)
         ).flat(1)
     ).flat(1)
     return sortContent
@@ -39,12 +39,31 @@ const splitIntoDateStrings = (contentThatCanBePracticed: FlashCard[]): FlashCard
     return resultArray;
 }
 
-const splitIntoCharacterNumbers = (contentThatCanBePracticed: FlashCard[]): FlashCard[][] => {
-    const allCharacterNumbers: number[] = Array.from(new Set(contentThatCanBePracticed.map((item=> item.cardNumber)))).sort()
-    const resultArray: FlashCard[][] = allCharacterNumbers.map(eachNumber => {
+const splitIntoRandomSorted = (contentThatCanBePracticed: FlashCard[]): FlashCard[][] => {
+    const charNumbers: number[] = Array.from(new Set(contentThatCanBePracticed.map((item=> item.cardNumber))))//.sort()
+    const randomSortedNumbers = shuffle(charNumbers)
+    const resultArray: FlashCard[][] = randomSortedNumbers.map(eachNumber => {
         return contentThatCanBePracticed.filter(item => item.cardNumber === eachNumber)
     })
     return resultArray;
+}
+
+function shuffle(array: number[]): number[] {
+    let currentIndex = array.length,  randomIndex;
+
+    // While there remain elements to shuffle...
+    while (currentIndex != 0) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
 }
 
 //dateString format: yyyy-mm-dd
