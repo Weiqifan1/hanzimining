@@ -40,15 +40,49 @@ const splitIntoDateStrings = (contentThatCanBePracticed: FlashCard[]): FlashCard
 }
 
 const splitIntoRandomSorted = (contentThatCanBePracticed: FlashCard[]): FlashCard[][] => {
+    const seed: number = getSeedFromFlashCards(contentThatCanBePracticed)
     const charNumbers: number[] = Array.from(new Set(contentThatCanBePracticed.map((item=> item.cardNumber))))//.sort()
-    const randomSortedNumbers = shuffle(charNumbers)
+    const randomSortedNumbers = shuffle(charNumbers, seed)
     const resultArray: FlashCard[][] = randomSortedNumbers.map(eachNumber => {
         return contentThatCanBePracticed.filter(item => item.cardNumber === eachNumber)
     })
     return resultArray;
 }
 
-function shuffle(array: number[]): number[] {
+function getSeedFromFlashCards(contentThatCanBePracticed: FlashCard[]): number {
+    const sumOfReviewNumbers: number = contentThatCanBePracticed.map(item => item.repetitionValue).reduce(function (a, b) {
+        return a + b;
+    }, 0);
+    return sumOfReviewNumbers;
+}
+
+//Fisher-Yates
+//https://stackoverflow.com/questions/16801687/javascript-random-ordering-with-seed
+function shuffle(array: number[], seed: number): number[] {                // <-- ADDED ARGUMENT
+    var m = array.length, t, i;
+
+    // While there remain elements to shuffle…
+    while (m) {
+
+        // Pick a remaining element…
+        i = Math.floor(random(seed) * m--);        // <-- MODIFIED LINE
+
+        // And swap it with the current element.
+        t = array[m];
+        array[m] = array[i];
+        array[i] = t;
+        ++seed                                     // <-- ADDED LINE
+    }
+
+    return array;
+}
+
+function random(seed: number): number {
+    var x = Math.sin(seed++) * 10000;
+    return x - Math.floor(x);
+}
+
+function shuffleRANDOM(array: number[]): number[] {
     let currentIndex = array.length,  randomIndex;
 
     // While there remain elements to shuffle...
