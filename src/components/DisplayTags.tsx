@@ -1,6 +1,7 @@
 import React, {PropsWithChildren, useState} from "react";
 import {FlashCardDeck, FlashCard} from "../state/state-types/charactersrstypes";
 import {mkdtemp} from "fs";
+import DisplayTagItem from "./DisplayTagItem";
 
 // React.FC<{data: FlashCardDeck}> = (props: PropsWithChildren<{data: FlashCardDeck}>)
 
@@ -26,7 +27,9 @@ const DisplayTags: React.FC<{content: FlashCardDeck}> = (props: PropsWithChildre
         <p>her er teksten</p>
         <ul>
             {nestedArray.map((eachMap: string[]) =>(
-                <p>{eachMap[0]}: <br/> {eachMap[1]}</p>
+                <DisplayTagItem TagItem={eachMap}/>
+                //<TodoItem content={item} show={true} showSecondary={true}/>
+                //<p>{eachMap[0]}: <br/> {eachMap[1]}</p>
             ))}
         </ul>
     </section>
