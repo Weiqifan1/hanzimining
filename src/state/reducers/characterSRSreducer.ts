@@ -59,6 +59,16 @@ const removeTag = (updatedTags: Record<string, string>, characterSRSObject: Flas
     return result
 }
 
+//TODO: change this to be able to handle the logic I made in my shelved code
+const editSingleTag = (updatedTags: Record<string, string>, characterSRSObject: FlashCardDeck): FlashCardDeck => {
+    const result: FlashCardDeck = {
+        ...characterSRSObject,
+        tags: updatedTags
+    }
+    return result
+}
+
+
 
 const characterSRSreducer = (state: FlashCardDeck = initialState, action: CharacterSRSaction): FlashCardDeck => {
     switch (action.type) {
@@ -68,6 +78,8 @@ const characterSRSreducer = (state: FlashCardDeck = initialState, action: Charac
             return addNewTag(action.payload.Tags, action.payload.CharactersSRS)
         case CharacterSRSactionTypes.REMOVETAG:
             return removeTag(action.payload.Tags, action.payload.CharactersSRS)
+        case CharacterSRSactionTypes.EDITSINGLETAG:
+            return editSingleTag(action.payload.Tags, action.payload.CharactersSRS)
         case CharacterSRSactionTypes.EDITLISTITEM:
             return editListItem(action.payload.Content[0], action.payload.CharactersSRS)
         case CharacterSRSactionTypes.EDITLISTITEMINBULK:

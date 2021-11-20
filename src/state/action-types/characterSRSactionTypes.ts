@@ -3,5 +3,6 @@ export enum CharacterSRSactionTypes{
     EDITLISTITEM = "editlistitem",
     EDITLISTITEMINBULK = "editlistiteminbult",
     ADDNEWTAG = "addnewtag",
-    REMOVETAG = "removetag"
+    REMOVETAG = "removetag",
+    EDITSINGLETAG = "editsingletag"
 }
