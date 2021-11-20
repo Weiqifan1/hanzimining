@@ -59,16 +59,67 @@ const removeTag = (updatedTags: Record<string, string>, characterSRSObject: Flas
     return result
 }
 
-//TODO: change this to be able to handle the logic I made in my shelved code
-const editSingleTag = (updatedTags: Record<string, string>, characterSRSObject: FlashCardDeck): FlashCardDeck => {
-    const result: FlashCardDeck = {
-        ...characterSRSObject,
-        tags: updatedTags
-    }
+const editSingleTag = (NewTag: string[], OldTagTitle: string, characterSRSObject: FlashCardDeck): FlashCardDeck => {
+    const result: FlashCardDeck = privateEditSingleTagAndCreateNewDeck(NewTag, OldTagTitle, characterSRSObject)
     return result
 }
 
+const privateEditSingleTagAndCreateNewDeck = (NewTag: string[], OldTagTitle: string, characterSRSObject: FlashCardDeck): FlashCardDeck => {
+    const cleanTitle: string = privateCleanTagTitle(NewTag[0])
+    const newTag: string[] = [cleanTitle, NewTag[1]]
 
+    if (cleanTitle.length > 0) {
+        const updatedCardTagList: Record<string, string> = privateUpdateTagListOnDeck(characterSRSObject.tags, newTag, OldTagTitle)
+        const updatetedFlashCardList: FlashCard[] = privateUpdateFlashCardList(characterSRSObject.cards, newTag, OldTagTitle)
+        var newDeck: FlashCardDeck = {...characterSRSObject, tags: updatedCardTagList, cards: updatetedFlashCardList}
+        return newDeck
+    }
+    return characterSRSObject
+}
+
+const privateUpdateFlashCardList = (oldCards: FlashCard[], newTag: string[], oldTagTitle: string): FlashCard[] => {
+    var newCardList: FlashCard[] = new Array()
+    oldCards.forEach(function (eachCard) {
+        if (eachCard.tags.indexOf(oldTagTitle) > -1) {
+            const updatedCard: FlashCard = privateUpdateTagListOnEachCard(eachCard, newTag, oldTagTitle)
+            newCardList.push(updatedCard)
+        }else {
+            newCardList.push(eachCard)
+        }
+    });
+    return newCardList
+}
+
+const privateUpdateTagListOnEachCard = (eachCard: FlashCard, newTag: string[], oldTagTitle: string) => {
+    var newCardTagList: string[] = new Array()
+    eachCard.tags.forEach(function (eachTag){
+        if (eachTag != oldTagTitle) {
+            newCardTagList.push(eachTag)
+        }
+    })
+    newCardTagList.push(newTag[0])
+    const newCard: FlashCard = {...eachCard, tags: newCardTagList}
+    return newCard;
+}
+
+const privateUpdateTagListOnDeck = (deckTagList: Record<string, string>, newTag: string[], oldTagTitle: string): Record<string, string> => {
+    var tagsMinusEditedTag: Record<string, string> = {}
+    for (let key in deckTagList) {
+        if (key != oldTagTitle) {
+            const currentValue: string = deckTagList[key]
+            tagsMinusEditedTag[key] = currentValue
+        }
+    }
+    tagsMinusEditedTag[newTag[0]] = newTag[1]
+    return tagsMinusEditedTag
+}
+
+const privateCleanTagTitle = (input: string): string => {
+    if (input) {
+        return input.replace(/ /g,'').replace(/,/g, "").trim();
+    }
+    return ""
+}
 
 const characterSRSreducer = (state: FlashCardDeck = initialState, action: CharacterSRSaction): FlashCardDeck => {
     switch (action.type) {
@@ -79,7 +130,7 @@ const characterSRSreducer = (state: FlashCardDeck = initialState, action: Charac
         case CharacterSRSactionTypes.REMOVETAG:
             return removeTag(action.payload.Tags, action.payload.CharactersSRS)
         case CharacterSRSactionTypes.EDITSINGLETAG:
-            return editSingleTag(action.payload.Tags, action.payload.CharactersSRS)
+            return editSingleTag(action.payload.NewTag, action.payload.OldTagTitle, action.payload.CharactersSRS)
         case CharacterSRSactionTypes.EDITLISTITEM:
             return editListItem(action.payload.Content[0], action.payload.CharactersSRS)
         case CharacterSRSactionTypes.EDITLISTITEMINBULK:

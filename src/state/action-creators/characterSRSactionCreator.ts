@@ -43,14 +43,14 @@ export const addNewTag = (updatedtags: Record<string, string>, characterSRSobjec
 }
 
 //editsingletag
-export const editSingleTag = (updatedtags: Record<string, string>, characterSRSobject: FlashCardDeck) => {
+export const editSingleTag = (NewTag: string[], OldTagTitle: string, CharactersSRS: FlashCardDeck) => {
     return (dispatch: Dispatch<CharacterSRSaction>) => {
         dispatch({
-            type: CharacterSRSactionTypes.ADDNEWTAG,
+            type: CharacterSRSactionTypes.EDITSINGLETAG,
             payload: {
-                CharactersSRS: characterSRSobject,
-                Tags: updatedtags,
-                Content: characterSRSobject.cards
+                NewTag: NewTag,
+                OldTagTitle: OldTagTitle,
+                CharactersSRS: CharactersSRS
             }
         })
     }

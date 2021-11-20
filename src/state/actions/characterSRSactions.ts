@@ -46,7 +46,8 @@ interface EditSingleTag {
     type: CharacterSRSactionTypes.EDITSINGLETAG
     payload: {
         CharactersSRS: FlashCardDeck,
-        Tags: Record<string, string>
+        NewTag: string[],
+        OldTagTitle: string
     }
 }
 
