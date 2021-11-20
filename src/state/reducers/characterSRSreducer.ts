@@ -80,7 +80,13 @@ const privateEditSingleTagAndCreateNewDeck = (NewTag: string[], OldTagTitle: str
 const privateUpdateFlashCardList = (oldCards: FlashCard[], newTag: string[], oldTagTitle: string): FlashCard[] => {
     var newCardList: FlashCard[] = new Array()
     oldCards.forEach(function (eachCard) {
-        if (eachCard.tags.indexOf(oldTagTitle) > -1) {
+        var oldTitleInList: boolean = false
+        for (let eachTagIndex in eachCard.tags) {
+            if (eachCard.tags[eachTagIndex] === oldTagTitle) {
+                oldTitleInList = true
+            }
+        }
+        if (oldTitleInList) {
             const updatedCard: FlashCard = privateUpdateTagListOnEachCard(eachCard, newTag, oldTagTitle)
             newCardList.push(updatedCard)
         }else {

@@ -3,10 +3,10 @@ import {PropsWithChildren} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {bindActionCreators} from "redux";
 import { characterSRSactionCreators, State } from '../state/index';
+import FlashCardStateManipulation from "../applogic/FlashcardDisplayLogic/FlashCardDisplayBoundary";
 
 const DisplayTagItem: React.FC<{TagItem: string[]}> =
-    (props: PropsWithChildren<{TagItem: string[]}>) => {//PropsWithChildren<{content: Content}>
-//<p>{eachMap[0]}: <br/> {eachMap[1]}</p>
+    (props: PropsWithChildren<{TagItem: string[]}>) => {
 
         const dispatch = useDispatch();
         const {editSingleTag} = bindActionCreators(characterSRSactionCreators, dispatch)
@@ -17,17 +17,32 @@ const DisplayTagItem: React.FC<{TagItem: string[]}> =
         var tempTagTitle: string = props.TagItem[0]
         var tempTagBody: string = props.TagItem[1]
 
+        function detectOverlapWithOtherTags(cleanTitle: string, oldTagTitle: string, tags: Record<string, string>) {
+            var overlapWithOtherTags: boolean = false
+            const previousTagKeys: string[] = Object.keys(tags)
+            for (let eachKeyIndex in previousTagKeys) {
+                const eachKey: string = previousTagKeys[eachKeyIndex]
+                if ((eachKey != oldTagTitle) && (cleanTitle === eachKey)) {
+                    overlapWithOtherTags = true
+                }
+            }
+            return overlapWithOtherTags;
+        }
+
         const saveEdit = () => {
             var changesMade: boolean = false
             if (!(tempTagTitle === props.TagItem[0])) {changesMade = true}
             if (!(tempTagBody === props.TagItem[1])) {changesMade = true}
             const cleanTitle: string = cleanTagTitle(tempTagTitle)
-            const oldTagTitle: string = props.TagItem[0]
+            const oldTagTitle = props.TagItem[0]
             const newTag: string[] = [cleanTitle, tempTagBody]
+            const overlapWithOtherTags: boolean = detectOverlapWithOtherTags(cleanTitle, oldTagTitle, characterSRSstate.tags)
                 //TDOD: create an action that can save a content object
 
-            if (changesMade && cleanTitle.length > 0) {
+            if (changesMade && !overlapWithOtherTags && cleanTitle.length > 0) {
               editSingleTag(newTag, oldTagTitle, characterSRSstate)
+            }else if (overlapWithOtherTags) {
+                console.log("the tag name exist on another tag")
             }
         }
 
@@ -38,31 +53,17 @@ const DisplayTagItem: React.FC<{TagItem: string[]}> =
             return ""
         }
 
-        return <section><p>{props.TagItem[0]}: <br/> {props.TagItem[1]}</p></section>
+        return <section>
+            <button type="button" onClick={() => saveEdit()}>saveEditOn {props.TagItem[0]}</button>
+            <ul>
+                <li onInput={(e) =>
+                    tempTagTitle = FlashCardStateManipulation.editStringvalue(e, props.TagItem[0])}
+                    contentEditable="true">{tempTagTitle}</li>
+                <li onInput={(e) =>
+                    tempTagBody = FlashCardStateManipulation.editStringvalue(e, props.TagItem[1])}
+                    contentEditable="true">{tempTagBody}</li>
+            </ul>
+        </section>
 }
 
 export default DisplayTagItem
-
-/*
-if (tagTitle) {
-            const cleanTagTittle: string = tagTitle.replace(/ /g,'').replace(/,/g, "").trim();
-            if (cleanTagTittle.length > 0) {
-                var currentDecktags = characterSRSstate.tags
-                let typeMap: Record<string, string> = {}
-
-                let mykeys: string[] = Array.from(Object.keys(currentDecktags))
-                let myvalues: string[] = Array.from(Object.values(currentDecktags))
-
-                var num:number = 0
-                for(num=0;num < mykeys.length;num++) {
-                    typeMap[mykeys[num]]  = myvalues[num]
-                }
-                typeMap[tagTitle] = tagBody;
-
-                const updatedDeck: FlashCardDeck = {
-                    ...characterSRSstate, tags: typeMap
-                }
-                addNewTag(typeMap, characterSRSstate)
-            }
-        }
-*/
