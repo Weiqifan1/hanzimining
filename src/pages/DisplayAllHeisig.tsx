@@ -20,7 +20,10 @@ const DisplayAllHeisig: React.FunctionComponent<IPage> = props => {
 
     const [displayChars, setDisplayChars] = useState<FlashCard[]>([])
     const [numberToDisplay, setNumberToDisplay] = useState<number>(prepareNumberToDisplaySize(characterSRSstate.cards.length))
+    const [tagSubstringSearchField, setTagSubstringSearchField] = useState("")
+    const handleChangeToTagsubstringSearchField = (e: React.FormEvent<HTMLInputElement>) => {setTagSubstringSearchField(e.currentTarget.value)}
 
+    
     function sortbyIndexNumberAscendingInclUnknown() {
         const sortedByNumber: FlashCard[] = allCards.sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.cardNumber < b.cardNumber) {return -1; }if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
         setDisplayChars(sortedByNumber.slice(0,numberToDisplay))
@@ -69,6 +72,21 @@ const DisplayAllHeisig: React.FunctionComponent<IPage> = props => {
         }
     }
 
+    const displayByChosenTagTitleSubstring = () => {
+        const stringToLookFor: string = tagSubstringSearchField//"ball"
+        const result: FlashCard[] = displayChars.filter((eachCard) => {
+            var substringIsFound: boolean[] = new Array()
+            for (let eachArrayKey in eachCard.tags) {
+                const eachTag: string = eachCard.tags[eachArrayKey]
+                if (eachTag.toString().toLowerCase().includes(stringToLookFor)) {
+                    substringIsFound.push(true)
+                }
+            }
+            return substringIsFound.length>0
+        })
+        setDisplayChars(result.slice(0,numberToDisplay))
+    }
+    
     return <section>
         <h1> The display all heisig page </h1>
         <p>number of heisig items: {characterSRSstate.cards.length}</p>
@@ -83,9 +101,11 @@ const DisplayAllHeisig: React.FunctionComponent<IPage> = props => {
         <button type="button" onClick={sortbyIndexNumberDescending}>sortKnownCardsByCharNumberDescending</button>
         <button type="button" onClick={sortByReviewNumberDescending}>sortKnownCardsByReviewValueDescending</button>
         <button type="button" onClick={sortByLastReviewDateDescending}>sortKnownCardsByLastReviewDateDescending</button>
+        <p></p>
+        <button type="button" onClick={() => displayByChosenTagTitleSubstring()}>filterByTagTitleSubstring</button>
+        <input type="tagToRemove" value={tagSubstringSearchField} onChange={handleChangeToTagsubstringSearchField} />
         <Todos data={displayChars}/>
     </section>
-    //return <h1> The display all heisig page </h1>
 };
 
 export default DisplayAllHeisig;
