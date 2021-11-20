@@ -34,18 +34,27 @@ const DisplayTags: React.FC<{content: FlashCardDeck}> = (props: PropsWithChildre
         useState<string[][]>(sortNestedArrayTagsByTitleAlphabeticly(getNestedArray(props.content.tags)))
 
     var currentTagListToDisplay: string[][] = nestedArrayTagsToDosplay
+    const [tagSubstringSearchField, setTagSubstringSearchField] = useState("")
+    const handleChangeToTagsubstringSearchField = (e: React.FormEvent<HTMLInputElement>) => {setTagSubstringSearchField(e.currentTarget.value)}
 
     const displayByChosenTitle = () => {
-        const stringToLookFor: string = "ball"
+        const stringToLookFor: string = tagSubstringSearchField//"ball"
         const result: string[][] = currentTagListToDisplay.filter((eachTags) => {
             return eachTags[0].toLowerCase().includes(stringToLookFor)
         })
         setNestedArrayTagsToDosplay(result)
     }
 
+    const sortAllCharsAlphabetically = () => {
+        const resultArray: string[][] = sortNestedArrayTagsByTitleAlphabeticly(getNestedArray(props.content.tags))
+        setNestedArrayTagsToDosplay(resultArray)
+    }
+
     const display: JSX.Element = <section>
         <p>her er teksten</p>
-        <button type="button" onClick={() => displayByChosenTitle()}>sortByChosenTitle</button>
+        <button type="button" onClick={() => sortAllCharsAlphabetically()}>showAllTags</button>
+        <button type="button" onClick={() => displayByChosenTitle()}>filterByTitleSubstring</button>
+        <input type="tagToRemove" value={tagSubstringSearchField} onChange={handleChangeToTagsubstringSearchField} />
         <ul>
             {currentTagListToDisplay.map((eachMap: string[]) =>(
                 <DisplayTagItem TagItem={eachMap}/>
