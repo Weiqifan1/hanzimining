@@ -1,11 +1,7 @@
 import React, {PropsWithChildren, useState} from "react";
 import {FlashCardDeck, FlashCard} from "../state/state-types/charactersrstypes";
-import {mkdtemp} from "fs";
 import DisplayTagItem from "./DisplayTagItem";
 
-// React.FC<{data: FlashCardDeck}> = (props: PropsWithChildren<{data: FlashCardDeck}>)
-
-//Products: React.FC<{content: FlashCard}> = (props: PropsWithChildren<{content: FlashCard}>) => {
 const DisplayTags: React.FC<{content: FlashCardDeck}> = (props: PropsWithChildren<{content: FlashCardDeck}>) => {
 
     const getNestedArray = (tagMap: Record<string, string>): string[][] => {
@@ -21,15 +17,35 @@ const DisplayTags: React.FC<{content: FlashCardDeck}> = (props: PropsWithChildre
         return nestedElems
     }
 
-    const nestedArray: string[][] = getNestedArray(props.content.tags)
+    const sortNestedArrayTagsByTitleAlphabeticly = (input: string[][]): string[][] => {
+        var sortedTags: string[][] = input.sort((n1,n2) => {
+            if (n1 > n2) {
+                return 1;
+            }
+            if (n1 < n2) {
+                return -1;
+            }
+            return 0;
+        });
+        return sortedTags
+        //etNestedArrayTagsToDosplay(sortedTags)
+    }
+
+    const displayAlphabetically = () => {
+        const result: string[][] = sortNestedArrayTagsByTitleAlphabeticly(nestedArrayTagsToDosplay)
+        setNestedArrayTagsToDosplay(result)
+    }
+    //<button type="button" onClick={() => displayAlphabetically()}>sortByTitle</button>
+
+    const [nestedArrayTagsToDosplay, setNestedArrayTagsToDosplay] =
+        useState<string[][]>(sortNestedArrayTagsByTitleAlphabeticly(getNestedArray(props.content.tags)))
+
 
     const display: JSX.Element = <section>
         <p>her er teksten</p>
         <ul>
-            {nestedArray.map((eachMap: string[]) =>(
+            {nestedArrayTagsToDosplay.map((eachMap: string[]) =>(
                 <DisplayTagItem TagItem={eachMap}/>
-                //<TodoItem content={item} show={true} showSecondary={true}/>
-                //<p>{eachMap[0]}: <br/> {eachMap[1]}</p>
             ))}
         </ul>
     </section>
