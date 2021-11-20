@@ -28,23 +28,26 @@ const DisplayTags: React.FC<{content: FlashCardDeck}> = (props: PropsWithChildre
             return 0;
         });
         return sortedTags
-        //etNestedArrayTagsToDosplay(sortedTags)
     }
-
-    const displayAlphabetically = () => {
-        const result: string[][] = sortNestedArrayTagsByTitleAlphabeticly(nestedArrayTagsToDosplay)
-        setNestedArrayTagsToDosplay(result)
-    }
-    //<button type="button" onClick={() => displayAlphabetically()}>sortByTitle</button>
 
     const [nestedArrayTagsToDosplay, setNestedArrayTagsToDosplay] =
         useState<string[][]>(sortNestedArrayTagsByTitleAlphabeticly(getNestedArray(props.content.tags)))
 
+    var currentTagListToDisplay: string[][] = nestedArrayTagsToDosplay
+
+    const displayByChosenTitle = () => {
+        const stringToLookFor: string = "ball"
+        const result: string[][] = currentTagListToDisplay.filter((eachTags) => {
+            return eachTags[0].toLowerCase().includes(stringToLookFor)
+        })
+        setNestedArrayTagsToDosplay(result)
+    }
 
     const display: JSX.Element = <section>
         <p>her er teksten</p>
+        <button type="button" onClick={() => displayByChosenTitle()}>sortByChosenTitle</button>
         <ul>
-            {nestedArrayTagsToDosplay.map((eachMap: string[]) =>(
+            {currentTagListToDisplay.map((eachMap: string[]) =>(
                 <DisplayTagItem TagItem={eachMap}/>
             ))}
         </ul>
@@ -54,13 +57,3 @@ const DisplayTags: React.FC<{content: FlashCardDeck}> = (props: PropsWithChildre
 }
 
 export default DisplayTags
-
-/*
-
-<ul>
-            {Object.entries(props.content.tags).map(([k,v]) =>(
-                <p>{k}: <br/> {v}</p>
-            ))}
-        </ul>
-
-*/
