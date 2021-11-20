@@ -72,6 +72,24 @@ const DisplayAllHeisig: React.FunctionComponent<IPage> = props => {
         }
     }
 
+    const filterCharactersByCriteria = () => {
+        const stringToLookFor: string[] = tagSubstringSearchField.split("-")
+        //check if content is an interval, then filter by index numbers
+        if (stringToLookFor.length===2 && Number(stringToLookFor[0] && Number(stringToLookFor[1]))) {
+            displayByInterval(Number(stringToLookFor[0]), Number(stringToLookFor[1]))
+        }else {
+            //else filter by tag substring
+            displayByChosenTagTitleSubstring()
+        }
+    }
+
+    const displayByInterval = (firstNum: number, secondNum: number) => {
+        const result: FlashCard[] = displayChars.filter((eachCard) => {
+            return eachCard.cardNumber >= firstNum && eachCard.cardNumber <= secondNum
+        })
+        setDisplayChars(result.slice(0,numberToDisplay))
+    }
+
     const displayByChosenTagTitleSubstring = () => {
         const stringToLookFor: string = tagSubstringSearchField//"ball"
         const result: FlashCard[] = displayChars.filter((eachCard) => {
@@ -102,7 +120,7 @@ const DisplayAllHeisig: React.FunctionComponent<IPage> = props => {
         <button type="button" onClick={sortByReviewNumberDescending}>sortKnownCardsByReviewValueDescending</button>
         <button type="button" onClick={sortByLastReviewDateDescending}>sortKnownCardsByLastReviewDateDescending</button>
         <p></p>
-        <button type="button" onClick={() => displayByChosenTagTitleSubstring()}>filterByTagTitleSubstring</button>
+        <button type="button" onClick={() => filterCharactersByCriteria()}>filterCharacters</button>
         <input type="tagToRemove" value={tagSubstringSearchField} onChange={handleChangeToTagsubstringSearchField} />
         <Todos data={displayChars}/>
     </section>
