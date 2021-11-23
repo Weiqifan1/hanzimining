@@ -31,7 +31,7 @@ const splitIntoReviewNumbers = (contentThatCanBePracticed: FlashCard[]): FlashCa
 const splitIntoDateStrings = (contentThatCanBePracticed: FlashCard[]): FlashCard[][] => {
     const allLastPracticedDatesString: string[] = Array.from(new Set(contentThatCanBePracticed.map((item=> item.dateOfLastReview))))
     const allLastPracticedDatesCorrectString: string[] = allLastPracticedDatesString.filter(eachDate => isCorrectDateString(eachDate))
-    const allLastPracticedDatesSorted: Date[] = allLastPracticedDatesCorrectString.map(item => new Date(item)).sort()
+    const allLastPracticedDatesSorted: Date[] = allLastPracticedDatesCorrectString.sort().map(item => new Date(item))
     const backToString: string[] = allLastPracticedDatesSorted.map(eachDate => eachDate.toISOString().substr(0,10))
     const resultArray: FlashCard[][] = backToString.map(eachDateString => {
         return contentThatCanBePracticed.filter(item => item.dateOfLastReview === eachDateString)
