@@ -20,19 +20,44 @@ const DisplayAllHeisig: React.FunctionComponent<IPage> = props => {
 
     const [displayChars, setDisplayChars] = useState<FlashCard[]>([])
     const [numberToDisplay, setNumberToDisplay] = useState<number>(prepareNumberToDisplaySize(characterSRSstate.cards.length))
-    const [tagSubstringSearchField, setTagSubstringSearchField] = useState("")
-    const handleChangeToTagsubstringSearchField = (e: React.FormEvent<HTMLInputElement>) => {setTagSubstringSearchField(e.currentTarget.value)}
+    const [numberIntervalFilter, setNumberIntervalFilter] = useState("")
+    const handleChangeNumberIntervalFilter = (e: React.FormEvent<HTMLInputElement>) => {setNumberIntervalFilter(e.currentTarget.value)}
+    const [tagSubstringFilter, setTagSubstringFilter] = useState("")
+    const handleChangeTagSubstringFilter = (e: React.FormEvent<HTMLInputElement>) => {setTagSubstringFilter(e.currentTarget.value)}
+    const [fontSideSubstring, setFontSideSubstring] = useState("")
+    const handleChangeFrontSideSubstringFilter = (e: React.FormEvent<HTMLInputElement>) => {setFontSideSubstring(e.currentTarget.value)}
+    const [backSideSubstring, setBackSideSubstring] = useState("")
+    const handleChangeBackSideSubstringFilter = (e: React.FormEvent<HTMLInputElement>) => {setBackSideSubstring(e.currentTarget.value)}
 
-    
+
     function sortbyIndexNumberAscendingInclUnknown() {
         const sortedByNumber: FlashCard[] = allCards.sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.cardNumber < b.cardNumber) {return -1; }if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
-        setDisplayChars(sortedByNumber.slice(0,numberToDisplay))
+        //setDisplayChars(sortedByNumber.slice(0,numberToDisplay))
+        filterCards(sortedByNumber)
     }
+    const filterCards = (inputListOfCards: FlashCard[]) => {
+        if (numberIntervalFilter.length > 0) {
+            const result = displayByInterval(inputListOfCards)
+            setDisplayChars(result.slice(0,numberToDisplay))
+        }else if (tagSubstringFilter.length > 0){
+            const result = displayByChosenTagTitleSubstring(inputListOfCards)
+            setDisplayChars(result.slice(0,numberToDisplay))
+        }else if (fontSideSubstring){
+            //else filter by tag substring
+            const result = displayByFrontSideOfCard(inputListOfCards)
+            setDisplayChars(result.slice(0,numberToDisplay))
+        }else if (backSideSubstring) {
+            const result = displayByBackSideOfCard(inputListOfCards)
+            setDisplayChars(result.slice(0,numberToDisplay))
+        }else {
+            setDisplayChars(inputListOfCards.slice(0,numberToDisplay))
+        }
+    }
+
     function removeUnknown(input: FlashCard[]): FlashCard[] {
         const onlyKnown: FlashCard[] = input.filter(x=>x.repetitionValue>0)
         return onlyKnown
     }
-
 
     function sortbyIndexNumberAscending() {
         const sortedByNumber: FlashCard[] = removeUnknown(allCards).sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.cardNumber < b.cardNumber) {return -1; }if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
@@ -72,26 +97,35 @@ const DisplayAllHeisig: React.FunctionComponent<IPage> = props => {
         }
     }
 
-    const filterCharactersByCriteria = () => {
-        const stringToLookFor: string[] = tagSubstringSearchField.split("-")
-        //check if content is an interval, then filter by index numbers
-        if (stringToLookFor.length===2 && Number(stringToLookFor[0] && Number(stringToLookFor[1]))) {
-            displayByInterval(Number(stringToLookFor[0]), Number(stringToLookFor[1]))
-        }else {
-            //else filter by tag substring
-            displayByChosenTagTitleSubstring()
-        }
-    }
-
-    const displayByInterval = (firstNum: number, secondNum: number) => {
+    const displayByFrontSideOfCard = (displayChars: FlashCard[]): FlashCard[] => {
+        const stringToLookFor: string = fontSideSubstring
         const result: FlashCard[] = displayChars.filter((eachCard) => {
-            return eachCard.cardNumber >= firstNum && eachCard.cardNumber <= secondNum
+            return eachCard.frontSide.includes(stringToLookFor)
         })
-        setDisplayChars(result.slice(0,numberToDisplay))
+        return result
     }
 
-    const displayByChosenTagTitleSubstring = () => {
-        const stringToLookFor: string = tagSubstringSearchField//"ball"
+    const displayByBackSideOfCard = (displayChars: FlashCard[]): FlashCard[] => {
+        const stringToLookFor: string = backSideSubstring
+        const result: FlashCard[] = displayChars.filter((eachCard) => {
+            return eachCard.backSide.includes(stringToLookFor)
+        })
+        return result
+    }
+
+    const displayByInterval = (displayChars: FlashCard[]): FlashCard[] => {
+        const stringToLookFor: string[] = numberIntervalFilter.split("-")
+        if (stringToLookFor.length===2 && Number(stringToLookFor[0] && Number(stringToLookFor[1]))){
+            const result: FlashCard[] = displayChars.filter((eachCard) => {
+                return eachCard.cardNumber >= Number(stringToLookFor[0]) && eachCard.cardNumber <= Number(stringToLookFor[1])
+            })
+            return result
+        }
+        return displayChars
+    }
+
+    const displayByChosenTagTitleSubstring = (displayChars: FlashCard[]): FlashCard[] => {
+        const stringToLookFor: string = tagSubstringFilter//"ball"
         const result: FlashCard[] = displayChars.filter((eachCard) => {
             var substringIsFound: boolean[] = new Array()
             for (let eachArrayKey in eachCard.tags) {
@@ -102,7 +136,7 @@ const DisplayAllHeisig: React.FunctionComponent<IPage> = props => {
             }
             return substringIsFound.length>0
         })
-        setDisplayChars(result.slice(0,numberToDisplay))
+        return result
     }
     
     return <section>
@@ -120,10 +154,18 @@ const DisplayAllHeisig: React.FunctionComponent<IPage> = props => {
         <button type="button" onClick={sortByReviewNumberDescending}>sortKnownCardsByReviewValueDescending</button>
         <button type="button" onClick={sortByLastReviewDateDescending}>sortKnownCardsByLastReviewDateDescending</button>
         <p></p>
-        <button type="button" onClick={() => filterCharactersByCriteria()}>filterCharacters</button>
-        <input type="tagToRemove" value={tagSubstringSearchField} onChange={handleChangeToTagsubstringSearchField} />
+        <label htmlFor="interval">interval:</label>
+        <input type="text" id="interval" name="interval" value={numberIntervalFilter} onChange={handleChangeNumberIntervalFilter} />
+        <label htmlFor="fontside">fontside:</label>
+        <input type="text" id="fontside" name="fontside" value={fontSideSubstring} onChange={handleChangeFrontSideSubstringFilter} />
+        <label htmlFor="backside">backside:</label>
+        <input type="text" id="backside" name="backside" value={backSideSubstring} onChange={handleChangeBackSideSubstringFilter} />
+        <label htmlFor="tag">tag:</label>
+        <input type="text" id="tag" name="tag" value={tagSubstringFilter} onChange={handleChangeTagSubstringFilter} />
+
         <Todos data={displayChars}/>
     </section>
 };
+
 
 export default DisplayAllHeisig;
