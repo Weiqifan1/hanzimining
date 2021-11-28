@@ -1,3 +1,5 @@
+
 export enum PreviousCharactersActionTypes {
-    ADDTOPREVIOUSCHARACTERS = "addtopreviouscharacters"
+    ADDTOPREVIOUSCHARACTERS = "addtopreviouscharacters",
+    SUBSTRACTFROMPREVIOUSCHARACTERS = 'substractfrompreviouscharacters'
 }

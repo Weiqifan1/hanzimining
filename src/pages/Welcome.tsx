@@ -26,12 +26,14 @@ const Welcome: React.FunctionComponent<IPage> = props => {
     const characterSRSstate: FlashCardDeck = useSelector(
         (state: State) => state.characterSRS
     )
+
     //previousCharacters
-    const {addToPreviousCharacters} = bindActionCreators(previousCharactersActionCreators, dispatch)
-    const previousCharactersState: FlashCard[] = useSelector(
+    const {addToPreviousCharacters, substractFromPreviousCharacters} = bindActionCreators(previousCharactersActionCreators, dispatch)
+    const previousCharactersState: [FlashCard[], FlashCard[], FlashCard[]] = useSelector(
         (state: State) => state.previousCharacters
     )
-    var previousCharacters: FlashCard[] = previousCharactersState;
+    //var previousCharacters: [FlashCard[], FlashCard[], FlashCard[]] = previousCharactersState;
+
 
     const{setShowSecondaryFlashCardInfo} = bindActionCreators(showSecondaryFlashcardInfoActionCreator, dispatch)
     const showSecondaryFlashCardInfoState: boolean = useSelector(
@@ -45,7 +47,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
         const srslogic: characterSRSlogic = {
             characterSRS: characterSRSstate,
             currentContent: undefined,
-            mostRecentContentObjects: previousCharacters, //characterSRSstate.previousCardsViewed,
+            mostRecentContentObjects: previousCharactersState[2], //characterSRSstate.previousCardsViewed,
             notEnoughCharacters: false
         }
         const srscalculationResult: characterSRSlogic = calculateNextCharacter(srslogic)
@@ -63,7 +65,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
                 contentOrNotEnough = <p>Content type is undefined!!! this is an error</p>
             }
         }
-        displayMostRecentCharacters(previousCharacters)//previousCharacters = []//characterSRSstate.previousCardsViewed//displayPreviousCharacters = displayMostRecentCharacters(characterSRSstate.previousCharacters)
+        displayMostRecentCharacters(previousCharactersState)  //previousCharacters = []//characterSRSstate.previousCardsViewed//displayPreviousCharacters = displayMostRecentCharacters(characterSRSstate.previousCharacters)
         return contentOrNotEnough
     }
 
@@ -176,7 +178,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
     }
     const respondToAPresentedCharacterSRSObject = (increaseOrDecreaseReviewValue: number) => {
         const current: FlashCard = currentContent
-        const updatedPrevious: FlashCard[] = previousCharacters ? [current, ...previousCharacters] : [current]
+        //const updatedPrevious: FlashCard[] = previousCharacters ? [current, ...previousCharacters] : [current]
         const updatedDate: string = new Date().toISOString().slice(0,10)
         const updatedReviewValue: number =
             (current && current.repetitionValue && current.repetitionValue+increaseOrDecreaseReviewValue > 0)
@@ -185,8 +187,12 @@ const Welcome: React.FunctionComponent<IPage> = props => {
         const updatedContent: FlashCard = {...current, repetitionValue: updatedReviewValue, dateOfLastReview: updatedDate}
         const updatedCharacterSRS: FlashCardDeck = {...characterSRSstate}
         setShowCharacterSRSContentElement(false)
-        previousCharacters = [...previousCharacters, current]
-        addToPreviousCharacters(current, previousCharactersState)
+        //previousCharacters = [...previousCharacters, current]
+        if (increaseOrDecreaseReviewValue > 0) {
+            addToPreviousCharacters(current, previousCharactersState)
+        }else if (increaseOrDecreaseReviewValue < 0) {
+            substractFromPreviousCharacters(current, previousCharactersState)
+        }
         //console.log(previousCharacters)
         editListItemInBulk([updatedContent], updatedCharacterSRS)
     }
@@ -210,17 +216,25 @@ const Welcome: React.FunctionComponent<IPage> = props => {
         return buttonsToReturn
     }
 
-    const displayMostRecentCharacters = (listToDisplay: FlashCard[]): ReactElement => {
+
+    const displayMostRecentCharacters = (listToDisplay: [FlashCard[], FlashCard[], FlashCard[]]): ReactElement => {
         //console.log(listToDisplay.map(each=>each.backSide))
-        const mostRecentCharacter: FlashCard[] = listToDisplay ? listToDisplay : []
+        const mostRecentCharacter: FlashCard[] = listToDisplay[2] ? listToDisplay[2] : []
         let resultString: string;
         if (!mostRecentCharacter || mostRecentCharacter.length === 0) {
             resultString = "No previous characters yet"
         }else {
             const shortList: FlashCard[] = mostRecentCharacter.length<5 ? mostRecentCharacter.reverse() : mostRecentCharacter.reverse().slice(0,5)
             const stringList: string = shortList.map(each => each.backSide+each.cardNumber).join()
-            resultString = "previous: " + stringList + " totalRepetitions: " + mostRecentCharacter.length
+            const netRepetition: number = mostRecentCharacter.length - (2 * listToDisplay[1].length)
+            resultString = "previous: " + stringList +
+                " total: " + mostRecentCharacter.length +
+                " pos: " + listToDisplay[0].length +
+                " neg: " + listToDisplay[1].length +
+                " netRepetitions: " + netRepetition
         }
+        console.log("foerste: " + listToDisplay[0].length)
+        console.log("anden: " + listToDisplay[1].length)
         return <section>{resultString}</section>
     }
 
@@ -243,7 +257,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
     //{displayMostRecentCharacters()}
     return <section>
         <h1> The Welcome page </h1>
-        {displayMostRecentCharacters(previousCharacters)}
+        {displayMostRecentCharacters(previousCharactersState)}
         {displayNumberOfCharacters()}
         {addCharactersPageContent()}
         {showSecondaryInformationReactElement()}
