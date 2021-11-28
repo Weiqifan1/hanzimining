@@ -4,7 +4,7 @@ import {getReviewPriority} from "./calculateContentReviewPriority";
 
 
 export const calculateNextCharacter = (input: characterSRSlogic): characterSRSlogic => {
-    const fiveMostRecent: FlashCard[] = getMostRecentlyPracticed(input, 5)
+    const fiveMostRecent: FlashCard[] = getMostRecentlyPracticed(input, 10)
     const reviewPrioritySorted: FlashCard[] = getReviewPriority(input.characterSRS.cards, fiveMostRecent)
     if (reviewPrioritySorted.length === 0){
         //there are no characters that can be shown
