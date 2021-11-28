@@ -224,7 +224,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
         if (!mostRecentCharacter || mostRecentCharacter.length === 0) {
             resultString = "No previous characters yet"
         }else {
-            const shortList: FlashCard[] = mostRecentCharacter.length<5 ? mostRecentCharacter.reverse() : mostRecentCharacter.reverse().slice(0,5)
+            const shortList: FlashCard[] = mostRecentCharacter.length<11 ? mostRecentCharacter.reverse() : mostRecentCharacter.reverse().slice(0,11)
             const stringList: string = shortList.map(each => each.backSide+each.cardNumber).join()
             const netRepetition: number = mostRecentCharacter.length - (2 * listToDisplay[1].length)
             resultString = "previous: " + stringList +
