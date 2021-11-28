@@ -3,6 +3,7 @@ import Products from "../pages/Products";
 import Insurance from "../pages/Insurance";
 import PasteHeisig from "../pages/PasteHeisig";
 import DisplayAllHeisig from "../pages/DisplayAllHeisig";
+import Statistics from "../pages/Statistics";
 import IRoute from "../interfaces/route";
 
 const routes: IRoute[] = [
@@ -28,6 +29,12 @@ const routes: IRoute[] = [
         path: '/products',
         name: 'Products',
         component: Products,
+        exact: true
+    },
+    {
+        path: '/statistics',
+        name: 'Statistics',
+        component: Statistics,
         exact: true
     },
     {
