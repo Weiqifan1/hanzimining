@@ -87,10 +87,10 @@ const LoadAndSave: React.FunctionComponent<IPage> = props => {
     }
 
     return <section>
-        <h1> The paste heisig page </h1>
-        <button type="button" onClick={() => downloadCharacterSRSobject()}>downloadCharacterSRS</button>
-        <button type="button" onClick={() => processJsonInput()}>processJson</button>
-        <button type="button" onClick={() => clearInputField()}>ClearContent</button>
+        <h1>Load and download flashcard files</h1>
+        <button type="button" onClick={() => downloadCharacterSRSobject()}>download changes</button>
+        <button type="button" onClick={() => processJsonInput()}>process json</button>
+        <button type="button" onClick={() => clearInputField()}>clear data</button>
         <p>{characterSRSstate.cards.length}</p>
         <p>***</p>
         <input type="text" id="inserthanzi" placeholder="paste character json file content"></input>

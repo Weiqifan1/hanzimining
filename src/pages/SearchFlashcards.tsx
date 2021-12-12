@@ -8,17 +8,19 @@ import {FlashCard} from "../interfaces/flashcard";
 
 const SearchFlashcards: React.FunctionComponent<IPage> = props => {
 
+    const MAXCARDSTODISPLAY: number = 100;
+
     const characterSRSstate = useSelector(
         (state: State) => state.characterSRS
     )
 
     function prepareNumberToDisplaySize(data: number): number{
-        return data > 100 ? 100 : data
+        return data > MAXCARDSTODISPLAY ? MAXCARDSTODISPLAY : data
     }
     const allCards: FlashCard[] = characterSRSstate.cards.sort(function sortByCardNumbers(a: FlashCard, b: FlashCard){if (a.cardNumber < b.cardNumber) {return -1; }if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
 
     const [displayChars, setDisplayChars] = useState<FlashCard[]>([])
-    const [numberToDisplay, setNumberToDisplay] = useState<number>(prepareNumberToDisplaySize(characterSRSstate.cards.length))
+    const [maxCardsToDisplay, setMaxCardsToDisplay] = useState<number>(prepareNumberToDisplaySize(characterSRSstate.cards.length))
     const [numberIntervalFilter, setNumberIntervalFilter] = useState("")
     const handleChangeNumberIntervalFilter = (e: React.FormEvent<HTMLInputElement>) => {setNumberIntervalFilter(e.currentTarget.value)}
     const [tagSubstringFilter, setTagSubstringFilter] = useState("")
@@ -36,18 +38,18 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
     const filterCards = (inputListOfCards: FlashCard[]) => {
         if (numberIntervalFilter.length > 0) {
             const result = displayByInterval(inputListOfCards)
-            setDisplayChars(result.slice(0,numberToDisplay))
+            setDisplayChars(result.slice(0,maxCardsToDisplay))
         }else if (tagSubstringFilter.length > 0){
             const result = displayByChosenTagTitleSubstring(inputListOfCards)
-            setDisplayChars(result.slice(0,numberToDisplay))
+            setDisplayChars(result.slice(0,maxCardsToDisplay))
         }else if (fontSideSubstring){
             const result = displayByFrontSideOfCard(inputListOfCards)
-            setDisplayChars(result.slice(0,numberToDisplay))
+            setDisplayChars(result.slice(0,maxCardsToDisplay))
         }else if (backSideSubstring) {
             const result = displayByBackSideOfCard(inputListOfCards)
-            setDisplayChars(result.slice(0,numberToDisplay))
+            setDisplayChars(result.slice(0,maxCardsToDisplay))
         }else {
-            setDisplayChars(inputListOfCards.slice(0,numberToDisplay))
+            setDisplayChars(inputListOfCards.slice(0,maxCardsToDisplay))
         }
     }
 
@@ -58,39 +60,40 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
 
     function sortbyIndexNumberAscending() {
         const sortedByNumber: FlashCard[] = removeUnknown(allCards).sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.cardNumber < b.cardNumber) {return -1; }if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
-        setDisplayChars(sortedByNumber.slice(0,numberToDisplay))
+        setDisplayChars(sortedByNumber.slice(0,maxCardsToDisplay))
     }
     function sortbyIndexNumberDescending() {
         const sortedByNumber: FlashCard[] = removeUnknown(allCards).sort(function sortToLargeToSmall(a: FlashCard, b: FlashCard){if (a.cardNumber < b.cardNumber) {return 1; }if (a.cardNumber > b.cardNumber) {return -1;}return 0;})
-        setDisplayChars(sortedByNumber.slice(0,numberToDisplay))
+        setDisplayChars(sortedByNumber.slice(0,maxCardsToDisplay))
     }
 
     function sortByReviewNumberAscending() {
         const sortedByReviewValue: FlashCard[] = removeUnknown(allCards).sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.repetitionValue < b.repetitionValue) {return -1; }if (a.repetitionValue > b.repetitionValue) {return 1;}return 0;})
-        setDisplayChars(sortedByReviewValue.slice(0,numberToDisplay))
+        setDisplayChars(sortedByReviewValue.slice(0,maxCardsToDisplay))
     }
     function sortByReviewNumberDescending() {
         const sortedByReviewValue: FlashCard[] = removeUnknown(allCards).sort(function sortLargeToSmall(a: FlashCard, b: FlashCard){if (a.repetitionValue < b.repetitionValue) {return 1; }if (a.repetitionValue > b.repetitionValue) {return -1;}return 0;})
-        setDisplayChars(sortedByReviewValue.slice(0,numberToDisplay))
+        setDisplayChars(sortedByReviewValue.slice(0,maxCardsToDisplay))
     }
 
     function sortByLastReviewDateAscending() {
         const sortedByLastReviewDate: FlashCard[] = removeUnknown(allCards).sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.dateOfLastReview < b.dateOfLastReview) {return -1; }if (a.dateOfLastReview > b.dateOfLastReview) {return 1;}return 0;})
-        setDisplayChars(sortedByLastReviewDate.slice(0,numberToDisplay))
+        setDisplayChars(sortedByLastReviewDate.slice(0,maxCardsToDisplay))
     }
     function sortByLastReviewDateDescending() {
         const sortedByLastReviewDate: FlashCard[] = removeUnknown(allCards).sort(function sortLargeToSmall(a: FlashCard, b: FlashCard){if (a.dateOfLastReview < b.dateOfLastReview) {return 1; }if (a.dateOfLastReview > b.dateOfLastReview) {return -1;}return 0;})
-        setDisplayChars(sortedByLastReviewDate.slice(0,numberToDisplay))
+        setDisplayChars(sortedByLastReviewDate.slice(0,maxCardsToDisplay))
     }
 
     function clearData() {
         setDisplayChars([])
     }
+    
     function toggleSize() {
-        if (numberToDisplay < characterSRSstate.cards.length) {
-            setNumberToDisplay(characterSRSstate.cards.length)
+        if (maxCardsToDisplay < characterSRSstate.cards.length) {
+            setMaxCardsToDisplay(characterSRSstate.cards.length)
         }else {
-            setNumberToDisplay(100)
+            setMaxCardsToDisplay(MAXCARDSTODISPLAY)
         }
     }
 
@@ -138,9 +141,9 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
     
     return <section>
         <h1>Search current flashcard Deck</h1>
-        <p>number of heisig items: {characterSRSstate.cards.length}</p>
-        <button type="button" onClick={toggleSize}>toggleSize{numberToDisplay}</button>
-        <button type="button" onClick={clearData}>clearData</button>
+        <p>number of cards: {characterSRSstate.cards.length}</p>
+        <button type="button" onClick={toggleSize}>toggle size {maxCardsToDisplay}</button>
+        <button type="button" onClick={clearData}>clear data</button>
         <button type="button" onClick={sortbyIndexNumberAscendingInclUnknown}>sortAllCardsByCharNumberAscending</button>
         <p></p>
         <button type="button" onClick={sortbyIndexNumberAscending}>sortKnownCardsByCharNumberAscending</button>
