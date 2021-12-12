@@ -7,7 +7,7 @@ import { characterSRSactionCreators, previousCharactersActionCreators, showSecon
 import FlashCardStateManipulation from "../applogic/FlashcardDisplayLogic/FlashCardStateManipulation";
 import React, {FormEvent, PropsWithChildren, useState} from "react";
 
-const Products: React.FunctionComponent<IPage> = props => {
+const Tags: React.FunctionComponent<IPage> = props => {
 
     const dispatch = useDispatch();
     const {addNewTag, removeTag} = bindActionCreators(characterSRSactionCreators, dispatch)
@@ -77,13 +77,12 @@ const Products: React.FunctionComponent<IPage> = props => {
     }
 
     const toggleDisplayTags = () => {
-        const test = "hello"
         setDisplayTagsBoolean(!displayTagsBoolean)
     }
 
     return (
     <section>
-        <h1> The Products page </h1>
+        <h1> Tags </h1>
         <button id="createtags" type="button" onClick={addToTagList}>createNewTag</button>
         <button id="showtags" type="button" onClick={toggleDisplayTags}>displaytags:{displayTagsBoolean.valueOf()}</button>
         <button id="removeTag" type="button" onClick={localRemoveTag}>removeTag:{fname.valueOf()}</button>
@@ -104,4 +103,4 @@ const Products: React.FunctionComponent<IPage> = props => {
 
 };
 
-export default Products;
+export default Tags;

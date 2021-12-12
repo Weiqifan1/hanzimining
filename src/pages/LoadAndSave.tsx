@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 import IPage from "../interfaces/page";
-import {FlashCardDeck, FlashCard} from "../state/state-types/charactersrstypes";
+import {FlashCardDeck} from "../state/state-types/charactersrstypes";
 import { useDispatch, useSelector } from "react-redux";
 import {bindActionCreators} from "redux";
 import { characterSRSactionCreators, State } from '../state/index';
 import {FileUploader} from "../components/FileUploader";
-import {DragAndDropProps, DragAndDropState} from "../interfaces/dragAndDropState";
+import {DragAndDropState} from "../interfaces/dragAndDropState";
 
 const LoadAndSave: React.FunctionComponent<IPage> = props => {
 
@@ -33,7 +33,6 @@ const LoadAndSave: React.FunctionComponent<IPage> = props => {
     }
 
     const clearInputField = () => {
-
         const insertHanzi = (document.getElementById("inserthanzi") as HTMLInputElement)
         insertHanzi.value = ""
         const blankInput: FlashCardDeck = {
@@ -43,7 +42,6 @@ const LoadAndSave: React.FunctionComponent<IPage> = props => {
             tags: {},
             cards: []
         }
-
         createSRSobject(blankInput)
         setUploadData({
             dragging: false,

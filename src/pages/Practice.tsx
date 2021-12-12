@@ -15,25 +15,19 @@ const Practice: React.FunctionComponent<IPage> = props => {
     useEffect(()=>{addCharactersReference.current?.focus();},[])
 
     var currentContent: FlashCard;
-    //var displayPreviousCharacters: ReactElement = <p></p>
     const [showCharacterSRSContentElement, setShowCharacterSRSContentElement] = useState<boolean>(false)
-    //const [showSecondaryInformation, setShowSecondaryInformation] = useState<boolean>(true)
     const [addMoreCharactersTextField, setAddMoreCharactersTextField] = useState<string>("");
 
     const dispatch = useDispatch();
-    //characterSRS
     const {editListItemInBulk} = bindActionCreators(characterSRSactionCreators, dispatch)
     const characterSRSstate: FlashCardDeck = useSelector(
         (state: State) => state.characterSRS
     )
 
-    //previousCharacters
     const {addToPreviousCharacters, substractFromPreviousCharacters} = bindActionCreators(previousCharactersActionCreators, dispatch)
     const previousCharactersState: [FlashCard[], FlashCard[], FlashCard[]] = useSelector(
         (state: State) => state.previousCharacters
     )
-    //var previousCharacters: [FlashCard[], FlashCard[], FlashCard[]] = previousCharactersState;
-
 
     const{setShowSecondaryFlashCardInfo} = bindActionCreators(showSecondaryFlashcardInfoActionCreator, dispatch)
     const showSecondaryFlashCardInfoState: boolean = useSelector(
@@ -42,12 +36,11 @@ const Practice: React.FunctionComponent<IPage> = props => {
     var showSecondaryInformationLocalState: boolean = showSecondaryFlashCardInfoState
 
     const todoPageContent = (): ReactElement => {
-        //previousCharacters = characterSRSstate.previousCharacters
         let contentOrNotEnough;
         const srslogic: characterSRSlogic = {
             characterSRS: characterSRSstate,
             currentContent: undefined,
-            mostRecentContentObjects: previousCharactersState[2], //characterSRSstate.previousCardsViewed,
+            mostRecentContentObjects: previousCharactersState[2],
             notEnoughCharacters: false
         }
         const srscalculationResult: characterSRSlogic = calculateNextCharacter(srslogic)
@@ -55,9 +48,7 @@ const Practice: React.FunctionComponent<IPage> = props => {
             contentOrNotEnough = <p>not enough characters. add more to deck</p>
         }else {
             if (srscalculationResult.currentContent) {
-                //save the calculated Content object to a component variable
                 currentContent = srscalculationResult.currentContent
-                //previousCharacters = srscalculationResult.characterSRS.previousCharacters ? srscalculationResult.characterSRS.previousCharacters : []
                 contentOrNotEnough = <CardComponent content={srscalculationResult.currentContent}
                                                     show={showCharacterSRSContentElement}
                                                     showSecondary={showSecondaryInformationLocalState}/>
@@ -65,10 +56,9 @@ const Practice: React.FunctionComponent<IPage> = props => {
                 contentOrNotEnough = <p>Content type is undefined!!! this is an error</p>
             }
         }
-        displayMostRecentCharacters(previousCharactersState)  //previousCharacters = []//characterSRSstate.previousCardsViewed//displayPreviousCharacters = displayMostRecentCharacters(characterSRSstate.previousCharacters)
+        displayMostRecentCharacters(previousCharactersState)
         return contentOrNotEnough
     }
-
 
     const displayNumberOfCharacters = (): ReactElement => {
         const charactersYouWantToAdd: number = Number(addMoreCharactersTextField) ? Number(addMoreCharactersTextField) : 0

@@ -17,8 +17,7 @@ function substractFromPreviousCharacters(newContent: FlashCard, exixtingState: [
 const previousCharactersReducer = (state: [FlashCard[], FlashCard[], FlashCard[]] = initialState, action: PreviousCharacterAction): [FlashCard[], FlashCard[], FlashCard[]] => {
 
     switch (action.type) {
-        case PreviousCharactersActionTypes.ADDTOPREVIOUSCHARACTERS://CharacterSRSactionTypes.CREATESRSOBJECT:
-            //return action.payload.Content
+        case PreviousCharactersActionTypes.ADDTOPREVIOUSCHARACTERS:
             return addToPreviousCharacters(action.payload.newContent, action.payload.Content)
         case PreviousCharactersActionTypes.SUBSTRACTFROMPREVIOUSCHARACTERS:
             return substractFromPreviousCharacters(action.payload.newContent, action.payload.Content)

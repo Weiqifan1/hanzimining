@@ -1,5 +1,5 @@
 import Practice from "../pages/Practice";
-import Products from "../pages/Products";
+import Tags from "../pages/Tags";
 import LoadAndSave from "../pages/LoadAndSave";
 import SearchFlashcards from "../pages/SearchFlashcards";
 import Statistics from "../pages/Statistics";
@@ -25,9 +25,9 @@ const routes: IRoute[] = [
         exact: true
     },
     {
-        path: '/products',
-        name: 'Products',
-        component: Products,
+        path: '/tags',
+        name: 'Tags',
+        component: Tags,
         exact: true
     },
     {

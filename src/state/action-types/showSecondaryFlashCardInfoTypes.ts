@@ -1,3 +1,3 @@
-export enum ShowSecondaryFlashCardInfoTypes {//PreviousCharactersActionTypes {
+export enum ShowSecondaryFlashCardInfoTypes {
     SHOWSECONDARYFLASHCARDINFO = "showsecondaryflashcardinfo"
 }

@@ -2,8 +2,6 @@ import {FlashCardDeck, FlashCard} from "../state-types/charactersrstypes";
 import {Dispatch} from "redux";
 import {CharacterSRSaction} from "../actions/characterSRSactions";
 import {CharacterSRSactionTypes} from "../action-types/characterSRSactionTypes";
-
-
 export const createSRSobject = (characterSRSobject: FlashCardDeck) => {
     return (dispatch: Dispatch<CharacterSRSaction>) => {
         dispatch({
