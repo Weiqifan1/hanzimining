@@ -20,7 +20,7 @@ const routes: IRoute[] = [
         exact: true
     },
     {
-        path: '/welcome',
+        path: '/practice',
         name: 'Practice',
         component: Practice,
         exact: true

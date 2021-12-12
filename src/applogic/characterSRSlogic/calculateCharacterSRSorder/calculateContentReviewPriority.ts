@@ -58,46 +58,24 @@ function getSeedFromFlashCards(contentThatCanBePracticed: FlashCard[]): number {
 
 //Fisher-Yates
 //https://stackoverflow.com/questions/16801687/javascript-random-ordering-with-seed
-function shuffle(array: number[], seed: number): number[] {                // <-- ADDED ARGUMENT
+function shuffle(array: number[], seed: number): number[] {
     var m = array.length, t, i;
-
     // While there remain elements to shuffle…
     while (m) {
-
         // Pick a remaining element…
-        i = Math.floor(random(seed) * m--);        // <-- MODIFIED LINE
-
+        i = Math.floor(random(seed) * m--);
         // And swap it with the current element.
         t = array[m];
         array[m] = array[i];
         array[i] = t;
-        ++seed                                     // <-- ADDED LINE
+        ++seed
     }
-
     return array;
 }
 
 function random(seed: number): number {
     var x = Math.sin(seed++) * 10000;
     return x - Math.floor(x);
-}
-
-function shuffleRANDOM(array: number[]): number[] {
-    let currentIndex = array.length,  randomIndex;
-
-    // While there remain elements to shuffle...
-    while (currentIndex != 0) {
-
-        // Pick a remaining element...
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
-
-        // And swap it with the current element.
-        [array[currentIndex], array[randomIndex]] = [
-            array[randomIndex], array[currentIndex]];
-    }
-
-    return array;
 }
 
 //dateString format: yyyy-mm-dd
