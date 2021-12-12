@@ -88,7 +88,7 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
     function clearData() {
         setDisplayChars([])
     }
-    
+
     function toggleSize() {
         if (maxCardsToDisplay < characterSRSstate.cards.length) {
             setMaxCardsToDisplay(characterSRSstate.cards.length)
