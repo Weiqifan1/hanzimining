@@ -1,4 +1,4 @@
-import {FlashCard, FlashCardDeck} from "../state/state-types/charactersrstypes";
+
 import {PropsWithChildren} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {bindActionCreators} from "redux";
@@ -37,7 +37,6 @@ const DisplayTagItem: React.FC<{TagItem: string[]}> =
             const oldTagTitle = props.TagItem[0]
             const newTag: string[] = [cleanTitle, tempTagBody]
             const overlapWithOtherTags: boolean = detectOverlapWithOtherTags(cleanTitle, oldTagTitle, characterSRSstate.tags)
-                //TDOD: create an action that can save a content object
 
             if (changesMade && !overlapWithOtherTags && cleanTitle.length > 0) {
               editSingleTag(newTag, oldTagTitle, characterSRSstate)

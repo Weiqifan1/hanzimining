@@ -7,7 +7,7 @@ import { characterSRSactionCreators, previousCharactersActionCreators, showSecon
 import {FlashCardDeck, FlashCard} from "../state/state-types/charactersrstypes";
 import characterSRSlogic from "../interfaces/characterSRSlogic";
 import {calculateNextCharacter} from "../applogic/characterSRSlogic/calculateCharacterSRSorder/characterSRSlogicBoundary";
-import TodoItem from "../components/TodoItem";
+import CardComponent from "../components/CardComponent";
 
 const Practice: React.FunctionComponent<IPage> = props => {
 
@@ -58,9 +58,9 @@ const Practice: React.FunctionComponent<IPage> = props => {
                 //save the calculated Content object to a component variable
                 currentContent = srscalculationResult.currentContent
                 //previousCharacters = srscalculationResult.characterSRS.previousCharacters ? srscalculationResult.characterSRS.previousCharacters : []
-                contentOrNotEnough = <TodoItem content={srscalculationResult.currentContent}
-                                               show={showCharacterSRSContentElement}
-                                               showSecondary={showSecondaryInformationLocalState}/>
+                contentOrNotEnough = <CardComponent content={srscalculationResult.currentContent}
+                                                    show={showCharacterSRSContentElement}
+                                                    showSecondary={showSecondaryInformationLocalState}/>
             }else {
                 contentOrNotEnough = <p>Content type is undefined!!! this is an error</p>
             }

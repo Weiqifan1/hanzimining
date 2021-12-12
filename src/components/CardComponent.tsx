@@ -1,7 +1,7 @@
-import classes from "./TodoItem.module.css"
-import {FormEvent, PropsWithChildren, useState} from "react";
+import classes from "./CardComponent.module.css"
+import {PropsWithChildren, useState} from "react";
 import React from "react";
-import {FlashCardDeck, FlashCard} from "../state/state-types/charactersrstypes";
+import {FlashCard} from "../state/state-types/charactersrstypes";
 import { useDispatch, useSelector } from "react-redux";
 import {bindActionCreators} from "redux";
 import { characterSRSactionCreators, State } from '../state/index';
@@ -12,8 +12,8 @@ import {
     getFlashCard
 } from "../applogic/characterSRSlogic/flashcardHelperFunctions/gettingFlashCards";
 
-const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: boolean}> =
-    (props: PropsWithChildren<{content: FlashCard, show: boolean, showSecondary: boolean}>) => {//PropsWithChildren<{content: Content}>
+const CardComponent: React.FC<{content: FlashCard, show: boolean, showSecondary: boolean}> =
+    (props: PropsWithChildren<{content: FlashCard, show: boolean, showSecondary: boolean}>) => {
 
     const dispatch = useDispatch();
     const {editListItem} = bindActionCreators(characterSRSactionCreators, dispatch)
@@ -44,6 +44,7 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
         if (!(tempNotableCards === props.content.notableCards)) {changesMade = true}
         if (!(tempCardName === props.content.cardName)) {changesMade = true}
         if (!(tempTagsOnCard === props.content.tags)) {changesMade = true}
+
         const newContentObject: FlashCard = {
             cardNumber: props.content.cardNumber,
             cardName: tempCardName,
@@ -57,7 +58,7 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
             repetitionHistory: props.content.repetitionHistory,
             tags: tempTagsOnCard
         }
-        //TDOD: create an action that can save a content object
+
         if (changesMade) {
             editListItem(newContentObject, characterSRSstate)
         }
@@ -136,8 +137,7 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
         }
     }
     const generateListOfCardButtons = (currentCard: number): JSX.Element => {
-        //export const getFlashCard = (cardNumber: number, currentState: FlashCardDeck): FlashCard => {
-        let localCard = getFlashCard(currentCard, characterSRSstate)//characterSRSstate
+        let localCard = getFlashCard(currentCard, characterSRSstate)
         if (localCard.notableCards.length > 0) {
             const localList: JSX.Element[] = localCard.notableCards.map(x=>{
                 return <button type="button" onClick={() => setCardToDisplay(x)}>
@@ -168,10 +168,7 @@ const TodoItem: React.FC<{content: FlashCard, show: boolean, showSecondary: bool
         <button type="button" onClick={() => toggleShowNotableCards()}>showNotableCardButtons{showNotableChardButtons.valueOf()}</button>
         {displayNotableCardButtons()}
         {displayCard()}
-
     </section>
-
 }
 
-
-export default TodoItem
+export default CardComponent

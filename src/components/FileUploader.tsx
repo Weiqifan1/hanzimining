@@ -12,7 +12,6 @@ export class FileUploader extends React.Component<DragAndDropProps, DragAndDropS
 
     }
 
-
     dragEventCounter = 0;
     dragenterListener = (event: React.DragEvent<HTMLDivElement>) => {
         this.overrideEventDefaults(event);

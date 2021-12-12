@@ -4,7 +4,7 @@ import IPage from "../interfaces/page";
 import {useDispatch, useSelector} from "react-redux";
 import {bindActionCreators} from "redux";
 import { characterSRSactionCreators, State } from '../state/index';
-import Todos from "../components/Todos"
+import CardListComponent from "../components/CardListComponent"
 import {FlashCard} from "../state/state-types/charactersrstypes";
 
 const SearchFlashcards: React.FunctionComponent<IPage> = props => {
@@ -163,7 +163,7 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
         <label htmlFor="tag">tag:</label>
         <input type="text" id="tag" name="tag" value={tagSubstringFilter} onChange={handleChangeTagSubstringFilter} />
 
-        <Todos data={displayChars}/>
+        <CardListComponent data={displayChars}/>
     </section>
 };
 

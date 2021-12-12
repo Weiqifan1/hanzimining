@@ -1,4 +1,3 @@
-import classes from "./FileUploaderPresentationalComponent.module.css"
 
 type PresentationalProps = {
     dragging: boolean;
