@@ -4,7 +4,7 @@ import DisplayTags from "../components/DisplayTags";
 import {bindActionCreators} from "redux";
 import {FlashCard, FlashCardDeck} from "../state/state-types/charactersrstypes";
 import { characterSRSactionCreators, previousCharactersActionCreators, showSecondaryFlashcardInfoActionCreator,  State } from '../state/index';
-import FlashCardStateManipulation from "../applogic/FlashcardDisplayLogic/FlashCardDisplayBoundary";
+import FlashCardStateManipulation from "../applogic/FlashcardDisplayLogic/FlashCardStateManipulation";
 import React, {FormEvent, PropsWithChildren, useState} from "react";
 
 const Products: React.FunctionComponent<IPage> = props => {

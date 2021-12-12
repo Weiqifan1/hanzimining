@@ -86,3 +86,7 @@ export const editStringvalue = (htmlelement: FormEvent<HTMLElement>, defaultValu
         return finalresult
     }
 }
+
+export default {editNumberValue, editStringvalue, editNumberList, displayNumberList, parseNumberListInput, displayStringList,
+    editTagList
+}

@@ -5,7 +5,7 @@ import {FlashCard} from "../state/state-types/charactersrstypes";
 import { useDispatch, useSelector } from "react-redux";
 import {bindActionCreators} from "redux";
 import { characterSRSactionCreators, State } from '../state/index';
-import FlashCardStateManipulation from "../applogic/FlashcardDisplayLogic/FlashCardDisplayBoundary";
+import FlashCardStateManipulation from "../applogic/FlashcardDisplayLogic/FlashCardStateManipulation";
 import {
     cardExistInDeck,
     getCardSimpleDisplayInfo,

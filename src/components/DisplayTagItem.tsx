@@ -3,7 +3,7 @@ import {PropsWithChildren} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {bindActionCreators} from "redux";
 import { characterSRSactionCreators, State } from '../state/index';
-import FlashCardStateManipulation from "../applogic/FlashcardDisplayLogic/FlashCardDisplayBoundary";
+import FlashCardStateManipulation from "../applogic/FlashcardDisplayLogic/FlashCardStateManipulation";
 
 const DisplayTagItem: React.FC<{TagItem: string[]}> =
     (props: PropsWithChildren<{TagItem: string[]}>) => {
