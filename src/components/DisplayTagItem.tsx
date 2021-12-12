@@ -41,7 +41,7 @@ const DisplayTagItem: React.FC<{TagItem: string[]}> =
             if (changesMade && !overlapWithOtherTags && cleanTitle.length > 0) {
               editSingleTag(newTag, oldTagTitle, characterSRSstate)
             }else if (overlapWithOtherTags) {
-                console.log("the tag name exist on another tag")
+                console.log("error: the new tag name already exist")
             }
         }
 

@@ -24,10 +24,9 @@ const LoadAndSave: React.FunctionComponent<IPage> = props => {
         try {
             let characterSRSobj: FlashCardDeck = JSON.parse(content);
             createSRSobject(characterSRSobj)
-            console.log("no error")
         }
         catch(e){
-            console.log("error:")
+            console.log("error occurred during JSON parsing :")
             console.log(e)
         }
     }

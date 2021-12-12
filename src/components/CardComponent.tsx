@@ -125,7 +125,6 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, showSecondary:
             setShowNotableChardButtons(!showNotableChardButtons)
         }
         setShowNotableChardButtons(!showNotableChardButtons)
-        console.log("showNotableButtons: " + showNotableChardButtons)
     }
 
     const displayNotableCardButtons = (): JSX.Element => {

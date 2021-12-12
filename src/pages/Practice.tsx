@@ -62,33 +62,37 @@ const Practice: React.FunctionComponent<IPage> = props => {
 
     const displayNumberOfCharacters = (): ReactElement => {
         const charactersYouWantToAdd: number = Number(addMoreCharactersTextField) ? Number(addMoreCharactersTextField) : 0
-        const finalCharValue: number = getNewFinalCharValue(charactersYouWantToAdd, characterSRSstate.cards)
+        const finalCharValue: number = getNewFinalCharValue(charactersYouWantToAdd)
         const allCharacters: number = characterSRSstate.cards.filter(eachContent => {
             return eachContent.repetitionValue > 0
         }).length
         return <p>highest character: {finalCharValue} all characters: {allCharacters}</p>
     }
+
     //used to either add new character or delete old ones (remove it from the deck)
-    const getCharsToEdit = (charactersToAdd: number, zeroToDeleteElseAddNew: number, allCharacter: FlashCard[]): FlashCard[] => {
+    const addOrRemoveCardsToPractice = (charactersToAdd: number, addCards: boolean): FlashCard[] => {
         let charsToAdd: FlashCard[];
-        if (zeroToDeleteElseAddNew > 0) {
+        if (addCards) {
+            //add cards
             const sortedCharactersLowestToHighest: FlashCard[] = characterSRSstate.cards.sort(function sort(a: FlashCard, b: FlashCard){if (a.cardNumber < b.cardNumber) {return -1; }if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
             const onlyCharactersWithReviewValueAt0: FlashCard[] = sortedCharactersLowestToHighest.filter(eachContent => eachContent.repetitionValue === 0)
             charsToAdd = onlyCharactersWithReviewValueAt0.slice(0,charactersToAdd).map(eachContent => {
-                const updatedContent: FlashCard = {...eachContent, repetitionValue: zeroToDeleteElseAddNew}
+                const updatedContent: FlashCard = {...eachContent, repetitionValue: 1}
                 return updatedContent
             })
         }else {
+            //remove cards
             const sortedCharactersHighestToLowest: FlashCard[] = characterSRSstate.cards.sort(function sortReverse(a: FlashCard, b: FlashCard){if (a.cardNumber > b.cardNumber) {return -1; }if (a.cardNumber < b.cardNumber) {return 1;}return 0;})
             const charactersWithReviewValueAbove0ReverseSorted: FlashCard[] = sortedCharactersHighestToLowest.filter(eachContent => eachContent.repetitionValue > 0)
             charsToAdd = charactersWithReviewValueAbove0ReverseSorted.slice(0,charactersToAdd).map(eachContent => {
-                const updatedContent: FlashCard = {...eachContent, repetitionValue: zeroToDeleteElseAddNew}
+                const updatedContent: FlashCard = {...eachContent, repetitionValue: 0}
                 return updatedContent
             })
         }
         return charsToAdd
     }
-    const getNewFinalCharValue = (charactersToAdd: number, allCharacter: FlashCard[]): number => {
+
+    const getNewFinalCharValue = (charactersToAdd: number): number => {
         const sortedCharactersLowestToHighest: FlashCard[] = characterSRSstate.cards.sort(function sort(a: FlashCard, b: FlashCard){if (a.cardNumber < b.cardNumber) {return -1; }if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
         const onlyCharactersWithReviewValueAt0: FlashCard[] = sortedCharactersLowestToHighest.filter(eachContent => eachContent.repetitionValue === 0)
         const charsToAdd: FlashCard[] = onlyCharactersWithReviewValueAt0.slice(0,charactersToAdd)
@@ -97,26 +101,23 @@ const Practice: React.FunctionComponent<IPage> = props => {
         return sortetReverse[0] ? sortetReverse[0].cardNumber : 0
     }
 
-
     const deleteANumberOfCharacters = () => {
         const charactersYouWantToAdd: number = Number(addMoreCharactersTextField) ? Number(addMoreCharactersTextField) : 0
-        const charactersToDelete: FlashCard[] = getCharsToEdit(charactersYouWantToAdd, 0, characterSRSstate.cards)
+        const charactersToDelete: FlashCard[] = addOrRemoveCardsToPractice(charactersYouWantToAdd, false)
         setAddMoreCharactersTextField("")
         editListItemInBulk(charactersToDelete, characterSRSstate)
     }
     const addANumberOfCharacters = () => {
         const charactersYouWantToAdd: number = Number(addMoreCharactersTextField) ? Number(addMoreCharactersTextField) : 0
-        const newCharactersToBeAdded: FlashCard[] = getCharsToEdit(charactersYouWantToAdd, 1, characterSRSstate.cards)
+        const newCharactersToBeAdded: FlashCard[] = addOrRemoveCardsToPractice(charactersYouWantToAdd, true)
         setAddMoreCharactersTextField("")
         editListItemInBulk(newCharactersToBeAdded, characterSRSstate)
     }
     const changeOnNewCharacterInputField = (e: React.FormEvent<HTMLInputElement>) => {
         setAddMoreCharactersTextField(e.currentTarget.value)
-        //console.log(addMoreCharactersTextField);
     }
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        //console.log(event.key.toString())
         if (event.key.toString() === ' ' || event.key.toString() === "ArrowRight") {
             setAddMoreCharactersTextField("")
             if (showCharacterSRSContentElement) {
@@ -134,7 +135,6 @@ const Practice: React.FunctionComponent<IPage> = props => {
         }
     };
 
-
     const addCharactersPageContent = (): ReactElement => {
         return <section>
             <button type="button" onClick={addANumberOfCharacters}>addNewChars</button>
@@ -149,7 +149,6 @@ const Practice: React.FunctionComponent<IPage> = props => {
             <button type="button" onClick={deleteANumberOfCharacters}>deleteLatestCharacters</button>
         </section>
     }
-
 
     const setShowCharacterSRSContentElementFunc = () => {
         setShowCharacterSRSContentElement(true);
@@ -166,28 +165,23 @@ const Practice: React.FunctionComponent<IPage> = props => {
     const decreaseReviewValueWithOne = () => {
         respondToAPresentedCharacterSRSObject(-1)
     }
+
     const respondToAPresentedCharacterSRSObject = (increaseOrDecreaseReviewValue: number) => {
         const current: FlashCard = currentContent
-        //const updatedPrevious: FlashCard[] = previousCharacters ? [current, ...previousCharacters] : [current]
         const updatedDate: string = new Date().toISOString().slice(0,10)
         const updatedReviewValue: number =
             (current && current.repetitionValue && current.repetitionValue+increaseOrDecreaseReviewValue > 0)
                 ? current.repetitionValue+increaseOrDecreaseReviewValue : 1
-
         const updatedContent: FlashCard = {...current, repetitionValue: updatedReviewValue, dateOfLastReview: updatedDate}
         const updatedCharacterSRS: FlashCardDeck = {...characterSRSstate}
         setShowCharacterSRSContentElement(false)
-        //previousCharacters = [...previousCharacters, current]
         if (increaseOrDecreaseReviewValue > 0) {
             addToPreviousCharacters(current, previousCharactersState)
         }else if (increaseOrDecreaseReviewValue < 0) {
             substractFromPreviousCharacters(current, previousCharactersState)
         }
-        //console.log(previousCharacters)
         editListItemInBulk([updatedContent], updatedCharacterSRS)
     }
-
-
 
     const buttonsToShowAndHandleCharacterSRSContentElement = (): ReactElement => {
         let buttonsToReturn: ReactElement;
@@ -206,9 +200,7 @@ const Practice: React.FunctionComponent<IPage> = props => {
         return buttonsToReturn
     }
 
-
     const displayMostRecentCharacters = (listToDisplay: [FlashCard[], FlashCard[], FlashCard[]]): ReactElement => {
-        //console.log(listToDisplay.map(each=>each.backSide))
         const mostRecentCharacter: FlashCard[] = listToDisplay[2] ? listToDisplay[2] : []
         let resultString: string;
         if (!mostRecentCharacter || mostRecentCharacter.length === 0) {
@@ -223,19 +215,12 @@ const Practice: React.FunctionComponent<IPage> = props => {
                 " neg: " + listToDisplay[1].length +
                 " netRepetitions: " + netRepetition
         }
-        console.log("foerste: " + listToDisplay[0].length)
-        console.log("anden: " + listToDisplay[1].length)
         return <section>{resultString}</section>
     }
 
 
     const changeShowSecondaryInformationValue = () => {
         setShowSecondaryFlashCardInfo(!showSecondaryInformationLocalState)
-        //showSecondaryInformation = !showSecondaryInformation
-        //const currentValue: boolean = showSecondaryInformation
-        //setShowSecondaryInformation(!currentValue)
-        console.log("hello this is changeShowSecondary")
-        console.log("show secondary: " + showSecondaryInformationLocalState)
     }
 
     const showSecondaryInformationReactElement = (): ReactElement => {
@@ -244,7 +229,6 @@ const Practice: React.FunctionComponent<IPage> = props => {
         </section>
     }
 
-    //{displayMostRecentCharacters()}
     return <section>
         <h1> Practice </h1>
         {displayMostRecentCharacters(previousCharactersState)}
@@ -256,7 +240,6 @@ const Practice: React.FunctionComponent<IPage> = props => {
         <p>***</p>
         {todoPageContent()}
     </section>
-
 };
 
 export default Practice;
