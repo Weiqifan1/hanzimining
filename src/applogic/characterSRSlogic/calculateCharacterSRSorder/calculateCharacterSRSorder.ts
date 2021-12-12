@@ -3,7 +3,7 @@ import {FlashCard} from "../../../state/state-types/charactersrstypes";
 import {getReviewPriority} from "./calculateContentReviewPriority";
 
 
-export const calculateNextCharacter = (input: characterSRSlogic): characterSRSlogic => {
+export const doCalculateNextCharacter = (input: characterSRSlogic): characterSRSlogic => {
     const fiveMostRecent: FlashCard[] = getMostRecentlyPracticed(input, 10)
     const reviewPrioritySorted: FlashCard[] = getReviewPriority(input.characterSRS.cards, fiveMostRecent)
     if (reviewPrioritySorted.length === 0){

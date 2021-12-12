@@ -6,7 +6,7 @@ import {bindActionCreators} from "redux";
 import { characterSRSactionCreators, previousCharactersActionCreators, showSecondaryFlashcardInfoActionCreator,  State } from '../state/index';
 import {FlashCardDeck, FlashCard} from "../state/state-types/charactersrstypes";
 import characterSRSlogic from "../interfaces/characterSRSlogic";
-import {calculateNextCharacter} from "../applogic/characterSRSlogic/calculateCharacterSRSorder/calculateCharacterSRSorder";
+import {calculateNextCharacter} from "../applogic/characterSRSlogic/calculateCharacterSRSorder/characterSRSlogicBoundary";
 import TodoItem from "../components/TodoItem";
 
 const Practice: React.FunctionComponent<IPage> = props => {
