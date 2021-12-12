@@ -42,7 +42,6 @@ export const addNewTag = (updatedtags: Record<string, string>, characterSRSobjec
     }
 }
 
-//editsingletag
 export const editSingleTag = (NewTag: string[], OldTagTitle: string, CharactersSRS: FlashCardDeck) => {
     return (dispatch: Dispatch<CharacterSRSaction>) => {
         dispatch({

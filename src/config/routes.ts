@@ -1,6 +1,5 @@
 import Practice from "../pages/Practice";
 import Products from "../pages/Products";
-import Insurance from "../pages/Insurance";
 import LoadAndSave from "../pages/LoadAndSave";
 import SearchFlashcards from "../pages/SearchFlashcards";
 import Statistics from "../pages/Statistics";
@@ -35,12 +34,6 @@ const routes: IRoute[] = [
         path: '/statistics',
         name: 'Statistics',
         component: Statistics,
-        exact: true
-    },
-    {
-        path: '/insurance',
-        name: 'Insurance',
-        component: Insurance,
         exact: true
     }
 ]

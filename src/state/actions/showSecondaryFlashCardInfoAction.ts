@@ -2,7 +2,7 @@
 import {ShowSecondaryFlashCardInfoTypes} from "../action-types/showSecondaryFlashCardInfoTypes";
 
 interface addToPreviousCharacters {
-    type: ShowSecondaryFlashCardInfoTypes.SHOWSECONDARYFLASHCARDINFO//CharacterSRSactionTypes.EDITLISTITEMINBULK
+    type: ShowSecondaryFlashCardInfoTypes.SHOWSECONDARYFLASHCARDINFO
     payload: boolean
 }
 

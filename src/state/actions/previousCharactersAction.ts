@@ -3,7 +3,7 @@ import {PreviousCharactersActionTypes} from "../action-types/previousCharactersA
 import {FlashCard} from "../state-types/charactersrstypes";
 
 interface addToPreviousCharacters {
-    type: PreviousCharactersActionTypes.ADDTOPREVIOUSCHARACTERS//CharacterSRSactionTypes.EDITLISTITEMINBULK
+    type: PreviousCharactersActionTypes.ADDTOPREVIOUSCHARACTERS
     payload: {
         Content: [FlashCard[], FlashCard[], FlashCard[]],
         newContent: FlashCard
