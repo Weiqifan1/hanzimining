@@ -32,7 +32,6 @@ const editListItem = (newContent: FlashCard, characterSRSObject: FlashCardDeck):
 }
 
 const editListItemsInBulk = (newContentInBulk: FlashCard[], characterSRSObject: FlashCardDeck): FlashCardDeck => {
-    //remove all charactersThatHasTheSameNumbers
     const allNewNumbers: number[] = newContentInBulk.map(each => each.cardNumber)
     const characterList: FlashCard[] = characterSRSObject.cards.filter(each => !allNewNumbers.includes(each.cardNumber))
     const redoneArray: FlashCard[] = characterList.concat(newContentInBulk)
