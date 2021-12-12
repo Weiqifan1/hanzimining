@@ -48,7 +48,7 @@ const LoadAndSave: React.FunctionComponent<IPage> = props => {
         })
     }
 
-    const testchr = (filename: string, text: string) => {
+    const saveAsJsonfile = (filename: string, text: string) => {
         var element = document.createElement('a');
         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
         element.setAttribute('download', filename);
@@ -61,7 +61,7 @@ const LoadAndSave: React.FunctionComponent<IPage> = props => {
     const downloadCharacterSRSobject = () => {
         const characterSRSobject: FlashCardDeck = characterSRSstate
         const result: string = JSON.stringify(characterSRSobject)
-        testchr("updatedList.json", result)
+        saveAsJsonfile("updatedList.json", result)
     }
 
     const handleDragAndDrop = (data: DragAndDropState) => {
@@ -83,7 +83,7 @@ const LoadAndSave: React.FunctionComponent<IPage> = props => {
     const getCharactersJson = (filename: string, url: string) => {
         fetch(url)
             .then(res => res.json())
-            .then(data => testchr(filename, JSON.stringify(data)))
+            .then(data => saveAsJsonfile(filename, JSON.stringify(data)))
     }
 
     return <section>

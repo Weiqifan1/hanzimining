@@ -2,16 +2,15 @@ import IPage from "../interfaces/page";
 import {useDispatch, useSelector} from "react-redux";
 import DisplayTags from "../components/DisplayTags";
 import {bindActionCreators} from "redux";
-import {FlashCard, FlashCardDeck} from "../state/state-types/charactersrstypes";
-import { characterSRSactionCreators, previousCharactersActionCreators, showSecondaryFlashcardInfoActionCreator,  State } from '../state/index';
+import {FlashCardDeck} from "../state/state-types/charactersrstypes";
+import { characterSRSactionCreators, State} from '../state/index';
 import FlashCardStateManipulation from "../applogic/FlashcardDisplayLogic/FlashCardStateManipulation";
-import React, {FormEvent, PropsWithChildren, useState} from "react";
+import React, {useState} from "react";
 
 const Tags: React.FunctionComponent<IPage> = props => {
 
     const dispatch = useDispatch();
     const {addNewTag, removeTag} = bindActionCreators(characterSRSactionCreators, dispatch)
-    //const {removeTag} = bindActionCreators(characterSRSactionCreators, dispatch)
     const characterSRSstate: FlashCardDeck = useSelector(
         (state: State) => state.characterSRS
     )
@@ -20,7 +19,6 @@ const Tags: React.FunctionComponent<IPage> = props => {
     const [displayTagsBoolean, setDisplayTagsBoolean] = useState<boolean>(true);
     const [fname, setFname] = useState("")
     const handleChange = (e: React.FormEvent<HTMLInputElement>) => {    setFname(e.currentTarget.value)  }
-
 
     const addToTagList = () => {
         if (tagTitle) {
@@ -38,9 +36,6 @@ const Tags: React.FunctionComponent<IPage> = props => {
                 }
                 typeMap[tagTitle] = tagBody;
 
-                const updatedDeck: FlashCardDeck = {
-                    ...characterSRSstate, tags: typeMap
-                }
                 addNewTag(typeMap, characterSRSstate)
             }
         }
@@ -100,7 +95,6 @@ const Tags: React.FunctionComponent<IPage> = props => {
         {displayTags(characterSRSstate, displayTagsBoolean)}
     </section>
     );
-
 };
 
 export default Tags;

@@ -1,9 +1,8 @@
 
-import React, {MouseEventHandler, ReactElement, useState} from "react";
+import React, {useState} from "react";
 import IPage from "../interfaces/page";
-import {useDispatch, useSelector} from "react-redux";
-import {bindActionCreators} from "redux";
-import { characterSRSactionCreators, State } from '../state/index';
+import {useSelector} from "react-redux";
+import {State } from '../state/index';
 import CardListComponent from "../components/CardListComponent"
 import {FlashCard} from "../state/state-types/charactersrstypes";
 
@@ -32,7 +31,6 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
 
     function sortbyIndexNumberAscendingInclUnknown() {
         const sortedByNumber: FlashCard[] = allCards.sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.cardNumber < b.cardNumber) {return -1; }if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
-        //setDisplayChars(sortedByNumber.slice(0,numberToDisplay))
         filterCards(sortedByNumber)
     }
     const filterCards = (inputListOfCards: FlashCard[]) => {
@@ -43,7 +41,6 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
             const result = displayByChosenTagTitleSubstring(inputListOfCards)
             setDisplayChars(result.slice(0,numberToDisplay))
         }else if (fontSideSubstring){
-            //else filter by tag substring
             const result = displayByFrontSideOfCard(inputListOfCards)
             setDisplayChars(result.slice(0,numberToDisplay))
         }else if (backSideSubstring) {
@@ -140,7 +137,7 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
     }
     
     return <section>
-        <h1> The display all heisig page </h1>
+        <h1>Search current flashcard Deck</h1>
         <p>number of heisig items: {characterSRSstate.cards.length}</p>
         <button type="button" onClick={toggleSize}>toggleSize{numberToDisplay}</button>
         <button type="button" onClick={clearData}>clearData</button>
@@ -162,7 +159,6 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
         <input type="text" id="backside" name="backside" value={backSideSubstring} onChange={handleChangeBackSideSubstringFilter} />
         <label htmlFor="tag">tag:</label>
         <input type="text" id="tag" name="tag" value={tagSubstringFilter} onChange={handleChangeTagSubstringFilter} />
-
         <CardListComponent data={displayChars}/>
     </section>
 };

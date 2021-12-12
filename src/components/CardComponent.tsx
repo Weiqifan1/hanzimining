@@ -10,7 +10,7 @@ import {
     cardExistInDeck,
     getCardSimpleDisplayInfo,
     getFlashCard
-} from "../applogic/characterSRSlogic/flashcardHelperFunctions/gettingFlashCards";
+} from "../applogic/flashcardHelperFunctions/gettingFlashCards";
 
 const CardComponent: React.FC<{content: FlashCard, show: boolean, showSecondary: boolean}> =
     (props: PropsWithChildren<{content: FlashCard, show: boolean, showSecondary: boolean}>) => {

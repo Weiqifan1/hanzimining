@@ -1,4 +1,4 @@
-import {FlashCard, FlashCardDeck} from "../../../state/state-types/charactersrstypes";
+import {FlashCard, FlashCardDeck} from "../../state/state-types/charactersrstypes";
 
 export const getCardSimpleDisplayInfo = (cardNumber: number, currentState: FlashCardDeck): string => {
     const cardExists: boolean = cardExistInDeck(cardNumber, currentState)
