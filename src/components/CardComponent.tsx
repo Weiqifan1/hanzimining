@@ -1,7 +1,7 @@
 import classes from "./CardComponent.module.css"
 import {PropsWithChildren, useState} from "react";
 import React from "react";
-import {FlashCard} from "../state/state-types/charactersrstypes";
+import {FlashCard} from "../interfaces/flashcard";
 import { useDispatch, useSelector } from "react-redux";
 import {bindActionCreators} from "redux";
 import { characterSRSactionCreators, State } from '../state/index';

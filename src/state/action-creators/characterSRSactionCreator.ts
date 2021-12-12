@@ -1,4 +1,5 @@
-import {FlashCardDeck, FlashCard} from "../state-types/charactersrstypes";
+import {FlashCard} from "../../interfaces/flashcard";
+import {FlashCardDeck} from "../../interfaces/flashcarddeck";
 import {Dispatch} from "redux";
 import {CharacterSRSaction} from "../actions/characterSRSactions";
 import {CharacterSRSactionTypes} from "../action-types/characterSRSactionTypes";

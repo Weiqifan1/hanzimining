@@ -1,5 +1,5 @@
 import React from "react";
-import {FlashCard} from "../state/state-types/charactersrstypes";
+import {FlashCard} from "../interfaces/flashcard";
 import CardComponent from "./CardComponent";
 
 const CardListComponent: React.FC<{data: FlashCard[]}> = (props) => {

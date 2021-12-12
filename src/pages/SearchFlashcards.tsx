@@ -4,7 +4,7 @@ import IPage from "../interfaces/page";
 import {useSelector} from "react-redux";
 import {State } from '../state/index';
 import CardListComponent from "../components/CardListComponent"
-import {FlashCard} from "../state/state-types/charactersrstypes";
+import {FlashCard} from "../interfaces/flashcard";
 
 const SearchFlashcards: React.FunctionComponent<IPage> = props => {
 

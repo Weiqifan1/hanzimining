@@ -1,6 +1,6 @@
 
 import {PreviousCharactersActionTypes} from "../action-types/previousCharactersActionTypes";
-import {FlashCard} from "../state-types/charactersrstypes";
+import {FlashCard} from "../../interfaces/flashcard";
 
 interface addToPreviousCharacters {
     type: PreviousCharactersActionTypes.ADDTOPREVIOUSCHARACTERS

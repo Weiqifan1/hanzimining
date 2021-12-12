@@ -2,8 +2,9 @@ import IPage from "../interfaces/page";
 
 import { useDispatch, useSelector } from "react-redux";
 import {bindActionCreators} from "redux";
-import { characterSRSactionCreators, previousCharactersActionCreators, showSecondaryFlashcardInfoActionCreator,  State } from '../state/index';
-import {FlashCard, FlashCardDeck} from "../state/state-types/charactersrstypes";
+import { characterSRSactionCreators, State} from '../state/index';
+import {FlashCard} from "../interfaces/flashcard";
+import {FlashCardDeck} from "../interfaces/flashcarddeck";
 import {editListItemInBulk} from "../state/action-creators/characterSRSactionCreator";
 
 const Statistics : React.FunctionComponent<IPage> = props => {

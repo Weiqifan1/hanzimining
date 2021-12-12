@@ -2,7 +2,7 @@ import IPage from "../interfaces/page";
 import {useDispatch, useSelector} from "react-redux";
 import DisplayTags from "../components/DisplayTags";
 import {bindActionCreators} from "redux";
-import {FlashCardDeck} from "../state/state-types/charactersrstypes";
+import {FlashCardDeck} from "../interfaces/flashcarddeck";
 import { characterSRSactionCreators, State} from '../state/index';
 import FlashCardStateManipulation from "../applogic/FlashcardDisplayLogic/FlashCardStateManipulation";
 import React, {useState} from "react";

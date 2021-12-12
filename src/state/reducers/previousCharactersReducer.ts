@@ -1,4 +1,4 @@
-import {FlashCard} from "../state-types/charactersrstypes";
+import {FlashCard} from "../../interfaces/flashcard";
 import {PreviousCharactersActionTypes} from "../action-types/previousCharactersActionTypes";
 import {PreviousCharacterAction} from "../actions/previousCharactersAction";
 

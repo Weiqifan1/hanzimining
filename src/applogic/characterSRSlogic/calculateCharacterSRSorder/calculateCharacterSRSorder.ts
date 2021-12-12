@@ -1,5 +1,5 @@
 import characterSRSlogic from "../../../interfaces/characterSRSlogic";
-import {FlashCard} from "../../../state/state-types/charactersrstypes";
+import {FlashCard} from "../../../interfaces/flashcard";
 import {getReviewPriority} from "./calculateContentReviewPriority";
 
 export const doCalculateNextCharacter = (input: characterSRSlogic): characterSRSlogic => {

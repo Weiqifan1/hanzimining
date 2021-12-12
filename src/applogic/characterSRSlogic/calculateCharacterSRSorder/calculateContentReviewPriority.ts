@@ -1,4 +1,4 @@
-import {FlashCard} from "../../../state/state-types/charactersrstypes";
+import {FlashCard} from "../../../interfaces/flashcard";
 
 //characters added to deck (reviewNumber > 0) and not forbidden, sorted by review priority
 export const getReviewPriority = (allContentItems: FlashCard[], forbiddenCharacters: FlashCard[]): FlashCard[] => {

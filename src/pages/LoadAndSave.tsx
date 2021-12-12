@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import IPage from "../interfaces/page";
-import {FlashCardDeck} from "../state/state-types/charactersrstypes";
+import {FlashCardDeck} from "../interfaces/flashcarddeck";
 import { useDispatch, useSelector } from "react-redux";
 import {bindActionCreators} from "redux";
 import { characterSRSactionCreators, State } from '../state/index';

@@ -1,5 +1,5 @@
 import React, {PropsWithChildren, useState} from "react";
-import {FlashCardDeck, FlashCard} from "../state/state-types/charactersrstypes";
+import {FlashCardDeck} from "../interfaces/flashcarddeck";
 import DisplayTagItem from "./DisplayTagItem";
 
 const DisplayTags: React.FC<{content: FlashCardDeck}> = (props: PropsWithChildren<{content: FlashCardDeck}>) => {

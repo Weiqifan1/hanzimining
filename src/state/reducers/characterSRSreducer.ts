@@ -1,6 +1,7 @@
 import {CharacterSRSaction} from "../actions/characterSRSactions";
 import {CharacterSRSactionTypes} from "../action-types/characterSRSactionTypes";
-import {FlashCard, FlashCardDeck} from "../state-types/charactersrstypes";
+import {FlashCard} from "../../interfaces/flashcard";
+import {FlashCardDeck} from "../../interfaces/flashcarddeck"
 
 const initialState: FlashCardDeck = {
     deckName: '',

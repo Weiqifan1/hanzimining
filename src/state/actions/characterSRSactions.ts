@@ -1,5 +1,6 @@
 import {CharacterSRSactionTypes} from "../action-types/characterSRSactionTypes";
-import {FlashCardDeck, FlashCard} from "../state-types/charactersrstypes";
+import {FlashCard} from "../../interfaces/flashcard";
+import {FlashCardDeck} from "../../interfaces/flashcarddeck";
 
 interface CreateSRSobject {
     type: CharacterSRSactionTypes.CREATESRSOBJECT

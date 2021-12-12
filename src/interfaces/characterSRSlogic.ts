@@ -1,4 +1,5 @@
-import {FlashCardDeck, FlashCard} from "../state/state-types/charactersrstypes";
+import {FlashCard} from "../interfaces/flashcard";
+import {FlashCardDeck} from "../interfaces/flashcarddeck";
 
 export default interface characterSRSlogic {
     characterSRS: FlashCardDeck;
