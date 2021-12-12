@@ -1,28 +1,28 @@
-import Welcome from "../pages/Welcome";
+import Practice from "../pages/Practice";
 import Products from "../pages/Products";
 import Insurance from "../pages/Insurance";
-import PasteHeisig from "../pages/PasteHeisig";
-import DisplayAllHeisig from "../pages/DisplayAllHeisig";
+import LoadAndSave from "../pages/LoadAndSave";
+import SearchFlashcards from "../pages/SearchFlashcards";
 import Statistics from "../pages/Statistics";
 import IRoute from "../interfaces/route";
 
 const routes: IRoute[] = [
     {
-        path: '/pasteheisig',
-        name: 'PasteHeisig',
-        component: PasteHeisig,
+        path: '/loadandsave',
+        name: 'LoadAndSave',
+        component: LoadAndSave,
         exact: true
     },
     {
-        path: '/displayallheisig',
-        name: 'DisplayAllHeisig',
-        component: DisplayAllHeisig,
+        path: '/searchflashcards',
+        name: 'Search',
+        component: SearchFlashcards,
         exact: true
     },
     {
         path: '/welcome',
-        name: 'Welcome',
-        component: Welcome,
+        name: 'Practice',
+        component: Practice,
         exact: true
     },
     {

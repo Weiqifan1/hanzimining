@@ -7,7 +7,7 @@ import { characterSRSactionCreators, State } from '../state/index';
 import Todos from "../components/Todos"
 import {FlashCard} from "../state/state-types/charactersrstypes";
 
-const DisplayAllHeisig: React.FunctionComponent<IPage> = props => {
+const SearchFlashcards: React.FunctionComponent<IPage> = props => {
 
     const characterSRSstate = useSelector(
         (state: State) => state.characterSRS
@@ -168,4 +168,4 @@ const DisplayAllHeisig: React.FunctionComponent<IPage> = props => {
 };
 
 
-export default DisplayAllHeisig;
+export default SearchFlashcards;

@@ -7,7 +7,7 @@ import { characterSRSactionCreators, State } from '../state/index';
 import {FileUploader} from "../components/FileUploader";
 import {DragAndDropProps, DragAndDropState} from "../interfaces/dragAndDropState";
 
-const PasteHeisig: React.FunctionComponent<IPage> = props => {
+const LoadAndSave: React.FunctionComponent<IPage> = props => {
 
     const dispatch = useDispatch();
     const {createSRSobject} = bindActionCreators(characterSRSactionCreators, dispatch)
@@ -115,4 +115,4 @@ const PasteHeisig: React.FunctionComponent<IPage> = props => {
     </section>
 };
 
-export default PasteHeisig;
+export default LoadAndSave;

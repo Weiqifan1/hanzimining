@@ -9,7 +9,7 @@ import characterSRSlogic from "../interfaces/characterSRSlogic";
 import {calculateNextCharacter} from "../applogic/characterSRSlogic/calculateCharacterSRSorder/calculateCharacterSRSorder";
 import TodoItem from "../components/TodoItem";
 
-const Welcome: React.FunctionComponent<IPage> = props => {
+const Practice: React.FunctionComponent<IPage> = props => {
 
     const addCharactersReference = useRef<HTMLInputElement | null>(null);
     useEffect(()=>{addCharactersReference.current?.focus();},[])
@@ -256,7 +256,7 @@ const Welcome: React.FunctionComponent<IPage> = props => {
 
     //{displayMostRecentCharacters()}
     return <section>
-        <h1> The Welcome page </h1>
+        <h1> Practice </h1>
         {displayMostRecentCharacters(previousCharactersState)}
         {displayNumberOfCharacters()}
         {addCharactersPageContent()}
@@ -269,4 +269,4 @@ const Welcome: React.FunctionComponent<IPage> = props => {
 
 };
 
-export default Welcome;
+export default Practice;
