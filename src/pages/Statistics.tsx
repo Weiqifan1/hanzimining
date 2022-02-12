@@ -37,13 +37,21 @@ const Statistics : React.FunctionComponent<IPage> = props => {
 
     const reviewNumbersCount: string[] = generateCountingDisplay(characterSRSstate.cards)
 
-    const addToAllKnownReviewNumbers = (oldReviewNumber: number, numberToAdd: number): number => {
-        if (oldReviewNumber === 0) {
-            return oldReviewNumber
-        }else if (oldReviewNumber === 1) {
-            return oldReviewNumber
-        }else if (oldReviewNumber > 0){
-            return oldReviewNumber+numberToAdd
+    const newReviewNumbers = (oldReviewNumber: number, numberToAdd: number): number => {
+        if (numberToAdd > 0) {
+            if (oldReviewNumber === 0) {
+                return oldReviewNumber
+            }else if (oldReviewNumber > 0){
+                return oldReviewNumber+numberToAdd
+            }else {
+                return oldReviewNumber
+            }
+        }else if (numberToAdd < 0){
+            if (oldReviewNumber > 1) {
+                return oldReviewNumber+numberToAdd
+            }else {
+                return oldReviewNumber
+            }
         }else {
             return oldReviewNumber
         }
@@ -53,7 +61,7 @@ const Statistics : React.FunctionComponent<IPage> = props => {
         const allFlashCards: FlashCard[] = characterSRSstate.cards
         const reduceByOne: FlashCard[] = allFlashCards.map(eachCard => {
             const eachRepetitionNumber: number = eachCard.repetitionValue
-            const newRepetitionNumber: number = addToAllKnownReviewNumbers(eachRepetitionNumber, -1)
+            const newRepetitionNumber: number = newReviewNumbers(eachRepetitionNumber, -1)
             var newCard: FlashCard = {...eachCard, repetitionValue: newRepetitionNumber}
             return newCard
         })
@@ -64,7 +72,7 @@ const Statistics : React.FunctionComponent<IPage> = props => {
         const allFlashCards: FlashCard[] = characterSRSstate.cards
         const reduceByOne: FlashCard[] = allFlashCards.map(eachCard => {
             const eachRepetitionNumber: number = eachCard.repetitionValue
-            const newRepetitionNumber: number = addToAllKnownReviewNumbers(eachRepetitionNumber, 1)
+            const newRepetitionNumber: number = newReviewNumbers(eachRepetitionNumber, 1)
             var newCard: FlashCard = {...eachCard, repetitionValue: newRepetitionNumber}
             return newCard
         })
