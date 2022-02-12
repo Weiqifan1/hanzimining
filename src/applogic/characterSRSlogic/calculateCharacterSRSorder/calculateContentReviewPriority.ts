@@ -12,11 +12,16 @@ export const getReviewPriority = (allContentItems: FlashCard[], forbiddenCharact
 }
 
 const calculateReviewPriority = (input: FlashCard[]): FlashCard[] => {
-    const sortContent: FlashCard[] = splitIntoReviewNumbers(input).map(eachByReview =>
-        splitIntoDateStrings(eachByReview).map(eachByDate =>
-            splitIntoRandomSorted(eachByDate).flat(1)
+    const sortContent: FlashCard[] = splitIntoReviewNumbers(input)
+        .map(eachByReview =>
+            splitIntoHistoryValues(eachByReview)
+                .map(eachByHistory =>
+                    splitIntoDateStrings(eachByHistory)
+                        .map(eachByDate =>
+                            splitIntoRandomSorted(eachByDate).flat(1)
+                        ).flat(1)
+                ).flat(1)
         ).flat(1)
-    ).flat(1)
     return sortContent
 }
 
@@ -26,6 +31,26 @@ const splitIntoReviewNumbers = (contentThatCanBePracticed: FlashCard[]): FlashCa
         return contentThatCanBePracticed.filter(item => item.repetitionValue === eachNumber)
     })
     return resultArray;
+}
+
+const splitIntoHistoryValues = (contentThatCanBePracticed: FlashCard[]): FlashCard[][] => {
+    const allHistorySums: number[] = Array.from(
+        new Set(contentThatCanBePracticed.map((item => getSumOfHistory(item))))).sort()
+    const resultArray: FlashCard[][] = allHistorySums.map(eachNumber => {
+        return contentThatCanBePracticed.filter(item => getSumOfHistory(item) === eachNumber)
+    })
+    return resultArray;
+}
+
+function getSumOfHistory(item: FlashCard): number {
+    const history: number[] = item.repetitionHistory
+    if (history == null ||
+        history == undefined) {
+        return 0
+    }else {
+        const result: number = item.repetitionHistory.reduce((sum,current) => sum + current, 0)
+        return result
+    }
 }
 
 const splitIntoDateStrings = (contentThatCanBePracticed: FlashCard[]): FlashCard[][] => {
