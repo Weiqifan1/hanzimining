@@ -79,10 +79,43 @@ const Statistics : React.FunctionComponent<IPage> = props => {
         editListItemInBulk(reduceByOne, characterSRSstate)
     }
 
+    function resetCardHistory() {
+        const allFlashCards: FlashCard[] = characterSRSstate.cards
+        const resetHistory: FlashCard[] = allFlashCards.map(eachCard => {
+            var newCard: FlashCard = {...eachCard, repetitionHistory: doResetHistory(eachCard.repetitionHistory)}
+            return newCard
+        })
+        editListItemInBulk(resetHistory, characterSRSstate)
+    }
+
+    function doResetHistory(repetitionHistory: number[]): number[] {
+        const newHistory: number[] = repetitionHistory.map(eachNumber => 1)
+        return newHistory;
+    }
+
+    function resetReviewDates() {
+        const allFlashCards: FlashCard[] = characterSRSstate.cards
+        const resetDates: FlashCard[] = allFlashCards.map(eachCard => {
+            var newCard: FlashCard = {...eachCard, dateOfLastReview: doResetDate(eachCard.dateOfLastReview)}
+            return newCard
+        })
+        editListItemInBulk(resetDates, characterSRSstate)
+    }
+
+    function doResetDate(dateOfLastReview: string) {
+        var today = new Date();
+        var yesterday = new Date();
+        yesterday.setDate(today.getDate() - 1);
+        const result = yesterday.toISOString().slice(0,10)
+        return result;
+    }
+
     return <div>
         <h1> The Statistics page </h1>
         <button type="button" onClick={increasePositiveReviewNumbersByOne}>increaseByOne</button>
         <button type="button" onClick={reducePositiveReviewNumbersByOne}>reduceByOne</button>
+        <button type="button" onClick={resetCardHistory}>resetHistory</button>
+        <button type="button" onClick={resetReviewDates}>resetReviewDates</button>
         <ul>
             {reviewNumbersCount.map(each => {
                 return <li>{each}</li>
