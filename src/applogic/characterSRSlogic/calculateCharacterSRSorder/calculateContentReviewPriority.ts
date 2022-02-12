@@ -26,17 +26,19 @@ const calculateReviewPriority = (input: FlashCard[]): FlashCard[] => {
 }
 
 const splitIntoReviewNumbers = (contentThatCanBePracticed: FlashCard[]): FlashCard[][] => {
-    const allReviewNumbers: number[] = Array.from(new Set(contentThatCanBePracticed.map((item=> item.repetitionValue)))).sort()
-    const resultArray: FlashCard[][] = allReviewNumbers.map(eachNumber => {
+    var allReviewNumbers: number[] = Array.from(
+        new Set(contentThatCanBePracticed.map((item=> item.repetitionValue))))
+    var sortedReviewNumbers: number[] = allReviewNumbers.sort((n1,n2) => n1 - n2);
+    var resultArray: FlashCard[][] = sortedReviewNumbers.map(eachNumber => {
         return contentThatCanBePracticed.filter(item => item.repetitionValue === eachNumber)
     })
     return resultArray;
 }
 
 const splitIntoHistoryValues = (contentThatCanBePracticed: FlashCard[]): FlashCard[][] => {
-    const allHistorySums: number[] = Array.from(
-        new Set(contentThatCanBePracticed.map((item => getSumOfHistory(item))))).sort()
-    const resultArray: FlashCard[][] = allHistorySums.map(eachNumber => {
+    var allHistorySums: number[] = Array.from(new Set(contentThatCanBePracticed.map((item => getSumOfHistory(item)))))
+    var sortedHustorySums: number[] = allHistorySums.sort((n1,n2) => n1 - n2);
+    var resultArray: FlashCard[][] = sortedHustorySums.map(eachNumber => {
         return contentThatCanBePracticed.filter(item => getSumOfHistory(item) === eachNumber)
     })
     return resultArray;
