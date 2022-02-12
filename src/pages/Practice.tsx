@@ -173,7 +173,12 @@ const Practice: React.FunctionComponent<IPage> = props => {
         const updatedReviewValue: number =
             (current && current.repetitionValue && current.repetitionValue+increaseOrDecreaseReviewValue > 0)
                 ? current.repetitionValue+increaseOrDecreaseReviewValue : 1
-        const updatedContent: FlashCard = {...current, repetitionValue: updatedReviewValue, dateOfLastReview: updatedDate}
+        const updatedContent: FlashCard =
+            {...current,
+                repetitionValue: updatedReviewValue,
+                dateOfLastReview: updatedDate,
+                repetitionHistory: generateRepetitionHistoryOfLength10(current.repetitionHistory, increaseOrDecreaseReviewValue)
+            }
         const updatedCharacterSRS: FlashCardDeck = {...characterSRSstate}
         setShowCharacterSRSContentElement(false)
         if (increaseOrDecreaseReviewValue > 0) {
@@ -182,6 +187,28 @@ const Practice: React.FunctionComponent<IPage> = props => {
             substractFromPreviousCharacters(current, previousCharactersState)
         }
         editListItemInBulk([updatedContent], updatedCharacterSRS)
+    }
+
+    const generateRepetitionHistoryOfLength10 = (oldHistory: number[], increaseOrDecrease: number): number[] => {
+        const basicHistory: number[] = [1,1,1,1,1,1,1,1,1,0]
+        if (oldHistory == null ||
+            oldHistory == undefined ||
+            oldHistory.length < 10 ||
+            oldHistory.length > 10) {
+            return basicHistory
+        }else {
+            if (increaseOrDecrease > 0) {
+                const removeLast: number[] = oldHistory.slice(0,oldHistory.length-1)
+                const updatedList: number[] = [1].concat(removeLast)
+                return updatedList
+            }else if (increaseOrDecrease < 0) {
+                const removeLast: number[] = oldHistory.slice(0,oldHistory.length-1)
+                const updatedList: number[] = [0].concat(removeLast)
+                return updatedList
+            }else {
+                return oldHistory
+            }
+        }
     }
 
     const buttonsToShowAndHandleCharacterSRSContentElement = (): ReactElement => {
