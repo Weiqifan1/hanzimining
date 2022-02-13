@@ -77,6 +77,7 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, showSecondary:
                     tempDateOfLastReview = FlashCardStateManipulation.editStringvalue(e, props.content.dateOfLastReview)}
                                    contentEditable="true">
                     {content.dateOfLastReview}</li> : <li></li>}
+                { props.show ? <li>{content.repetitionHistory}</li> : <li></li>}
                 <li onInput={(e) =>
                     tempKeyword = FlashCardStateManipulation.editStringvalue(e, props.content.frontSide)}
                     contentEditable="true">
@@ -110,6 +111,7 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, showSecondary:
                 <li>{input.cardNumber}</li>
                 <li>{input.repetitionValue}</li>
                 <li>{input.dateOfLastReview}</li>
+                <li>{input.repetitionHistory}</li>
                 <li>{input.frontSide}</li>
                 <li>{FlashCardStateManipulation.displayNumberList(input.notableCards)}</li>
                <li>{input.primaryInfo}</li>
