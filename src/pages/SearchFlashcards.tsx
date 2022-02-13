@@ -136,6 +136,11 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
                 return eachCard.cardNumber >= Number(stringToLookFor[0]) && eachCard.cardNumber <= Number(stringToLookFor[1])
             })
             return result
+        }else if (stringToLookFor.length === 1 && Number(stringToLookFor[0])) {
+            const result: FlashCard[] = displayChars.filter((eachCard) => {
+                return eachCard.cardNumber == Number(stringToLookFor[0])
+            })
+            return result
         }
         return displayChars
     }
