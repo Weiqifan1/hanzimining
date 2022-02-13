@@ -67,6 +67,22 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
         setDisplayChars(sortedByNumber.slice(0,maxCardsToDisplay))
     }
 
+    function sortbyHistorySumDescending() {
+        const sortedByHistorySum: FlashCard[] = removeUnknown(allCards).sort((n1,n2) => getSumOfHistory(n1) - getSumOfHistory(n2));
+        setDisplayChars(sortedByHistorySum.slice(0,maxCardsToDisplay))
+    }
+
+    function getSumOfHistory(item: FlashCard): number {
+        const history: number[] = item.repetitionHistory
+        if (history == null ||
+            history == undefined) {
+            return 0
+        }else {
+            const result: number = item.repetitionHistory.reduce((sum,current) => sum + current, 0)
+            return result
+        }
+    }
+
     function sortByReviewNumberAscending() {
         const sortedByReviewValue: FlashCard[] = removeUnknown(allCards).sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.repetitionValue < b.repetitionValue) {return -1; }if (a.repetitionValue > b.repetitionValue) {return 1;}return 0;})
         setDisplayChars(sortedByReviewValue.slice(0,maxCardsToDisplay))
@@ -138,7 +154,7 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
         })
         return result
     }
-    
+
     return <section>
         <h1>Search current flashcard Deck</h1>
         <p>number of cards: {characterSRSstate.cards.length}</p>
@@ -150,6 +166,7 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
         <button type="button" onClick={sortByReviewNumberAscending}>sortKnownCardsByReviewValueAscending</button>
         <button type="button" onClick={sortByLastReviewDateAscending}>sortKnownCardsByLastReviewDateAscending</button>
         <p></p>
+        <button type="button" onClick={sortbyHistorySumDescending}>sortKnownCardsByHistorySumDescending</button>
         <button type="button" onClick={sortbyIndexNumberDescending}>sortKnownCardsByCharNumberDescending</button>
         <button type="button" onClick={sortByReviewNumberDescending}>sortKnownCardsByReviewValueDescending</button>
         <button type="button" onClick={sortByLastReviewDateDescending}>sortKnownCardsByLastReviewDateDescending</button>
