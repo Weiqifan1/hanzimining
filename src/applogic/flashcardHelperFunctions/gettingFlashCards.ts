@@ -15,6 +15,16 @@ export const getCardSimpleDisplayInfo = (cardNumber: number, currentState: Flash
     }
 }
 
+export const getTagFromDeck = (tagName: String, characterSRSstate: FlashCardDeck): String => {
+    const record: Record<string, string> = characterSRSstate.tags
+    const primitiveString: string = tagName.toString()
+    const tagdata: String = record[primitiveString]
+    if (tagdata && tagdata.length > 0) {
+        return tagdata
+    }
+    return ""
+}
+
 export const cardExistInDeck = (cardNumber: number, currentState: FlashCardDeck): boolean => {
     const cardCandidates: FlashCard[]  = currentState.cards.filter(x=>{
         return (x.cardNumber === cardNumber)

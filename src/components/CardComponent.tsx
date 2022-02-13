@@ -9,7 +9,8 @@ import FlashCardStateManipulation from "../applogic/FlashcardDisplayLogic/FlashC
 import {
     cardExistInDeck,
     getCardSimpleDisplayInfo,
-    getFlashCard
+    getFlashCard,
+    getTagFromDeck
 } from "../applogic/flashcardHelperFunctions/gettingFlashCards";
 
 const CardComponent: React.FC<{content: FlashCard, show: boolean, showSecondary: boolean}> =
@@ -23,6 +24,8 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, showSecondary:
 
     const [cardToDisplay, setCardToDisplay] = useState<number>(-1)
     const [showNotableChardButtons, setShowNotableChardButtons] = useState<boolean>(false)
+    const [tagToDisplay, setTagToDisplay] = useState<String>("")
+    const [showTagButtons, setShowTagButtons] = useState<boolean>(false)
 
     const content: FlashCard = props.content
     var tempReviewValue: number = props.content.repetitionValue
@@ -129,6 +132,14 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, showSecondary:
         setShowNotableChardButtons(!showNotableChardButtons)
     }
 
+    const toggleShowTagButtons = () => {
+        if (showTagButtons) {
+            setTagToDisplay("")
+            setShowTagButtons(!showTagButtons)
+        }
+        setShowTagButtons(!showTagButtons)
+    }
+
     const displayNotableCardButtons = (): JSX.Element => {
         if (showNotableChardButtons) {
             const result: JSX.Element = <section>{generateListOfCardButtons(props.content.cardNumber)}</section>
@@ -155,6 +166,33 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, showSecondary:
         }
     }
 
+    const displayTagButtons = (): JSX.Element => {
+        if (showTagButtons) {
+            const result: JSX.Element = <section>{generateListOfTagButtons(props.content.tags)}</section>
+            return result
+        }else {
+            return <section></section>
+        }
+    }
+
+    const generateListOfTagButtons = (tags: String[]): JSX.Element => {
+        if (tags == null || !tags || tags.length == undefined || tags.length < 1) {
+            return <section>No tags to show</section>
+        }
+        const localList: JSX.Element[] = tags.map(x=>{
+            return <button type="button" onClick={
+                () => setTagTextFunction(x) }>
+                {x}</button>
+        })
+        const result: JSX.Element = <section><ul>
+            {localList}</ul></section>
+        return result
+    }
+
+    const setTagTextFunction = (tagName: String) => {
+        setTagToDisplay(tagName)
+    }
+
     const displayCard = (): JSX.Element => {
         if (cardToDisplay > -1 && cardExistInDeck(cardToDisplay, characterSRSstate)) {
             const newCard: FlashCard = getFlashCard(cardToDisplay, characterSRSstate);
@@ -164,10 +202,22 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, showSecondary:
         }
     }
 
+    const displayTag = (): JSX.Element => {
+        const text: String = getTagFromDeck(tagToDisplay, characterSRSstate)
+        if (text && text.length > 0) {
+            return <section>{text}</section>
+        }else {
+            return <section></section>
+        }
+    }
+
     return <section>
         <button type="button" onClick={() => saveEdit()}>saveEditOn {content.cardNumber}</button>
         <button type="button" onClick={() => toggleShowNotableCards()}>showNotableCardButtons{showNotableChardButtons.valueOf()}</button>
+        <button type="button" onClick={() => toggleShowTagButtons()}>showTagButtons{showTagButtons.valueOf()}</button>
         {displayNotableCardButtons()}
+        {displayTagButtons()}
+        {displayTag()}
         {displayCard()}
     </section>
 }
