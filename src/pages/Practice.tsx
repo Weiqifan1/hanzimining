@@ -243,9 +243,33 @@ const Practice: React.FunctionComponent<IPage> = props => {
                 " neg: " + listToDisplay[1].length +
                 " netRepetitions: " + netRepetition
         }
-        return <section>{resultString}</section>
+
+        const buttonsToEditRecentChars: ReactElement =
+            <section>
+                <button id="increaseLastCardByOne" type="button" onClick={increaseRepetitionOfLastCharacterByOne}>increaseLastCardByOne</button>
+                <button id="decreaseLastCardByOne" type="button" onClick={reduceRepetitionOfLastCharacterByOne}>reduceLastCardByOne</button>
+            </section>
+
+        return <section>{resultString} {buttonsToEditRecentChars}</section>
     }
 
+    const increaseRepetitionOfLastCharacterByOne = () => {
+        editRepetitionOfLastCharacterByOne(1)
+    }
+
+    const reduceRepetitionOfLastCharacterByOne = () => {
+        editRepetitionOfLastCharacterByOne(-1)
+    }
+
+    const editRepetitionOfLastCharacterByOne = (integerToAdd: number) => {
+        const mostRecentCharactersList: FlashCard[] = previousCharactersState[2] ? previousCharactersState[2] : []
+        if (mostRecentCharactersList && mostRecentCharactersList.length > 0){
+            const recentChar: FlashCard = mostRecentCharactersList[mostRecentCharactersList.length-1]
+            const recentCharReviewnumberReduced: number = recentChar.repetitionValue+integerToAdd
+            const updatedChar: FlashCard = {...recentChar, repetitionValue: recentCharReviewnumberReduced}
+            editListItemInBulk([updatedChar], characterSRSstate)
+        }
+    }
 
     const changeShowSecondaryInformationValue = () => {
         setShowSecondaryFlashCardInfo(!showSecondaryInformationLocalState)
