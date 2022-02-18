@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/hanzimining/static/css/main.b34065a8.chunk.css",
-    "main.js": "/hanzimining/static/js/main.9e743d41.chunk.js",
-    "main.js.map": "/hanzimining/static/js/main.9e743d41.chunk.js.map",
+    "main.js": "/hanzimining/static/js/main.de639d66.chunk.js",
+    "main.js.map": "/hanzimining/static/js/main.de639d66.chunk.js.map",
     "runtime-main.js": "/hanzimining/static/js/runtime-main.b11af833.js",
     "runtime-main.js.map": "/hanzimining/static/js/runtime-main.b11af833.js.map",
     "static/js/2.d0c36209.chunk.js": "/hanzimining/static/js/2.d0c36209.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.b11af833.js",
     "static/js/2.d0c36209.chunk.js",
     "static/css/main.b34065a8.chunk.css",
-    "static/js/main.9e743d41.chunk.js"
+    "static/js/main.de639d66.chunk.js"
   ]
 }
