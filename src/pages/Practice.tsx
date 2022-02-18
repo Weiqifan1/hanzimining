@@ -247,6 +247,7 @@ const Practice: React.FunctionComponent<IPage> = props => {
         const buttonsToEditRecentChars: ReactElement =
             <section>
                 <button id="increaseLastCardByOne" type="button" onClick={increaseRepetitionOfLastCharacterByOne}>increaseLastCardByOne</button>
+                {displayMostRecentCard()}
                 <button id="decreaseLastCardByOne" type="button" onClick={reduceRepetitionOfLastCharacterByOne}>reduceLastCardByOne</button>
             </section>
 
@@ -264,11 +265,38 @@ const Practice: React.FunctionComponent<IPage> = props => {
     const editRepetitionOfLastCharacterByOne = (integerToAdd: number) => {
         const mostRecentCharactersList: FlashCard[] = previousCharactersState[2] ? previousCharactersState[2] : []
         if (mostRecentCharactersList && mostRecentCharactersList.length > 0){
-            const recentChar: FlashCard = mostRecentCharactersList[mostRecentCharactersList.length-1]
+            const recentCharNumber: number = mostRecentCharactersList[mostRecentCharactersList.length-1].cardNumber
+            const recentChar: FlashCard = characterSRSstate.cards.filter(eachCard => eachCard.cardNumber == recentCharNumber)[0]
             const recentCharReviewnumberReduced: number = recentChar.repetitionValue+integerToAdd
-            const updatedChar: FlashCard = {...recentChar, repetitionValue: recentCharReviewnumberReduced}
-            editListItemInBulk([updatedChar], characterSRSstate)
+            if (recentCharReviewnumberReduced > 0) {
+                const updatedCharacterSRS: FlashCardDeck = {...characterSRSstate}
+                const updatedChar: FlashCard = {...recentChar, repetitionValue: recentCharReviewnumberReduced}
+                editListItemInBulk([updatedChar], updatedCharacterSRS)
+            }
         }
+    }
+
+    const displayMostRecentCard = (): string => {
+        const desiredCard: FlashCard = getMostRecentCard()
+        if (desiredCard.cardNumber > 0) {
+            const returnString: string = desiredCard.repetitionValue + desiredCard.backSide + desiredCard.cardNumber
+            return returnString
+        }
+        return "no cards to display"
+    }
+
+    const getMostRecentCard = (): FlashCard => {
+        const mostRecentCharactersList: FlashCard[] = previousCharactersState[2] ? previousCharactersState[2] : []
+        if (mostRecentCharactersList && mostRecentCharactersList.length > 0){
+            const recentChar: FlashCard = mostRecentCharactersList[0]
+            const recentNumber: number = recentChar.cardNumber
+            const cardDeck: FlashCard[] = characterSRSstate.cards.filter(eachCard => eachCard.cardNumber == recentNumber)
+            if (cardDeck.length > 0) {
+                const desiredCard: FlashCard = cardDeck[0]
+                return desiredCard
+            }
+        }
+        return {... characterSRSstate.cards[0], cardNumber: 0}
     }
 
     const changeShowSecondaryInformationValue = () => {
