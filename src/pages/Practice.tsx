@@ -17,6 +17,7 @@ const Practice: React.FunctionComponent<IPage> = props => {
 
     var currentContent: FlashCard;
     const [showCharacterSRSContentElement, setShowCharacterSRSContentElement] = useState<boolean>(false)
+    const [showPreviusCard, setShowPreviusCard] = useState<boolean>(false)
     const [addMoreCharactersTextField, setAddMoreCharactersTextField] = useState<string>("");
 
     const dispatch = useDispatch();
@@ -50,15 +51,36 @@ const Practice: React.FunctionComponent<IPage> = props => {
         }else {
             if (srscalculationResult.currentContent) {
                 currentContent = srscalculationResult.currentContent
-                contentOrNotEnough = <CardComponent content={srscalculationResult.currentContent}
-                                                    show={showCharacterSRSContentElement}
-                                                    showSecondary={showSecondaryInformationLocalState}/>
+                contentOrNotEnough = generateCardComponent(
+                    srscalculationResult.currentContent,
+                    showCharacterSRSContentElement,
+                    showSecondaryInformationLocalState)
             }else {
                 contentOrNotEnough = <p>Content type is undefined!!! this is an error</p>
             }
         }
         displayMostRecentCharacters(previousCharactersState)
         return contentOrNotEnough
+    }
+
+    const showPreviusCharacter = (): ReactElement => {
+        if (showPreviusCard) {
+            const previusCard: FlashCard = getMostRecentCard()
+            if (previusCard.cardNumber > 0) {
+                const cardComponent = generateCardComponent(previusCard, true, true)
+                return cardComponent
+            }else {
+                return <p>no previus card</p>
+            }
+        }else {
+            return <section></section>
+        }
+    }
+
+    const generateCardComponent = (content: FlashCard, showSRSContent: boolean, showSecondary: boolean) => {
+        return <CardComponent content={content}
+                       show={showSRSContent}
+                       showSecondary={showSecondary}/>
     }
 
     const displayNumberOfCharacters = (): ReactElement => {
@@ -249,9 +271,17 @@ const Practice: React.FunctionComponent<IPage> = props => {
                 <button id="increaseLastCardByOne" type="button" onClick={increaseRepetitionOfLastCharacterByOne}>increaseLastCardByOne</button>
                 {displayMostRecentCard()}
                 <button id="decreaseLastCardByOne" type="button" onClick={reduceRepetitionOfLastCharacterByOne}>reduceLastCardByOne</button>
+                <button id="togglePreviusCard" type="button" onClick={toggleShowPreviousCard}>toggleShowPrevious</button>
             </section>
-
         return <section>{resultString} {buttonsToEditRecentChars}</section>
+    }
+
+    const toggleShowPreviousCard = () => {
+        if (showPreviusCard) {
+            setShowPreviusCard(false)
+        }else {
+            setShowPreviusCard(true)
+        }
     }
 
     const increaseRepetitionOfLastCharacterByOne = () => {
@@ -318,6 +348,7 @@ const Practice: React.FunctionComponent<IPage> = props => {
         <p>***</p>
         {buttonsToShowAndHandleCharacterSRSContentElement()}
         <p>***</p>
+        {showPreviusCharacter()}
         {todoPageContent()}
     </section>
 };
