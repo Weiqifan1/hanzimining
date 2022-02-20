@@ -74,12 +74,17 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
 
     function getSumOfHistory(item: FlashCard): number {
         const history: number[] = item.repetitionHistory
-        if (history == null ||
-            history == undefined) {
+        if (history === null ||
+            history === undefined ||
+            history.length == 0) {
             return 0
         }else {
-            const result: number = item.repetitionHistory.reduce((sum,current) => sum + current, 0)
-            return result
+            try {
+                const result: number = history.reduce((sum,current) => sum + current, 0)
+                return result
+            }catch (e) {
+                return 0
+            }
         }
     }
 

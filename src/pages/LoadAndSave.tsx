@@ -6,6 +6,7 @@ import {bindActionCreators} from "redux";
 import { characterSRSactionCreators, State } from '../state/index';
 import {FileUploader} from "../components/FileUploader";
 import {DragAndDropState} from "../interfaces/dragAndDropState";
+import {FlashCard} from "../interfaces/flashcard";
 
 const LoadAndSave: React.FunctionComponent<IPage> = props => {
 
@@ -23,11 +24,37 @@ const LoadAndSave: React.FunctionComponent<IPage> = props => {
         const content: string = ((document.getElementById("inserthanzi") as HTMLInputElement).value);
         try {
             let characterSRSobj: FlashCardDeck = JSON.parse(content);
-            createSRSobject(characterSRSobj)
+
+            //add history if nothing exists
+            let allCards: FlashCard[] = characterSRSobj.cards
+            let cardsWithHistory: FlashCard[] = allCards.filter(each => testIfListOfNum(each.repetitionHistory))
+            let cardsNoHistory: FlashCard[] = allCards.filter(each => !testIfListOfNum(each.repetitionHistory))
+
+            //var newCard: FlashCard = {...eachCard, repetitionValue: newRepetitionNumber}
+            let cardsWithCreatedHistory: FlashCard[] = cardsNoHistory.map(each =>
+            {
+                var newCard: FlashCard = {...each, repetitionHistory: [1,1,1,1,1,1,1,1,1,1]}
+                return newCard
+            })
+
+            let allNewHistory: FlashCard[] = cardsWithHistory.concat(cardsWithCreatedHistory)
+
+            let newSRS: FlashCardDeck = {...characterSRSobj, cards: allNewHistory}
+
+            createSRSobject(newSRS)
         }
         catch(e){
             console.log("error occurred during JSON parsing :")
             console.log(e)
+        }
+    }
+
+    const testIfListOfNum = (input: number[]): Boolean => {
+        try {
+            let inputLength: Boolean = input.length > -1
+            return inputLength
+        }catch (e) {
+            return false
         }
     }
 
