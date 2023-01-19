@@ -120,7 +120,10 @@ const LoadAndSave: React.FunctionComponent<IPage> = props => {
         <button type="button" onClick={() => clearInputField()}>clear data</button>
         <p>{characterSRSstate.cards.length}</p>
         <p>***</p>
-        <input type="text" id="inserthanzi" placeholder="paste character json file content"></input>
+        <input type="text"
+               id="inserthanzi"
+               placeholder="paste character json file content"
+               style={{width: "370px"}}></input>
         <p>***</p>
         <FileUploader editParaList={handleDragAndDrop} paraList={uploadData}/>
         <p>******** Heisig example decks that can be download (keywords has to be added by the user) **********</p>
