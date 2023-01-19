@@ -126,7 +126,7 @@ const LoadAndSave: React.FunctionComponent<IPage> = props => {
                style={{width: "370px"}}></input>
         <p>***</p>
         <FileUploader editParaList={handleDragAndDrop} paraList={uploadData}/>
-        <p>******** Heisig example decks that can be download (keywords has to be added by the user) **********</p>
+        <p>******** Heisig character example decks that can be download (keywords has to be added by the user) **********</p>
         <button type="button" onClick={() => getCharactersJson(
             "heisigKanjiV5-3030noKeys.json",
             "https://weiqifan1.github.io/hanzimining_data/heisigKanjiV5-3030noKeys.json")}>
