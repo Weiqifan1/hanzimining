@@ -10,7 +10,7 @@ import {FlashCard} from "../interfaces/flashcard";
 
 
 const CreateDeck: React.FunctionComponent<IPage> = props => {
-    const backendUrl: string = "http://chinesesentencemining-6z6zb.ondigitalocean.app/texttodeck"//"http://127.0.0.1:5000/texttodeck"
+    const backendUrl: string = "https://chinesesentencemining-6z6zb.ondigitalocean.app/texttodeck"//"http://127.0.0.1:5000/texttodeck"
     const [selects, setSelects] = useState<string>("simplified")
     const [delivery, setDelivery] = useState<string>("toFile")
     const [outputs, setOutputs] = useState<string>("")
