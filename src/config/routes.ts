@@ -4,6 +4,7 @@ import LoadAndSave from "../pages/LoadAndSave";
 import SearchFlashcards from "../pages/SearchFlashcards";
 import Statistics from "../pages/Statistics";
 import IRoute from "../interfaces/route";
+import CreateDeck from "../pages/CreateDeck";
 
 const routes: IRoute[] = [
     {
@@ -12,6 +13,13 @@ const routes: IRoute[] = [
         component: LoadAndSave,
         exact: true
     },
+    {
+        path: '/createDeck',
+        name: 'CreateDeck',
+        component: CreateDeck,
+        exact: true
+    }
+    ,
     {
         path: '/searchflashcards',
         name: 'Search',
