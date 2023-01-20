@@ -67,6 +67,19 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, showSecondary:
         }
     }
 
+    function convertStringToListOfStrings(primaryOrSEcondaryInfo: string, infoStringToDisplay: string) {
+        var mylist = primaryOrSEcondaryInfo.split("\n")
+        const display: JSX.Element = <section>
+            <ul>
+                <li><strong>{infoStringToDisplay}</strong></li>
+                {mylist.map(
+                    each => <li style={{textAlign: 'left'}}>`{each}` </li>
+                )}
+            </ul>
+        </section>
+        return display
+    }
+
     const displayOriginalCharacter = (): JSX.Element => {
         const display: JSX.Element = <section>
             <ul>
@@ -97,11 +110,11 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, showSecondary:
                 { props.show ? <li onInput={(e) =>
                     tempPrimaryInfo = FlashCardStateManipulation.editStringvalue(e, props.content.primaryInfo)}
                                    contentEditable="true">
-                    {content.primaryInfo}</li> : <li></li>}
+                    {convertStringToListOfStrings(content.primaryInfo, "primary info:")}</li> : <li></li>}
                 { props.show&&props.showSecondary ? <li onInput={(e) =>
                     tempSecondaryInfo = FlashCardStateManipulation.editStringvalue(e, props.content.secondaryInfo)}
                                                         contentEditable="true">
-                    {content.secondaryInfo}</li> : <li></li>}
+                    {convertStringToListOfStrings(content.secondaryInfo, "secondary info:")}</li> : <li></li>}
             </ul>
         </section>
         return display
