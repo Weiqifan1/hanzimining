@@ -103,28 +103,7 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
                 download(deckName, stringedResponse)
             })
         console.log("request is sent")
-
     }
-
-
-
-    /*
-    fetch("http://127.0.0.1:5000/texttodeck", options)
-        .then(res => res.json())
-            .then((data) => console.log(data))
-            .catch((err) => console.log(err))
-
-    const headers = new Headers();
-            headers.append('Content-type', 'application/json');
-            const options = {
-                method: 'POST',
-                headers,
-                body: JSON.stringify(bodyDict)
-            }
-            const request = new Request('http://127.0.0.1:5000/texttodeck', options)
-            const response = fetch(request);
-     */
-
 
     const isEmptyString = (data: string): boolean => typeof data === "string" && data.trim().length == 0;
 
@@ -149,26 +128,27 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
             </div>
 
             <div>
+                <p>Insert the chinese text in the Text box. The data will be downloaded to a file</p>
+                <label htmlFor="text">Text</label>
+                <textarea id="text" required rows={10}> </textarea>
+            </div>
+        </form>
+        </section>
+            )
+};
+
+/*
+            <div>
                 <p>The data will be downloaded to a file</p>
                 <p>value: {delivery}</p>
                 <select value={delivery} onChange={e => setDelivery(e.target.value)}>
                     <option>toFile</option>
                 </select>
             </div>
-
-            <div>
-                <p>Insert the chinese text in the Text box. </p>
-                <label htmlFor="text">Text</label>
-                <textarea id="text" required rows={10}> </textarea>
-            </div>
-            <p>
+<p>
                 <label htmlFor="output">output</label>
                 <textarea id="output" required rows={10} value={outputs} onChange={e => setOutputs(e.target.value)}> </textarea>
             </p>
-
-        </form>
-        </section>
-            )
-};
+*/
 
 export default CreateDeck;
