@@ -149,12 +149,10 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
             </div>
 
             <div>
-                <p>Choose how to get the result data: download to file, written in the output box or both</p>
+                <p>The data will be downloaded to a file</p>
                 <p>value: {delivery}</p>
                 <select value={delivery} onChange={e => setDelivery(e.target.value)}>
                     <option>toFile</option>
-                    <option>toOutputBox</option>
-                    <option>toFileAndToOutputBox</option>
                 </select>
             </div>
 
