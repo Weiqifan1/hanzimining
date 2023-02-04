@@ -13,8 +13,9 @@ import {
     getTagFromDeck
 } from "../applogic/flashcardHelperFunctions/gettingFlashCards";
 
-const CardComponent: React.FC<{content: FlashCard, show: boolean, showSecondary: boolean}> =
-    (props: PropsWithChildren<{content: FlashCard, show: boolean, showSecondary: boolean}>) => {
+
+const CardComponent: React.FC<{content: FlashCard, show: boolean, showPrimary: boolean, showSecondary: boolean}> =
+    (props: PropsWithChildren<{content: FlashCard, show: boolean, showPrimary: boolean, showSecondary: boolean}>) => {
 
     const dispatch = useDispatch();
     const {editListItem} = bindActionCreators(characterSRSactionCreators, dispatch)
@@ -107,10 +108,11 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, showSecondary:
                         Object.keys(characterSRSstate.tags))}
                     contentEditable="true">
                     {FlashCardStateManipulation.displayStringList(content.tags)}</li>  : <li></li>}
-                { props.show ? <li onInput={(e) =>
+                { props.show&&props.showPrimary ? <li onInput={(e) =>
                     tempPrimaryInfo = FlashCardStateManipulation.editStringvalue(e, props.content.primaryInfo)}
                                    contentEditable="true">
                     {convertStringToListOfStrings(content.primaryInfo, "primary info:")}</li> : <li></li>}
+
                 { props.show&&props.showSecondary ? <li onInput={(e) =>
                     tempSecondaryInfo = FlashCardStateManipulation.editStringvalue(e, props.content.secondaryInfo)}
                                                         contentEditable="true">
