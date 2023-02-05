@@ -1,10 +1,11 @@
 
 import React, {useState} from "react";
 import IPage from "../interfaces/page";
-import {useSelector} from "react-redux";
-import {State } from '../state/index';
+import {useDispatch, useSelector} from "react-redux";
+import {showPrimaryFlashcardInfoActionCreator, showSecondaryFlashcardInfoActionCreator, State} from '../state/index';
 import CardListComponent from "../components/CardListComponent"
 import {FlashCard} from "../interfaces/flashcard";
+import {bindActionCreators} from "redux";
 
 const SearchFlashcards: React.FunctionComponent<IPage> = props => {
 
@@ -30,6 +31,28 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
     const [backSideSubstring, setBackSideSubstring] = useState("")
     const handleChangeBackSideSubstringFilter = (e: React.FormEvent<HTMLInputElement>) => {setBackSideSubstring(e.currentTarget.value)}
 
+
+    //show primary and secondary information
+
+    const dispatch = useDispatch();
+    const{setShowPrimaryFlashCardInfo} = bindActionCreators(showPrimaryFlashcardInfoActionCreator, dispatch)
+    const{setShowSecondaryFlashCardInfo} = bindActionCreators(showSecondaryFlashcardInfoActionCreator, dispatch)
+
+    const showPrimaryFlashCardInfoState: boolean = useSelector(
+        (state: State) => state.showPrimaryFlashCardInfo
+    )
+    const showSecondaryFlashCardInfoState: boolean = useSelector(
+        (state: State) => state.showSecondaryFlashCardInfo
+    )
+    var showPrimaryInformationLocalState: boolean = showPrimaryFlashCardInfoState
+    var showSecondaryInformationLocalState: boolean = showSecondaryFlashCardInfoState
+    const changeShowPrimaryInformationValue = () => {
+        setShowPrimaryFlashCardInfo(!showPrimaryInformationLocalState)
+    }
+
+    const changeShowSecondaryInformationValue = () => {
+        setShowSecondaryFlashCardInfo(!showSecondaryInformationLocalState)
+    }
 
     function sortbyIndexNumberAscendingInclUnknown() {
         const sortedByNumber: FlashCard[] = allCards.sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.cardNumber < b.cardNumber) {return -1; }if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
@@ -171,6 +194,8 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
         <button type="button" onClick={toggleSize}>toggle size {maxCardsToDisplay}</button>
         <button type="button" onClick={clearData}>clear data</button>
         <button type="button" onClick={sortbyIndexNumberAscendingInclUnknown}>sortAllCardsByCharNumberAscending</button>
+        <button type="button" onClick={changeShowPrimaryInformationValue}>showPrimary:{showPrimaryInformationLocalState.toString()}</button>
+        <button type="button" onClick={changeShowSecondaryInformationValue}>showSecondary:{showSecondaryInformationLocalState.toString()}</button>
         <p></p>
         <button type="button" onClick={sortbyIndexNumberAscending}>sortKnownCardsByCharNumberAscending</button>
         <button type="button" onClick={sortByReviewNumberAscending}>sortKnownCardsByReviewValueAscending</button>
@@ -189,7 +214,7 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
         <input type="text" id="backside" name="backside" value={backSideSubstring} onChange={handleChangeBackSideSubstringFilter} />
         <label htmlFor="tag">tag:</label>
         <input type="text" id="tag" name="tag" value={tagSubstringFilter} onChange={handleChangeTagSubstringFilter} />
-        <CardListComponent data={displayChars}/>
+        <CardListComponent data={displayChars} showPrimary={showPrimaryInformationLocalState} showSecondary={showSecondaryInformationLocalState}/>
     </section>
 };
 
