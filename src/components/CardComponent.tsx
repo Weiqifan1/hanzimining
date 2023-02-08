@@ -85,6 +85,11 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, showPrimary: b
         const display: JSX.Element = <section>
             <ul>
                 { props.show ? <li className={classes.characterListElement}>{props.content.backSide}</li> : <li className={classes.characterListElement}></li>}
+                {<section><br/></section>}
+                { props.show ? <li onInput={(e) =>
+                    tempCardName = FlashCardStateManipulation.editStringvalue(e, props.content.cardName)}
+                                   contentEditable="true">
+                    {content.cardName}</li> : <li></li>}
                 { props.show ? <li>{content.cardNumber}</li> : <li></li>}
                 { props.show ? <li onInput={(e) =>
                     tempReviewValue = FlashCardStateManipulation.editNumberValue(e, props.content.repetitionValue)}
@@ -126,6 +131,7 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, showPrimary: b
         const display: JSX.Element = <section>
             <ul>
                 <li className={classes.characterListElement}>{input.backSide}</li>
+                <li>{input.cardName}</li>
                 <li>{input.cardNumber}</li>
                 <li>{input.repetitionValue}</li>
                 <li>{input.dateOfLastReview}</li>
