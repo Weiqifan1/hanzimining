@@ -43,9 +43,9 @@ const editListItemsInBulk = (newContentInBulk: FlashCard[], characterSRSObject: 
     return result
 }
 
-const addNewCardToDeck = (newCards: FlashCard[], characterSRSObject: FlashCardDeck): FlashCardDeck => {
+export const addNewCardToDeck = (newCards: FlashCard[], characterSRSObject: FlashCardDeck): FlashCardDeck => {
     const characterList: FlashCard[] = characterSRSObject.cards
-    const redoneArray: FlashCard[] = characterList.concat(newCards)
+    const redoneArray: FlashCard[] = insertCardsInDeck(newCards, characterList)
     const result: FlashCardDeck = {
         ...characterSRSObject,
         deckName: characterSRSObject.deckName,
@@ -53,6 +53,48 @@ const addNewCardToDeck = (newCards: FlashCard[], characterSRSObject: FlashCardDe
     }
     return result
 }
+
+function insertCardsInDeck(newCards: FlashCard[], characterList: FlashCard[]): FlashCard[] {
+    const res: FlashCard[] = addSingleCardToList(newCards[0], characterList)
+    return res
+}
+
+function addSingleCardToList(flashCard: FlashCard, characterList: FlashCard[]): FlashCard[] {
+    const result: FlashCard[] = doAddSingleCardToList(flashCard, flashCard.cardNumber, [], characterList)
+    return result;
+}
+
+function doAddSingleCardToList(flashCard: FlashCard, cardNumber: number, updatedList: FlashCard[], characterList: FlashCard[]): FlashCard[] {
+    if (characterList.length == 0 && updatedList.length == 0) {
+        return [flashCard]
+    } else if (characterList.length == 0) {
+        const lastNewElem: FlashCard = updatedList[updatedList.length - 1]
+        if (lastNewElem.cardNumber < cardNumber) {
+            updatedList.push(flashCard)
+            return updatedList
+        } else {
+            return updatedList
+        }
+    } else if(characterList[0].cardNumber > cardNumber) {
+        //increment the cardnumber
+        const [head, ...tail] = characterList;
+        //newCard: FlashCard = {...eachCard, repetitionValue: newRepetitionNumber}
+        const newFlashcard: FlashCard = {...head, cardNumber: head.cardNumber + 1}
+        updatedList.push(newFlashcard)
+        return doAddSingleCardToList(flashCard, cardNumber, updatedList, tail)
+    } else if (characterList[0].cardNumber == cardNumber) {
+        updatedList.push(flashCard)
+        const [head, ...tail] = characterList;
+        const newFlashcard: FlashCard = {...head, cardNumber: head.cardNumber + 1}
+        updatedList.push(newFlashcard)
+        return doAddSingleCardToList(flashCard, cardNumber, updatedList, tail)
+    } else {
+        const [head, ...tail] = characterList;
+        updatedList.push(head)
+        return doAddSingleCardToList(flashCard, cardNumber, updatedList, tail)
+    }
+}
+
 
 const addNewTag = (updatedTags: Record<string, string>, characterSRSObject: FlashCardDeck): FlashCardDeck => {
     const result: FlashCardDeck = {
