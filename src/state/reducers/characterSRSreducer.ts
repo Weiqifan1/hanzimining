@@ -43,6 +43,17 @@ const editListItemsInBulk = (newContentInBulk: FlashCard[], characterSRSObject: 
     return result
 }
 
+const addNewCardToDeck = (newCards: FlashCard[], characterSRSObject: FlashCardDeck): FlashCardDeck => {
+    const characterList: FlashCard[] = characterSRSObject.cards
+    const redoneArray: FlashCard[] = characterList.concat(newCards)
+    const result: FlashCardDeck = {
+        ...characterSRSObject,
+        deckName: characterSRSObject.deckName,
+        cards: redoneArray
+    }
+    return result
+}
+
 const addNewTag = (updatedTags: Record<string, string>, characterSRSObject: FlashCardDeck): FlashCardDeck => {
     const result: FlashCardDeck = {
         ...characterSRSObject,
@@ -141,6 +152,8 @@ const characterSRSreducer = (state: FlashCardDeck = initialState, action: Charac
             return editListItem(action.payload.Content[0], action.payload.CharactersSRS)
         case CharacterSRSactionTypes.EDITLISTITEMINBULK:
             return editListItemsInBulk(action.payload.Content, action.payload.CharactersSRS)
+        case CharacterSRSactionTypes.ADDNEWCARDSTODECK:
+            return addNewCardToDeck(action.payload.Content, action.payload.CharactersSRS)
         default:
             return state
     }

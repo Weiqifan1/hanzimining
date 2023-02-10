@@ -91,3 +91,15 @@ export const editListItemInBulk = (listItemsInBulk: FlashCard[], characterSRSobj
         })
     }
 }
+
+export const addNewCardsToDeck = (newCards: FlashCard[], characterSRSobject: FlashCardDeck) => {
+    return (dispatch: Dispatch<CharacterSRSaction>) => {
+        dispatch({
+            type: CharacterSRSactionTypes.ADDNEWCARDSTODECK,
+            payload: {
+                CharactersSRS: characterSRSobject,
+                Content: newCards
+            }
+        })
+    }
+}

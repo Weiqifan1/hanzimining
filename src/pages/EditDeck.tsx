@@ -7,7 +7,8 @@ import {bindActionCreators} from "redux";
 import { characterSRSactionCreators,
     State } from '../state/index';
 import {FlashCardDeck} from "../interfaces/flashcarddeck";
-
+import {FlashCard} from "../interfaces/flashcard";
+import tags from "./Tags";
 
 const EditDeck: React.FunctionComponent<IPage> = props => {
 
@@ -15,17 +16,64 @@ const EditDeck: React.FunctionComponent<IPage> = props => {
     useEffect(()=>{addCharactersReference.current?.focus();},[])
 
     const dispatch = useDispatch();
-    const {editListItemInBulk} = bindActionCreators(characterSRSactionCreators, dispatch)
+    const {addNewCardsToDeck} = bindActionCreators(characterSRSactionCreators, dispatch)
     const characterSRSstate: FlashCardDeck = useSelector(
         (state: State) => state.characterSRS
     )
 
-    const [cardNumber, setCardNumber] = useState<number>(characterSRSstate.cards.length + 1)
+    const [localcardNumber, setLocalcardNumber] = useState<number>(characterSRSstate.cards.length + 1)
+    const [localcardName, setLocalcardName] = useState<string>("")
+    const [localfrontSide, setLocalfrontSide] = useState<string>("")
+    const [localbackSide, setLocalbackSide] = useState<string>("")
+    const [localprimaryInfo, setLocalprimaryInfo] = useState<string>("")
+    const [localsecondaryInfo, setLocalsecondaryInfo] = useState<string>("")
+    const [localnotableCards, setLocalnotableCards] = useState<string>("")
+    const [localtags, setLocaltags] = useState<string>("")
 
     function addFormInputToDeck() {
         const deck: FlashCardDeck = characterSRSstate
-        console.log(cardNumber)
-        console.log("buttonPressed")
+
+        const newCard: FlashCard = {
+            cardNumber: localcardNumber,
+            cardName: localcardName,
+            frontSide: localfrontSide,
+            backSide: localbackSide,
+            primaryInfo: localprimaryInfo,
+            secondaryInfo: localsecondaryInfo,
+            notableCards: generateNotableCards(localnotableCards, deck),
+            dateOfLastReview: "0001-01-01",
+            repetitionValue: 0,
+            repetitionHistory: [],
+            tags: generateTags(localtags, deck)
+        }
+
+        addNewCardsToDeck([newCard], characterSRSstate)
+    }
+
+    const generateTags = (input: string, deck: FlashCardDeck): string[] => {
+        const res: string[] = input.split(/(\s+)/).map(each => each.trim())
+        //remove impossibleCards
+        const nestedCardTags: string[][] = deck.cards.map(each => each.tags)
+        const cardTags: string[] = nestedCardTags.reduce((accumulator, value) => accumulator.concat(value), [])
+        const deckTags: string[] = cardTags.concat(Object.keys(deck.tags))
+        const resWithoutImpossibleNums: string[] = res.filter(each => deckTags.indexOf(each) > -1)
+        return resWithoutImpossibleNums
+    }
+
+    const generateNotableCards = (input: string, deck: FlashCardDeck): number[] => {
+        const res: string[] = localnotableCards.split(/(\s+)/).map(each => each.trim())
+        //remove impossibleCards
+        const resWithoutNonNums: number[] = res.filter(each => !isNaN(+each)).map(eachNum => +eachNum)
+        const deckCards: number[] = deck.cards.map(each => each.cardNumber)
+        const resWithoutImpossibleNums: number[] = resWithoutNonNums.filter(each => deckCards.indexOf(each) > -1)
+        return resWithoutImpossibleNums
+    }
+
+    const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        // No longer need to cast to any - hooray for react!
+        const newStr: string = e.target.value
+        const newNumber: number = +newStr
+        setLocalcardNumber(newNumber);
     }
 
     const newCardFrom = (): ReactElement => {
@@ -34,31 +82,35 @@ const EditDeck: React.FunctionComponent<IPage> = props => {
             <form >
                 <label>
                     cardNumber:
-                    <input type="number" name="cardNumber"></input>
+                    <input type="number" name="cardNumber" value={localcardNumber} onChange={handleCardNumberChange}></input>
                 </label>
                 <label>
                     cardName:
-                    <input type="text" name="cardName"></input>
+                    <input type="text" name="cardName" value={localcardName} onChange={e => setLocalcardName(e.currentTarget.value)}></input>
                 </label>
                 <label>
                     frontSide:
-                    <input type="text" name="frontSide"></input>
+                    <input type="text" name="frontSide" value={localfrontSide} onChange={e => setLocalfrontSide(e.currentTarget.value)}></input>
                 </label>
                 <label>
                     backSide:
-                    <input type="text" name="backSide"></input>
+                    <input type="text" name="backSide" value={localbackSide} onChange={e => setLocalbackSide(e.currentTarget.value)}></input>
                 </label>
                 <label>
                     primaryInfo:
-                    <input type="text" name="primaryInfo"></input>
+                    <input type="text" name="primaryInfo" value={localprimaryInfo} onChange={e => setLocalprimaryInfo(e.currentTarget.value)}></input>
                 </label>
                 <label>
                     secondaryInfo:
-                    <input type="text" name="secondaryInfo"></input>
+                    <input type="text" name="secondaryInfo" value={localsecondaryInfo} onChange={e => setLocalsecondaryInfo(e.currentTarget.value)}></input>
                 </label>
                 <label>
                     notableCards:
-                    <input type="text" name="notableCards"></input>
+                    <input type="text" name="notableCards" value={localnotableCards} onChange={e => setLocalnotableCards(e.currentTarget.value)}></input>
+                </label>
+                <label>
+                    tags:
+                    <input type="text" name="tags" value={localtags} onChange={e => setLocaltags(e.currentTarget.value)}></input>
                 </label>
             </form>
             <button type="button" onClick={
@@ -67,7 +119,6 @@ const EditDeck: React.FunctionComponent<IPage> = props => {
         </section>
 
     }
-
 
     return <section>
         <h1> Edit Deck </h1>
