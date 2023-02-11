@@ -15,6 +15,7 @@ const EditDeck: React.FunctionComponent<IPage> = props => {
     useEffect(()=>{addCharactersReference.current?.focus();},[])
 
     const dispatch = useDispatch();
+    //edit deck
     const {createDeck} = bindActionCreators(characterSRSactionCreators, dispatch)
     const {addNewCardsToDeck} = bindActionCreators(characterSRSactionCreators, dispatch)
     const characterSRSstate: FlashCardDeck = useSelector(
@@ -24,7 +25,11 @@ const EditDeck: React.FunctionComponent<IPage> = props => {
     const [localdeckName, setLocaldeckName] = useState<string>("")
     const [localdeckInfo, setLocaldeckInfo] = useState<string>("")
 
-    //create card
+    //delete or edit card
+    const [localdeleteCards, setLocaldeleteCards] = useState<string>("")
+    const [localeditCards, setLocaleditCards] = useState<string>("")
+
+    //create new card
     const [localcardNumber, setLocalcardNumber] = useState<number>(characterSRSstate.cards.length + 1)
     const [localcardName, setLocalcardName] = useState<string>("")
     const [localfrontSide, setLocalfrontSide] = useState<string>("")
@@ -33,6 +38,16 @@ const EditDeck: React.FunctionComponent<IPage> = props => {
     const [localsecondaryInfo, setLocalsecondaryInfo] = useState<string>("")
     const [localnotableCards, setLocalnotableCards] = useState<string>("")
     const [localtags, setLocaltags] = useState<string>("")
+
+    function editAndDeleteCardsButtonFunc() {
+        const deleteInput: string = localdeleteCards
+        const editInput: string = localeditCards
+        if (deleteInput.trim().length == 0 && editInput.trim().length > 0) {
+            //send tje edit field to the action
+        }else if (editInput.trim().length == 0 && deleteInput.trim().length > 0) {
+            //send delete to the action
+        }
+    }
 
     function createDeckGetData() {
         const newdeck: FlashCardDeck = {
@@ -63,6 +78,17 @@ const EditDeck: React.FunctionComponent<IPage> = props => {
         }
 
         addNewCardsToDeck([newCard], characterSRSstate)
+    }
+
+    function clearFormInputToDeck() {
+        setLocalcardNumber(characterSRSstate.cards.length + 1)
+        setLocalcardName("")
+        setLocalfrontSide("")
+        setLocalbackSide("")
+        setLocalprimaryInfo("")
+        setLocalsecondaryInfo("")
+        setLocalnotableCards("")
+        setLocaltags("")
     }
 
     const generateTags = (input: string, deck: FlashCardDeck): string[] => {
@@ -109,6 +135,34 @@ const EditDeck: React.FunctionComponent<IPage> = props => {
         </section>
     }
 
+    const editAndDeleteCards = (): ReactElement => {
+        return <section className="create">
+            <form>
+                <label>
+                    deleteCards:
+                    <input type="text" name="deleteCards" value={localdeleteCards} onChange={deleteCardsOnChange}></input>
+                </label>
+                <label>
+                    editCards:
+                    <input type="text" name="editCards" value={localeditCards} onChange={editCardsOnChange}></input>
+                </label>
+            </form>
+            <button type="button" onClick={
+                () => editAndDeleteCardsButtonFunc() }>
+                {"delete or edit cards"}</button>
+        </section>
+    }
+
+    function deleteCardsOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+        setLocaleditCards("")
+        setLocaldeleteCards(e.currentTarget.value)
+    }
+
+    function editCardsOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+        setLocaldeleteCards("")
+        setLocaleditCards(e.currentTarget.value)
+    }
+
     const newCardFrom = (): ReactElement => {
 
         return <section className="create">
@@ -145,16 +199,21 @@ const EditDeck: React.FunctionComponent<IPage> = props => {
             <button type="button" onClick={
                 () => addFormInputToDeck() }>
                 {"add card"}</button>
+            <br/>
+            <br/>
+            <button type="button" onClick={
+                () => clearFormInputToDeck() }>
+                {"clear"}</button>
+
         </section>
     }
 
-    //add create deck code
-    //add delete card code
-    //add change card number code -- it should be possible to change the place of a card in the deck
     return <section>
         <h1>Create Deck</h1>
         {createDeckReact()}
-        <h1>Edit Deck</h1>
+        <h1>Delete or edit cards</h1>
+        {editAndDeleteCards()}
+        <h1>Add card</h1>
         {newCardFrom()}
     </section>
 };
