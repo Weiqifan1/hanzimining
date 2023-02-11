@@ -2,6 +2,7 @@ import {CharacterSRSaction} from "../actions/characterSRSactions";
 import {CharacterSRSactionTypes} from "../action-types/characterSRSactionTypes";
 import {FlashCard} from "../../interfaces/flashcard";
 import {FlashCardDeck} from "../../interfaces/flashcarddeck"
+import CreateDeck from "../../pages/CreateDeck";
 
 const initialState: FlashCardDeck = {
     deckName: '',
@@ -39,6 +40,14 @@ const editListItemsInBulk = (newContentInBulk: FlashCard[], characterSRSObject: 
         ...characterSRSObject,
         deckName: characterSRSObject.deckName,
         cards: redoneArray
+    }
+    return result
+}
+
+const createDeck = (newContentInBulk: FlashCard[], characterSRSObject: FlashCardDeck): FlashCardDeck => {
+    const result: FlashCardDeck = {
+        ...characterSRSObject,
+        cards: newContentInBulk
     }
     return result
 }
@@ -247,6 +256,8 @@ const characterSRSreducer = (state: FlashCardDeck = initialState, action: Charac
             return editListItemsInBulk(action.payload.Content, action.payload.CharactersSRS)
         case CharacterSRSactionTypes.ADDNEWCARDSTODECK:
             return addNewCardToDeck(action.payload.Content, action.payload.CharactersSRS)
+        case CharacterSRSactionTypes.CREATENEWDECK:
+            return createDeck(action.payload.Content, action.payload.CharactersSRS)
         default:
             return state
     }

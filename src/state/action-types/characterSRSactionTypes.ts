@@ -5,5 +5,6 @@ export enum CharacterSRSactionTypes{
     ADDNEWCARDSTODECK = "addnewcardstodeck",
     ADDNEWTAG = "addnewtag",
     REMOVETAG = "removetag",
-    EDITSINGLETAG = "editsingletag"
+    EDITSINGLETAG = "editsingletag",
+    CREATENEWDECK = "createnewdeck"
 }

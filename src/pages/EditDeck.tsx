@@ -11,16 +11,20 @@ import {FlashCard} from "../interfaces/flashcard";
 import tags from "./Tags";
 
 const EditDeck: React.FunctionComponent<IPage> = props => {
-
     const addCharactersReference = useRef<HTMLInputElement | null>(null);
     useEffect(()=>{addCharactersReference.current?.focus();},[])
 
     const dispatch = useDispatch();
+    const {createDeck} = bindActionCreators(characterSRSactionCreators, dispatch)
     const {addNewCardsToDeck} = bindActionCreators(characterSRSactionCreators, dispatch)
     const characterSRSstate: FlashCardDeck = useSelector(
         (state: State) => state.characterSRS
     )
+    //create deck
+    const [localdeckName, setLocaldeckName] = useState<string>("")
+    const [localdeckInfo, setLocaldeckInfo] = useState<string>("")
 
+    //create card
     const [localcardNumber, setLocalcardNumber] = useState<number>(characterSRSstate.cards.length + 1)
     const [localcardName, setLocalcardName] = useState<string>("")
     const [localfrontSide, setLocalfrontSide] = useState<string>("")
@@ -29,6 +33,17 @@ const EditDeck: React.FunctionComponent<IPage> = props => {
     const [localsecondaryInfo, setLocalsecondaryInfo] = useState<string>("")
     const [localnotableCards, setLocalnotableCards] = useState<string>("")
     const [localtags, setLocaltags] = useState<string>("")
+
+    function createDeckGetData() {
+        const newdeck: FlashCardDeck = {
+            deckName: localdeckName,
+            deckInfo: localdeckInfo,
+            settings: {},
+            tags: {},
+            cards: []
+        }
+        createDeck([], newdeck)
+    }
 
     function addFormInputToDeck() {
         const deck: FlashCardDeck = characterSRSstate
@@ -76,6 +91,24 @@ const EditDeck: React.FunctionComponent<IPage> = props => {
         setLocalcardNumber(newNumber);
     }
 
+    const createDeckReact = (): ReactElement => {
+        return <section className="create">
+            <form>
+                <label>
+                    deckName:
+                    <input type="text" name="deckName" value={localdeckName} onChange={e => setLocaldeckName(e.currentTarget.value)}></input>
+                </label>
+                <label>
+                    deckInfo:
+                    <input type="text" name="deckInfo" value={localdeckInfo} onChange={e => setLocaldeckInfo(e.currentTarget.value)}></input>
+                </label>
+            </form>
+            <button type="button" onClick={
+                () => createDeckGetData() }>
+                {"create deck"}</button>
+        </section>
+    }
+
     const newCardFrom = (): ReactElement => {
 
         return <section className="create">
@@ -119,8 +152,9 @@ const EditDeck: React.FunctionComponent<IPage> = props => {
     //add delete card code
     //add change card number code -- it should be possible to change the place of a card in the deck
     return <section>
-
-        <h1> Edit Deck </h1>
+        <h1>Create Deck</h1>
+        {createDeckReact()}
+        <h1>Edit Deck</h1>
         {newCardFrom()}
     </section>
 };

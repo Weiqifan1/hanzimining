@@ -26,6 +26,14 @@ interface EditListItemsInBulk {
     }
 }
 
+interface CreateDeck {
+    type: CharacterSRSactionTypes.CREATENEWDECK
+    payload: {
+        CharactersSRS: FlashCardDeck,
+        Content: FlashCard[]
+    }
+}
+
 interface AddNewCardToDeck {
     type: CharacterSRSactionTypes.ADDNEWCARDSTODECK
     payload: {
@@ -59,4 +67,4 @@ interface EditSingleTag {
     }
 }
 
-export type CharacterSRSaction = CreateSRSobject | EditListItem | EditListItemsInBulk | AddNewTag | RemoveTag | EditSingleTag | AddNewCardToDeck
+export type CharacterSRSaction = CreateSRSobject | EditListItem | EditListItemsInBulk | AddNewTag | RemoveTag | EditSingleTag | AddNewCardToDeck | CreateDeck
