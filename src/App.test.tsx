@@ -39,6 +39,12 @@ test('test addNewCard, simpel', () => {
   expect(retcards[4].cardName).toBe("card5")
   expect(retcards[5].cardName).toBe("card6")
 
+  expect(retcards[0].notableCards.toString()).toBe("2,3,4,5")
+  expect(retcards[1].notableCards.toString()).toBe("1,3,4,5")
+  expect(retcards[2].notableCards.toString()).toBe("1,2,4,5")
+  expect(retcards[3].notableCards.toString()).toBe("1,2,3,5")
+  expect(retcards[4].notableCards.toString()).toBe("1,2,3,4")
+  expect(retcards[5].notableCards.toString()).toBe("")
 })
 
 test('test addNewCard, add card to middle of deck', () => {
@@ -67,8 +73,53 @@ test('test addNewCard, add card to middle of deck', () => {
   expect(retcards[4].cardName).toBe("card4")
   expect(retcards[5].cardName).toBe("card5")
 
+  expect(retcards[0].notableCards.toString()).toBe("2,4,5,6")
+  expect(retcards[1].notableCards.toString()).toBe("1,4,5,6")
+  expect(retcards[2].notableCards.toString()).toBe("")
+  expect(retcards[3].notableCards.toString()).toBe("1,2,5,6")
+  expect(retcards[4].notableCards.toString()).toBe("1,2,4,6")
+  expect(retcards[5].notableCards.toString()).toBe("1,2,4,5")
 })
 
+test('test addNewCard, add multiple cards to deck', () => {
+  const newCards: FlashCard[] = generate3NewCard24and5()
+  const characterSRSObject: FlashCardDeck = {
+    deckName: "deckName",
+    deckInfo: "deckInfo",
+    settings: {},
+    tags: {},
+    cards: generateOldDeckCards()
+  }
+  const returnVal = addNewCardToDeck(newCards, characterSRSObject)
+  const retcards = returnVal.cards
+  expect(retcards.length).toBe(8)
+  expect(retcards[0].cardNumber).toBe(1)
+  expect(retcards[1].cardNumber).toBe(2)
+  expect(retcards[2].cardNumber).toBe(3)
+  expect(retcards[3].cardNumber).toBe(4)
+  expect(retcards[4].cardNumber).toBe(5)
+  expect(retcards[5].cardNumber).toBe(6)
+  expect(retcards[6].cardNumber).toBe(7)
+  expect(retcards[7].cardNumber).toBe(8)
+
+  expect(retcards[0].cardName).toBe("card1")
+  expect(retcards[1].cardName).toBe("cardNew")
+  expect(retcards[2].cardName).toBe("card2")
+  expect(retcards[3].cardName).toBe("cardNew")
+  expect(retcards[4].cardName).toBe("cardNew")
+  expect(retcards[5].cardName).toBe("card3")
+  expect(retcards[6].cardName).toBe("card4")
+  expect(retcards[7].cardName).toBe("card5")
+
+  expect(retcards[0].notableCards.toString()).toBe("3,6,7,8")
+  expect(retcards[1].notableCards.toString()).toBe("")
+  expect(retcards[2].notableCards.toString()).toBe("1,6,7,8")
+  expect(retcards[3].notableCards.toString()).toBe("")
+  expect(retcards[4].notableCards.toString()).toBe("")
+  expect(retcards[5].notableCards.toString()).toBe("1,3,7,8")
+  expect(retcards[6].notableCards.toString()).toBe("1,3,6,8")
+  expect(retcards[7].notableCards.toString()).toBe("1,3,6,7")
+})
 
 function generateNewCard3() {
   const cardNew: FlashCard = {
@@ -104,6 +155,51 @@ function generateCard6() {
   return [card6];
 }
 
+function generate3NewCard24and5() {
+  const cardNew2: FlashCard = {
+    cardNumber: 2,
+    cardName: "cardNew",
+    frontSide: "cardNewFront",
+    backSide: "cardNewBack",
+    primaryInfo: "cardNewPrim",
+    secondaryInfo: "cardNewsec",
+    notableCards: [],
+    dateOfLastReview: "0001-01-01",
+    repetitionValue: 0,
+    repetitionHistory: [],
+    tags: []
+  }
+
+  const cardNew4: FlashCard = {
+    cardNumber: 4,
+    cardName: "cardNew",
+    frontSide: "cardNewFront",
+    backSide: "cardNewBack",
+    primaryInfo: "cardNewPrim",
+    secondaryInfo: "cardNewsec",
+    notableCards: [],
+    dateOfLastReview: "0001-01-01",
+    repetitionValue: 0,
+    repetitionHistory: [],
+    tags: []
+  }
+
+  const cardNew5: FlashCard = {
+    cardNumber: 5,
+    cardName: "cardNew",
+    frontSide: "cardNewFront",
+    backSide: "cardNewBack",
+    primaryInfo: "cardNewPrim",
+    secondaryInfo: "cardNewsec",
+    notableCards: [],
+    dateOfLastReview: "0001-01-01",
+    repetitionValue: 0,
+    repetitionHistory: [],
+    tags: []
+  }
+  return [cardNew2, cardNew4, cardNew5];
+}
+
 function generateOldDeckCards(): FlashCard[] {
   const card1: FlashCard = {
     cardNumber: 1,
@@ -112,7 +208,7 @@ function generateOldDeckCards(): FlashCard[] {
     backSide: "card1Back",
     primaryInfo: "card1Prim",
     secondaryInfo: "card1sec",
-    notableCards: [],
+    notableCards: [2,3,4,5],
     dateOfLastReview: "0001-01-01",
     repetitionValue: 0,
     repetitionHistory: [],
@@ -125,7 +221,7 @@ function generateOldDeckCards(): FlashCard[] {
     backSide: "card2Back",
     primaryInfo: "card2Prim",
     secondaryInfo: "card2sec",
-    notableCards: [],
+    notableCards: [1,3,4,5],
     dateOfLastReview: "0001-01-01",
     repetitionValue: 0,
     repetitionHistory: [],
@@ -138,7 +234,7 @@ function generateOldDeckCards(): FlashCard[] {
     backSide: "card3Back",
     primaryInfo: "card3Prim",
     secondaryInfo: "card3sec",
-    notableCards: [],
+    notableCards: [1,2,4,5],
     dateOfLastReview: "0001-01-01",
     repetitionValue: 0,
     repetitionHistory: [],
@@ -151,7 +247,7 @@ function generateOldDeckCards(): FlashCard[] {
     backSide: "card4Back",
     primaryInfo: "card4Prim",
     secondaryInfo: "card4sec",
-    notableCards: [],
+    notableCards: [1,2,3,5],
     dateOfLastReview: "0001-01-01",
     repetitionValue: 0,
     repetitionHistory: [],
@@ -164,7 +260,7 @@ function generateOldDeckCards(): FlashCard[] {
     backSide: "card5Back",
     primaryInfo: "card5Prim",
     secondaryInfo: "card5sec",
-    notableCards: [],
+    notableCards: [1,2,3,4],
     dateOfLastReview: "0001-01-01",
     repetitionValue: 0,
     repetitionHistory: [],

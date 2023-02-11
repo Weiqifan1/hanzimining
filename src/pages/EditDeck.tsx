@@ -40,7 +40,7 @@ const EditDeck: React.FunctionComponent<IPage> = props => {
             backSide: localbackSide,
             primaryInfo: localprimaryInfo,
             secondaryInfo: localsecondaryInfo,
-            notableCards: generateNotableCards(localnotableCards, deck),
+            notableCards: [],//generateNotableCards(localnotableCards, deck),
             dateOfLastReview: "0001-01-01",
             repetitionValue: 0,
             repetitionHistory: [],
@@ -105,20 +105,21 @@ const EditDeck: React.FunctionComponent<IPage> = props => {
                     <input type="text" name="secondaryInfo" value={localsecondaryInfo} onChange={e => setLocalsecondaryInfo(e.currentTarget.value)}></input>
                 </label>
                 <label>
-                    notableCards:
-                    <input type="text" name="notableCards" value={localnotableCards} onChange={e => setLocalnotableCards(e.currentTarget.value)}></input>
-                </label>
-                <label>
                     tags:
                     <input type="text" name="tags" value={localtags} onChange={e => setLocaltags(e.currentTarget.value)}></input>
                 </label>
             </form>
             <button type="button" onClick={
                 () => addFormInputToDeck() }>
-                {"x-here"}</button>
+                {"add card"}</button>
         </section>
-
     }
+    /*
+    <label>
+                    notableCards:
+                    <input type="text" name="notableCards" value={localnotableCards} onChange={e => setLocalnotableCards(e.currentTarget.value)}></input>
+                </label>
+    */
 
     return <section>
         <h1> Edit Deck </h1>
