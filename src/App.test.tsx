@@ -24,7 +24,7 @@ test('test addNewCard, simpel', () => {
   }
   const returnVal = addNewCardToDeck(newCards, characterSRSObject)
   const retcards = returnVal.cards
-  expect(retcards.length == 6)
+  expect(retcards.length).toBe(6)
   expect(retcards[0].cardNumber).toBe(1)
   expect(retcards[1].cardNumber).toBe(2)
   expect(retcards[2].cardNumber).toBe(3)
@@ -38,6 +38,74 @@ test('test addNewCard, simpel', () => {
   expect(retcards[3].cardName).toBe("card4")
   expect(retcards[4].cardName).toBe("card5")
   expect(retcards[5].cardName).toBe("card6")
+
+  expect(retcards[0].notableCards.toString()).toBe("2,3,4,5")
+  expect(retcards[1].notableCards.toString()).toBe("1,3,4,5")
+  expect(retcards[2].notableCards.toString()).toBe("1,2,4,5")
+  expect(retcards[3].notableCards.toString()).toBe("1,2,3,5")
+  expect(retcards[4].notableCards.toString()).toBe("1,2,3,4")
+  expect(retcards[5].notableCards.toString()).toBe("")
+})
+
+test('test addNewCard, minus one card number', () => {
+  const newCards: FlashCard[] = generateCardMinus1()
+  const characterSRSObject: FlashCardDeck = {
+    deckName: "deckName",
+    deckInfo: "deckInfo",
+    settings: {},
+    tags: {},
+    cards: generateOldDeckCards()
+  }
+  const returnVal = addNewCardToDeck(newCards, characterSRSObject)
+  const retcards = returnVal.cards
+  expect(retcards.length).toBe(6)
+  expect(retcards[0].cardNumber).toBe(1)
+  expect(retcards[1].cardNumber).toBe(2)
+  expect(retcards[2].cardNumber).toBe(3)
+  expect(retcards[3].cardNumber).toBe(4)
+  expect(retcards[4].cardNumber).toBe(5)
+  expect(retcards[5].cardNumber).toBe(6)
+
+  expect(retcards[0].cardName).toBe("card1")
+  expect(retcards[1].cardName).toBe("card2")
+  expect(retcards[2].cardName).toBe("card3")
+  expect(retcards[3].cardName).toBe("card4")
+  expect(retcards[4].cardName).toBe("card5")
+  expect(retcards[5].cardName).toBe("cardMinus1")
+
+  expect(retcards[0].notableCards.toString()).toBe("2,3,4,5")
+  expect(retcards[1].notableCards.toString()).toBe("1,3,4,5")
+  expect(retcards[2].notableCards.toString()).toBe("1,2,4,5")
+  expect(retcards[3].notableCards.toString()).toBe("1,2,3,5")
+  expect(retcards[4].notableCards.toString()).toBe("1,2,3,4")
+  expect(retcards[5].notableCards.toString()).toBe("")
+})
+
+test('test addNewCard, too large card number', () => {
+  const newCards: FlashCard[] = generateCard1000()
+  const characterSRSObject: FlashCardDeck = {
+    deckName: "deckName",
+    deckInfo: "deckInfo",
+    settings: {},
+    tags: {},
+    cards: generateOldDeckCards()
+  }
+  const returnVal = addNewCardToDeck(newCards, characterSRSObject)
+  const retcards = returnVal.cards
+  expect(retcards.length).toBe(6)
+  expect(retcards[0].cardNumber).toBe(1)
+  expect(retcards[1].cardNumber).toBe(2)
+  expect(retcards[2].cardNumber).toBe(3)
+  expect(retcards[3].cardNumber).toBe(4)
+  expect(retcards[4].cardNumber).toBe(5)
+  expect(retcards[5].cardNumber).toBe(6)
+
+  expect(retcards[0].cardName).toBe("card1")
+  expect(retcards[1].cardName).toBe("card2")
+  expect(retcards[2].cardName).toBe("card3")
+  expect(retcards[3].cardName).toBe("card4")
+  expect(retcards[4].cardName).toBe("card5")
+  expect(retcards[5].cardName).toBe("card1000")
 
   expect(retcards[0].notableCards.toString()).toBe("2,3,4,5")
   expect(retcards[1].notableCards.toString()).toBe("1,3,4,5")
@@ -153,6 +221,41 @@ function generateCard6() {
     tags: []
   }
   return [card6];
+}
+
+
+function generateCardMinus1() {
+  const cardMinus1: FlashCard = {
+    cardNumber: -1,
+    cardName: "cardMinus1",
+    frontSide: "cardMinus1Front",
+    backSide: "cardMinus1Back",
+    primaryInfo: "cardMinus1Prim",
+    secondaryInfo: "cardMinus1sec",
+    notableCards: [],
+    dateOfLastReview: "0001-01-01",
+    repetitionValue: 0,
+    repetitionHistory: [],
+    tags: []
+  }
+  return [cardMinus1];
+}
+
+function generateCard1000() {
+  const card1000: FlashCard = {
+    cardNumber: 1000,
+    cardName: "card1000",
+    frontSide: "card1000Front",
+    backSide: "card1000Back",
+    primaryInfo: "card1000Prim",
+    secondaryInfo: "card1000sec",
+    notableCards: [],
+    dateOfLastReview: "0001-01-01",
+    repetitionValue: 0,
+    repetitionHistory: [],
+    tags: []
+  }
+  return [card1000];
 }
 
 function generate3NewCard24and5() {

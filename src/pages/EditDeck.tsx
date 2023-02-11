@@ -114,14 +114,12 @@ const EditDeck: React.FunctionComponent<IPage> = props => {
                 {"add card"}</button>
         </section>
     }
-    /*
-    <label>
-                    notableCards:
-                    <input type="text" name="notableCards" value={localnotableCards} onChange={e => setLocalnotableCards(e.currentTarget.value)}></input>
-                </label>
-    */
 
+    //add create deck code
+    //add delete card code
+    //add change card number code -- it should be possible to change the place of a card in the deck
     return <section>
+
         <h1> Edit Deck </h1>
         {newCardFrom()}
     </section>

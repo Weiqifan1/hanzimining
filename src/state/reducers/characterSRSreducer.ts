@@ -56,7 +56,8 @@ export const addNewCardToDeck = (newCards: FlashCard[], characterSRSObject: Flas
 
 function insertCardsInDeck(newCards: FlashCard[], characterList: FlashCard[]): FlashCard[] {
     const sortedNewCards = newCards.sort((c1, c2) => c1.cardNumber - c2.cardNumber)
-    const res: FlashCard[] = doInsertCardsInDeck(sortedNewCards, characterList)
+    const sortedCharacterList = characterList.sort((c1, c2) => c1.cardNumber - c2.cardNumber)
+    const res: FlashCard[] = doInsertCardsInDeck(sortedNewCards, sortedCharacterList)
     return res
 }
 
@@ -72,8 +73,20 @@ function doInsertCardsInDeck(remainingCards: FlashCard[], characterList: FlashCa
 }
 
 function addSingleCardToList(flashCard: FlashCard, characterList: FlashCard[]): FlashCard[] {
-    const result: FlashCard[] = doAddSingleCardToList(flashCard, flashCard.cardNumber, [], characterList)
+    const largestCardNumber: number = characterList.map(each => each.cardNumber).sort()[characterList.length-1]
+    const updatedFlashCard: FlashCard = adjustCardNumber(flashCard, largestCardNumber)
+    const result: FlashCard[] = doAddSingleCardToList(updatedFlashCard, updatedFlashCard.cardNumber, [], characterList)
     return result;
+}
+
+function adjustCardNumber(flashCard: FlashCard, largestCardNumber: number): FlashCard {
+    const cardnumber = flashCard.cardNumber
+    if (cardnumber < 1 || cardnumber > largestCardNumber) {
+        const newCard: FlashCard = {...flashCard, cardNumber: largestCardNumber + 1}
+        return newCard
+    } else {
+        return flashCard
+    }
 }
 
 function doAddSingleCardToList(flashCard: FlashCard, cardNumber: number, updatedList: FlashCard[], characterList: FlashCard[]): FlashCard[] {
