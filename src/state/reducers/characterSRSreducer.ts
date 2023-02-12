@@ -2,6 +2,7 @@ import {CharacterSRSaction} from "../actions/characterSRSactions";
 import {CharacterSRSactionTypes} from "../action-types/characterSRSactionTypes";
 import {FlashCard} from "../../interfaces/flashcard";
 import {FlashCardDeck} from "../../interfaces/flashcarddeck"
+import {addNewCardsToDeck} from "../action-creators/characterSRSactionCreator";
 
 const initialState: FlashCardDeck = {
     deckName: '',
@@ -308,20 +309,36 @@ function replaceNotable(oldToNew: [number, number][], notableCards: number[]): n
 }
 
 function editCardOrder(input: [number, number], CharactersSRS: FlashCardDeck): FlashCardDeck {
-    //TODO: write tests for edit and implement
-    /*
-    const allNums: number[] = CharactersSRS.cards.map(each => each.cardNumber)
-    const largestNumberFromSRS: number = Math.max(...allNums)
-    if (isNaN(largestNumberFromSRS)) {
-        return CharactersSRS
+    const cardToDelete: FlashCard = CharactersSRS.cards[input[0]-1]
+    var newCardNumber: number = 0
+    var cardNumToDelete: number = 0
+    if (input[1] > input[0]) {
+        newCardNumber = input[1] + 1
+        cardNumToDelete = input[0]
+    }else {
+        newCardNumber = input[1]
+        cardNumToDelete = input[0] + 1
     }
-    if (input[0] < 1 || input[0] > largestNumberFromSRS || input[1] < 1 || input[1] > largestNumberFromSRS || input[0] == input[1]) {
-        return CharactersSRS
+    const updatedCardToDelete: FlashCard = {...cardToDelete, cardNumber: newCardNumber}
+    const rawaddedCards: FlashCard[] = insertCardsInDeck([updatedCardToDelete], CharactersSRS.cards)
+    const addedCardsWithUpdatedNotable: FlashCard[] = rawaddedCards.map(each => updatedNotableCards(cardNumToDelete, newCardNumber, each))
+    const rawaddedDeck: FlashCardDeck = {...CharactersSRS, cards: addedCardsWithUpdatedNotable}
+
+    const deckWithMovedCardDeleted: FlashCardDeck = deleteCards([cardNumToDelete], rawaddedDeck)
+    return deckWithMovedCardDeleted
+}
+
+function updatedNotableCards(cardNumToDelete: number, newCardNumber: number, rawaddedCards: FlashCard) {
+    var newCards: number[] = []
+    const oldCards: number[] = rawaddedCards.notableCards
+    for (let i = 0; i < oldCards.length; i++) {
+        newCards.push(oldCards[i])
+        if (oldCards[i] == cardNumToDelete) {
+            newCards.push(newCardNumber)
+        }
     }
-    const num1: number = input[0]
-    const num2: number = input[1]
-*/
-    return CharactersSRS
+    const result: FlashCard = {...rawaddedCards, notableCards: newCards.sort()}
+    return result;
 }
 
 function validateCharsToBeDeleted(CharsToBeDeleted: string): number[] {
@@ -365,7 +382,7 @@ function validateOrderToBeChanged(OrderToBeChanged: string): [number, number] {
         return [0,0]
     }
     if (num1 > num2) {
-        return [0,0]
+        return [num1, num2]
     }else if (num1 == num2) {
         return [0,0]
     }else {

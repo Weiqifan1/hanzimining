@@ -14,6 +14,70 @@ test('renders learn react link', () => {
 });
 */
 
+test('test delteOrChangeOrder, changeOrder - late to early', () => {
+  const changeOrder: string = "5,2"
+  const characterSRSObject: FlashCardDeck = {
+    deckName: "deckName",
+    deckInfo: "deckInfo",
+    settings: {},
+    tags: {},
+    cards: generateOldDeckCards_forOrderChange()
+  }
+
+  const returnVal: FlashCardDeck = deleteOrEditCardOrder("",changeOrder, characterSRSObject)
+  const retcards = returnVal.cards
+  expect(retcards.length).toBe(5)
+  expect(retcards[0].cardNumber).toBe(1)
+  expect(retcards[1].cardNumber).toBe(2)
+  expect(retcards[2].cardNumber).toBe(3)
+  expect(retcards[3].cardNumber).toBe(4)
+  expect(retcards[4].cardNumber).toBe(5)
+
+  expect(retcards[0].cardName).toBe("card1")
+  expect(retcards[1].cardName).toBe("card5")
+  expect(retcards[2].cardName).toBe("card2")
+  expect(retcards[3].cardName).toBe("card3")
+  expect(retcards[4].cardName).toBe("card4")
+
+  expect(retcards[0].notableCards.toString()).toBe("3,4")//old "2,3" -> "3,4" => "3,4"
+  expect(retcards[1].notableCards.toString()).toBe("4,5")//old "3,4" -> "4,5" => "4,5"
+  expect(retcards[2].notableCards.toString()).toBe("1,4")//old "1,3" -> "1,4" => "1,4"
+  expect(retcards[3].notableCards.toString()).toBe("3,5")//old "2,4" -> "3,5" => "3,5"
+  expect(retcards[4].notableCards.toString()).toBe("2,4")//old "3,5" -> "4,2" => "2,4"
+})
+
+test('test delteOrChangeOrder, changeOrder - early to late', () => {
+  const changeOrder: string = "2,5"
+  const characterSRSObject: FlashCardDeck = {
+    deckName: "deckName",
+    deckInfo: "deckInfo",
+    settings: {},
+    tags: {},
+    cards: generateOldDeckCards_forOrderChange()
+  }
+
+  const returnVal: FlashCardDeck = deleteOrEditCardOrder("",changeOrder, characterSRSObject)
+  const retcards = returnVal.cards
+  expect(retcards.length).toBe(5)
+  expect(retcards[0].cardNumber).toBe(1)
+  expect(retcards[1].cardNumber).toBe(2)
+  expect(retcards[2].cardNumber).toBe(3)
+  expect(retcards[3].cardNumber).toBe(4)
+  expect(retcards[4].cardNumber).toBe(5)
+
+  expect(retcards[0].cardName).toBe("card1")
+  expect(retcards[1].cardName).toBe("card3")
+  expect(retcards[2].cardName).toBe("card4")
+  expect(retcards[3].cardName).toBe("card5")
+  expect(retcards[4].cardName).toBe("card2")
+
+  expect(retcards[0].notableCards.toString()).toBe("2,5")//old "2,3" -> "2,3" => 5,2
+  expect(retcards[1].notableCards.toString()).toBe("3,5")//old "1,3" -> "2,4" => 5,3
+  expect(retcards[2].notableCards.toString()).toBe("2,4")//old "2,4" -> "3,5" => 4,2
+  expect(retcards[3].notableCards.toString()).toBe("2,3")//old "3,5" -> "3,4" => 2,3
+  expect(retcards[4].notableCards.toString()).toBe("1,2")//old "3,4" -> "1,3" => 1,2
+})
+
 
 ///////////////////////  delteOrChangeOrder //////////////////////////
 
@@ -470,6 +534,75 @@ function generateOldDeckCards(): FlashCard[] {
     primaryInfo: "card5Prim",
     secondaryInfo: "card5sec",
     notableCards: [1,2,3,4],
+    dateOfLastReview: "0001-01-01",
+    repetitionValue: 0,
+    repetitionHistory: [],
+    tags: []
+  }
+  return [card1,card2,card3,card4,card5];
+}
+
+function generateOldDeckCards_forOrderChange(): FlashCard[] {
+  const card1: FlashCard = {
+    cardNumber: 1,
+    cardName: "card1",
+    frontSide: "card1Front",
+    backSide: "card1Back",
+    primaryInfo: "card1Prim",
+    secondaryInfo: "card1sec",
+    notableCards: [2,3],
+    dateOfLastReview: "0001-01-01",
+    repetitionValue: 0,
+    repetitionHistory: [],
+    tags: []
+  }
+  const card2: FlashCard = {
+    cardNumber: 2,
+    cardName: "card2",
+    frontSide: "card2Front",
+    backSide: "card2Back",
+    primaryInfo: "card2Prim",
+    secondaryInfo: "card2sec",
+    notableCards: [1,3],
+    dateOfLastReview: "0001-01-01",
+    repetitionValue: 0,
+    repetitionHistory: [],
+    tags: []
+  }
+  const card3: FlashCard = {
+    cardNumber: 3,
+    cardName: "card3",
+    frontSide: "card3Front",
+    backSide: "card3Back",
+    primaryInfo: "card3Prim",
+    secondaryInfo: "card3sec",
+    notableCards: [2,4],
+    dateOfLastReview: "0001-01-01",
+    repetitionValue: 0,
+    repetitionHistory: [],
+    tags: []
+  }
+  const card4: FlashCard = {
+    cardNumber: 4,
+    cardName: "card4",
+    frontSide: "card4Front",
+    backSide: "card4Back",
+    primaryInfo: "card4Prim",
+    secondaryInfo: "card4sec",
+    notableCards: [3,5],
+    dateOfLastReview: "0001-01-01",
+    repetitionValue: 0,
+    repetitionHistory: [],
+    tags: []
+  }
+  const card5: FlashCard = {
+    cardNumber: 5,
+    cardName: "card5",
+    frontSide: "card5Front",
+    backSide: "card5Back",
+    primaryInfo: "card5Prim",
+    secondaryInfo: "card5sec",
+    notableCards: [3,4],
     dateOfLastReview: "0001-01-01",
     repetitionValue: 0,
     repetitionHistory: [],
