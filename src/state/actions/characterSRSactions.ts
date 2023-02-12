@@ -67,4 +67,13 @@ interface EditSingleTag {
     }
 }
 
-export type CharacterSRSaction = CreateSRSobject | EditListItem | EditListItemsInBulk | AddNewTag | RemoveTag | EditSingleTag | AddNewCardToDeck | CreateDeck
+interface DeleteOrEditCardOrder {
+    type: CharacterSRSactionTypes.DELETEOREDITCARDORDER
+    payload: {
+        CharactersSRS: FlashCardDeck,
+        CharsToBeDeleted: string,
+        OrderToBeChanged: string
+    }
+}
+
+export type CharacterSRSaction = CreateSRSobject | EditListItem | EditListItemsInBulk | AddNewTag | RemoveTag | EditSingleTag | AddNewCardToDeck | CreateDeck | DeleteOrEditCardOrder

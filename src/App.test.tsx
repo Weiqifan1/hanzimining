@@ -4,6 +4,7 @@ import {addNewCardToDeck} from '../src/state/reducers/characterSRSreducer'
 import App from './App';
 import {FlashCard} from "./interfaces/flashcard";
 import {FlashCardDeck} from "./interfaces/flashcarddeck";
+import {deleteOrEditCardOrder} from '../src/state/reducers/characterSRSreducer'
 
 /*
 test('renders learn react link', () => {
@@ -12,6 +13,111 @@ test('renders learn react link', () => {
   expect(linkElement).toBeInTheDocument();
 });
 */
+
+
+///////////////////////  delteOrChangeOrder //////////////////////////
+
+test('test delteOrChangeOrder, delete - card range middle', () => {
+  const deleteCards: string = "2-4"
+  const characterSRSObject: FlashCardDeck = {
+    deckName: "deckName",
+    deckInfo: "deckInfo",
+    settings: {},
+    tags: {},
+    cards: generateOldDeckCards()
+  }
+
+  const returnVal: FlashCardDeck = deleteOrEditCardOrder(deleteCards, "", characterSRSObject)
+  const retcards = returnVal.cards
+  expect(retcards.length).toBe(2)
+  expect(retcards[0].cardNumber).toBe(1)
+  expect(retcards[1].cardNumber).toBe(2)
+
+  expect(retcards[0].cardName).toBe("card1")
+  expect(retcards[1].cardName).toBe("card5")
+
+  expect(retcards[0].notableCards.toString()).toBe("2")
+  expect(retcards[1].notableCards.toString()).toBe("1")
+})
+
+test('test delteOrChangeOrder, delete - card range in beginning', () => {
+  const deleteCards: string = "1-3"
+  const characterSRSObject: FlashCardDeck = {
+    deckName: "deckName",
+    deckInfo: "deckInfo",
+    settings: {},
+    tags: {},
+    cards: generateOldDeckCards()
+  }
+
+  const returnVal: FlashCardDeck = deleteOrEditCardOrder(deleteCards, "", characterSRSObject)
+  const retcards = returnVal.cards
+  expect(retcards.length).toBe(2)
+  expect(retcards[0].cardNumber).toBe(1)
+  expect(retcards[1].cardNumber).toBe(2)
+
+  expect(retcards[0].cardName).toBe("card4")
+  expect(retcards[1].cardName).toBe("card5")
+
+  expect(retcards[0].notableCards.toString()).toBe("2")
+  expect(retcards[1].notableCards.toString()).toBe("1")
+})
+
+test('test delteOrChangeOrder, delete - card rannge at the end', () => {
+  const deleteCards: string = "3-5"
+  const characterSRSObject: FlashCardDeck = {
+    deckName: "deckName",
+    deckInfo: "deckInfo",
+    settings: {},
+    tags: {},
+    cards: generateOldDeckCards()
+  }
+
+  const returnVal: FlashCardDeck = deleteOrEditCardOrder(deleteCards, "", characterSRSObject)
+  const retcards = returnVal.cards
+  expect(retcards.length).toBe(2)
+  expect(retcards[0].cardNumber).toBe(1)
+  expect(retcards[1].cardNumber).toBe(2)
+
+  expect(retcards[0].cardName).toBe("card1")
+  expect(retcards[1].cardName).toBe("card2")
+
+  expect(retcards[0].notableCards.toString()).toBe("2")
+  expect(retcards[1].notableCards.toString()).toBe("1")
+})
+
+test('test delteOrChangeOrder, delete - single card', () => {
+  const deleteCards: string = "3"
+  const characterSRSObject: FlashCardDeck = {
+    deckName: "deckName",
+    deckInfo: "deckInfo",
+    settings: {},
+    tags: {},
+    cards: generateOldDeckCards()
+  }
+
+  const returnVal: FlashCardDeck = deleteOrEditCardOrder(deleteCards, "", characterSRSObject)
+  const retcards = returnVal.cards
+  expect(retcards.length).toBe(4)
+  expect(retcards[0].cardNumber).toBe(1)
+  expect(retcards[1].cardNumber).toBe(2)
+  expect(retcards[2].cardNumber).toBe(3)
+  expect(retcards[3].cardNumber).toBe(4)
+
+  expect(retcards[0].cardName).toBe("card1")
+  expect(retcards[1].cardName).toBe("card2")
+  expect(retcards[2].cardName).toBe("card4")
+  expect(retcards[3].cardName).toBe("card5")
+
+  expect(retcards[0].notableCards.toString()).toBe("2,3,4")
+  expect(retcards[1].notableCards.toString()).toBe("1,3,4")
+  expect(retcards[2].notableCards.toString()).toBe("1,2,4")
+  expect(retcards[3].notableCards.toString()).toBe("1,2,3")
+})
+
+
+//////////////////////// addNewCardToDeck /////////////////
+
 
 test('test addNewCard, simpel', () => {
   const newCards: FlashCard[] = generateCard6()

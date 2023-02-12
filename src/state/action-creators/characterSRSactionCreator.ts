@@ -115,3 +115,16 @@ export const addNewCardsToDeck = (newCards: FlashCard[], characterSRSobject: Fla
         })
     }
 }
+
+export const deleteOrEditCardOrder = (toDelete: string, toChange: string, deck: FlashCardDeck) => {
+    return (dispatch: Dispatch<CharacterSRSaction>) => {
+        dispatch({
+            type: CharacterSRSactionTypes.DELETEOREDITCARDORDER,
+            payload: {
+                CharactersSRS: deck,
+                CharsToBeDeleted: toDelete,
+                OrderToBeChanged: toChange
+            }
+        })
+    }
+}

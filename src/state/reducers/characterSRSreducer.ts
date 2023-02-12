@@ -2,7 +2,6 @@ import {CharacterSRSaction} from "../actions/characterSRSactions";
 import {CharacterSRSactionTypes} from "../action-types/characterSRSactionTypes";
 import {FlashCard} from "../../interfaces/flashcard";
 import {FlashCardDeck} from "../../interfaces/flashcarddeck"
-import CreateDeck from "../../pages/CreateDeck";
 
 const initialState: FlashCardDeck = {
     deckName: '',
@@ -240,6 +239,141 @@ const privateCleanTagTitle = (input: string): string => {
     return ""
 }
 
+export function deleteOrEditCardOrder(CharsToBeDeleted: string, OrderToBeChanged: string, CharactersSRS: FlashCardDeck): FlashCardDeck {
+    const charsToBeDeletedRange: number[] = validateCharsToBeDeleted(CharsToBeDeleted)
+    const orderToBeChangedTuple: [number, number] = validateOrderToBeChanged(OrderToBeChanged)
+    if (OrderToBeChanged == "" && charsToBeDeletedRange.length > 0) {
+        const resDelete = deleteCards(charsToBeDeletedRange, CharactersSRS)
+        return resDelete
+    }else if (CharsToBeDeleted == "" && !isNaN(orderToBeChangedTuple[0]) && !isNaN(orderToBeChangedTuple[1])) {
+        const resEdit: FlashCardDeck = editCardOrder(orderToBeChangedTuple, CharactersSRS)
+        return resEdit
+    }else {
+        return CharactersSRS
+    }
+}
+
+function deleteCards(input: number[], CharactersSRS: FlashCardDeck): FlashCardDeck {
+    if (input == null || input.length == 0) {
+        return CharactersSRS
+    }
+    const allNums: number[] = CharactersSRS.cards.map(each => each.cardNumber)
+    if (allNums.length == 0) {
+        return CharactersSRS
+    }
+    const numsToSetToNums: number[] = Array.from(new Set(allNums)).sort()
+    const firstnum: number = numsToSetToNums[0]
+    const lastnum: number = numsToSetToNums[numsToSetToNums.length-1]
+    if (firstnum != 1 || lastnum != numsToSetToNums.length || numsToSetToNums.length != allNums.length) {
+        return CharactersSRS
+    }
+
+    const validInput: number[] = input.filter(each => allNums.indexOf(each) > -1)
+    if (validInput.length == 0) {
+        return CharactersSRS
+    }
+
+    const cardsWithoutDeleted: FlashCard[] = CharactersSRS.cards.filter(each => validInput.indexOf(each.cardNumber) == -1)
+
+    const newNums: number[] = cardsWithoutDeleted.map(each => each.cardNumber)
+    const newRange: number[] = Array.from(Array(newNums.length).keys()).map(each => each + 1)
+    const oldToNew: [number, number][] = newRange.map(each => [newNums[each-1],each])
+
+    var updatedCards: FlashCard[] = updateCardListAfterDeleted(oldToNew, cardsWithoutDeleted)
+    const updatedDeck: FlashCardDeck = {...CharactersSRS, cards: updatedCards}
+    return updatedDeck;
+}
+
+function updateCardListAfterDeleted(oldToNew: [number, number][], cardsWithoutDeleted: FlashCard[]) {
+    var newCardList: FlashCard[] = []
+    const oldCardNums: number[] = cardsWithoutDeleted.map(each => each.cardNumber)
+    for (const [key, value] of Object.entries(cardsWithoutDeleted)) {
+        const oldCard: FlashCard = value
+        const updatedOld_notableCards: FlashCard = {...oldCard, notableCards: replaceNotable(oldToNew, oldCard.notableCards)}
+        const newNumberOnCard: number[] = oldToNew.filter(each => each[0] == updatedOld_notableCards.cardNumber).map(e => e[1])
+        if (newNumberOnCard.length == 0) {
+            newCardList.push(updatedOld_notableCards)
+        }else {
+            const newNum: number = newNumberOnCard[0]
+            const updatedCard: FlashCard = {...updatedOld_notableCards, cardNumber: newNum}
+            newCardList.push(updatedCard)
+        }
+    }
+    return newCardList;
+}
+
+function replaceNotable(oldToNew: [number, number][], notableCards: number[]): number[] {
+    const newCards: number[] = oldToNew.filter(each => notableCards.indexOf(each[0]) > -1).map(e => e[1])
+    return newCards
+}
+
+function editCardOrder(input: [number, number], CharactersSRS: FlashCardDeck): FlashCardDeck {
+    //TODO: write tests for edit and implement
+    /*
+    const allNums: number[] = CharactersSRS.cards.map(each => each.cardNumber)
+    const largestNumberFromSRS: number = Math.max(...allNums)
+    if (isNaN(largestNumberFromSRS)) {
+        return CharactersSRS
+    }
+    if (input[0] < 1 || input[0] > largestNumberFromSRS || input[1] < 1 || input[1] > largestNumberFromSRS || input[0] == input[1]) {
+        return CharactersSRS
+    }
+    const num1: number = input[0]
+    const num2: number = input[1]
+*/
+    return CharactersSRS
+}
+
+function validateCharsToBeDeleted(CharsToBeDeleted: string): number[] {
+    if (CharsToBeDeleted == null || CharsToBeDeleted == "") {
+        return []
+    }
+    if (!isNaN(+CharsToBeDeleted)) {
+        return [+CharsToBeDeleted]
+    }
+    const splitBySpace: string[] = CharsToBeDeleted.split("-")
+    if (splitBySpace.length != 2 || isNaN(+splitBySpace[0]) || isNaN(+splitBySpace[1])) {
+        return []
+    }
+    const num1: number = +splitBySpace[0]
+    const num2: number = +splitBySpace[1]
+    if (!Number.isInteger(num1) || !Number.isInteger(num2)) {
+        return []
+    }
+    if (num1 > num2) {
+        return []
+    }else if (num1 == num2) {
+        return [num1]
+    }else {
+        const res: number[] = Array.from({length: ((num2+1) - num1)}, (v, k) => k + num1);
+        return res
+    }
+    return []
+}
+
+function validateOrderToBeChanged(OrderToBeChanged: string): [number, number] {
+    if (OrderToBeChanged == null || OrderToBeChanged == "") {
+        return [0, 0]
+    }
+    const splitBySpace: string[] = OrderToBeChanged.split(",")
+    if (splitBySpace.length != 2 || isNaN(+splitBySpace[0]) || isNaN(+splitBySpace[1])) {
+        return [0,0]
+    }
+    const num1: number = +splitBySpace[0]
+    const num2: number = +splitBySpace[1]
+    if (!Number.isInteger(num1) || !Number.isInteger(num2)) {
+        return [0,0]
+    }
+    if (num1 > num2) {
+        return [0,0]
+    }else if (num1 == num2) {
+        return [0,0]
+    }else {
+        return [num1, num2]
+    }
+    return [0,0]
+}
+
 const characterSRSreducer = (state: FlashCardDeck = initialState, action: CharacterSRSaction): FlashCardDeck => {
     switch (action.type) {
         case CharacterSRSactionTypes.CREATESRSOBJECT:
@@ -258,6 +392,8 @@ const characterSRSreducer = (state: FlashCardDeck = initialState, action: Charac
             return addNewCardToDeck(action.payload.Content, action.payload.CharactersSRS)
         case CharacterSRSactionTypes.CREATENEWDECK:
             return createDeck(action.payload.Content, action.payload.CharactersSRS)
+        case CharacterSRSactionTypes.DELETEOREDITCARDORDER:
+            return deleteOrEditCardOrder(action.payload.CharsToBeDeleted, action.payload.OrderToBeChanged, action.payload.CharactersSRS)
         default:
             return state
     }

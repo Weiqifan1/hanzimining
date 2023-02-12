@@ -18,6 +18,8 @@ const EditDeck: React.FunctionComponent<IPage> = props => {
     //edit deck
     const {createDeck} = bindActionCreators(characterSRSactionCreators, dispatch)
     const {addNewCardsToDeck} = bindActionCreators(characterSRSactionCreators, dispatch)
+    //deleteOrEditCardOrder
+    const {deleteOrEditCardOrder} = bindActionCreators(characterSRSactionCreators, dispatch)
     const characterSRSstate: FlashCardDeck = useSelector(
         (state: State) => state.characterSRS
     )
@@ -43,9 +45,9 @@ const EditDeck: React.FunctionComponent<IPage> = props => {
         const deleteInput: string = localdeleteCards
         const editInput: string = localeditCards
         if (deleteInput.trim().length == 0 && editInput.trim().length > 0) {
-            //send tje edit field to the action
+            deleteOrEditCardOrder("", editInput, characterSRSstate)
         }else if (editInput.trim().length == 0 && deleteInput.trim().length > 0) {
-            //send delete to the action
+            deleteOrEditCardOrder(deleteInput, "", characterSRSstate)
         }
     }
 
