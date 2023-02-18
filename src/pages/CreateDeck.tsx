@@ -13,11 +13,8 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
     const backendUrl: string = "https://chinesesentencemining-6z6zb.ondigitalocean.app/texttodeck"//"http://127.0.0.1:5000/texttodeck"
     const [selects, setSelects] = useState<string>("simplified")
     const [sortorder, setsortorder] = useState<string>("chronological")
-    const [delivery, setDelivery] = useState<string>("toFile")
+    const [textType, setTextType] = useState<string>("rawText")
     const [outputs, setOutputs] = useState<string>("")
-    /*write a state variable to handle post requests*/
-    const [posts, setPosts] = useState<string>("");
-    /*dummy for forcing update*/
 
     const download = (filename: string, text:string) => {
         console.log("save file code initiated")
@@ -33,10 +30,10 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
     }
 
     const handleDownload = () => {
-        const deckName: string = ((document.getElementById("deckName") as HTMLInputElement).value);
-        const deckInfo: string = ((document.getElementById("deckInfo") as HTMLInputElement).value);
-        const text: string = ((document.getElementById("text") as HTMLInputElement).value);
-        const output: string = ((document.getElementById("output") as HTMLInputElement).value);
+        const deckName: string = ((document.getElementById("deckName") as HTMLInputElement).value.trim());
+        const deckInfo: string = ((document.getElementById("deckInfo") as HTMLInputElement).value.trim());
+        const vocab: string = ((document.getElementById("vocab") as HTMLInputElement).value.trim());
+        const text: string = ((document.getElementById("text") as HTMLInputElement).value.trim());
         if (isEmptyString(deckName) || isEmptyString(deckInfo) || isEmptyString(text)) {
             setOutputs("there is an error in in the input. make sure all fields are set")
         }
@@ -44,15 +41,19 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
         console.log(deckInfo)
         console.log(selects)
         console.log(sortorder)
+        console.log(vocab)
+        console.log(textType)
         console.log(text)
-        console.log(output)
 
         const bodyDict = {
             "deckName": deckName,
             "deckInfo": deckInfo,
             "script": selects,
             "cardOrder": sortorder,
-            "text": text,
+            "vocab": vocab.split(/(\s+)/),
+            "textType": textType,
+            "sentencenames": [],
+            "text": text.trim(),
         }
         console.log("send post request")
 
@@ -68,8 +69,10 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
             .then(response => response.json())
             .then(data => {
                 const stringedResponse = JSON.stringify(data)
-                //document.getElementById("output").value = stringedResponse
-                //setOutputs(stringedResponse)
+                const resp = document.getElementById("output")
+                if (resp != null) {
+                    setOutputs(resp.toString())
+                }
                 download(deckName, stringedResponse)
             })
         console.log("request is sent")
@@ -105,30 +108,32 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
                     <option>frequency</option>
                 </select>
             </div>
-
+            <div>
+                <p>choose the type of text you want to input: </p>
+                <p>value: {textType}</p>
+                <select value={textType} onChange={e => setTextType(e.target.value)}>
+                    <option>rawText</option>
+                    <option>ordered2Line</option>
+                </select>
+            </div>
+            <div>
+                <label htmlFor="vocab">vocab</label>
+                <textarea id="vocab" required rows={2}> </textarea>
+            </div>
             <div>
                 <p>Insert the chinese text in the Text box. The data will be downloaded to a file</p>
                 <label htmlFor="text">Text</label>
                 <textarea id="text" required rows={10}> </textarea>
             </div>
+            <div>
+                <label htmlFor="output">output</label>
+                <textarea value={outputs} required rows={2}> </textarea>
+            </div>
+
         </form>
         </section>
             )
 };
-
-/*
-            <div>
-                <p>The data will be downloaded to a file</p>
-                <p>value: {delivery}</p>
-                <select value={delivery} onChange={e => setDelivery(e.target.value)}>
-                    <option>toFile</option>
-                </select>
-            </div>
-<p>
-                <label htmlFor="output">output</label>
-                <textarea id="output" required rows={10} value={outputs} onChange={e => setOutputs(e.target.value)}> </textarea>
-            </p>
-*/
 
 export default CreateDeck;
 
