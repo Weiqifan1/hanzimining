@@ -8,7 +8,6 @@ import {FileUploader} from "../components/FileUploader";
 import {DragAndDropState} from "../interfaces/dragAndDropState";
 import {FlashCard} from "../interfaces/flashcard";
 
-
 const CreateDeck: React.FunctionComponent<IPage> = props => {
     const backendUrl: string = "https://chinesesentencemining-6z6zb.ondigitalocean.app/texttodeck"//"http://127.0.0.1:5000/texttodeck"
     const [selects, setSelects] = useState<string>("simplified")
@@ -17,7 +16,6 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
     const [outputs, setOutputs] = useState<string>("")
 
     const download = (filename: string, text:string) => {
-        console.log("save file code initiated")
         const element = document.createElement('a');
         const file = new Blob([text], {
             type: "text/plain;charset=utf-8",
@@ -26,7 +24,6 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
         element.download = filename + ".txt";
         document.body.appendChild(element);
         element.click();
-        console.log("save file code executed")
     }
 
     const handleDownload = () => {
@@ -37,14 +34,6 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
         if (isEmptyString(deckName) || isEmptyString(deckInfo) || isEmptyString(text)) {
             setOutputs("there is an error in in the input. make sure all fields are set")
         }
-        console.log(deckName)
-        console.log(deckInfo)
-        console.log(selects)
-        console.log(sortorder)
-        console.log(vocab)
-        console.log(textType)
-        console.log(text)
-
         const bodyDict = {
             "deckName": deckName,
             "deckInfo": deckInfo,
@@ -55,8 +44,6 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
             "sentencenames": [],
             "text": text.trim(),
         }
-        console.log("send post request")
-
         const headers = new Headers();
         headers.append('Content-type', 'application/json');
         const options = {
@@ -69,13 +56,11 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
             .then(response => response.json())
             .then(data => {
                 const stringedResponse = JSON.stringify(data)
-                const resp = document.getElementById("output")
-                if (resp != null) {
-                    setOutputs(resp.toString())
+                if (stringedResponse != null) {
+                    setOutputs(stringedResponse.toString())
                 }
                 download(deckName, stringedResponse)
             })
-        console.log("request is sent")
     }
 
     const isEmptyString = (data: string): boolean => typeof data === "string" && data.trim().length == 0;
@@ -127,13 +112,12 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
             </div>
             <div>
                 <label htmlFor="output">output</label>
+                <p>value: {outputs}</p>
                 <textarea value={outputs} required rows={2}> </textarea>
             </div>
-
         </form>
         </section>
             )
 };
-
 export default CreateDeck;
 
