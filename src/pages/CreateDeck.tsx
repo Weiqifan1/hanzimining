@@ -48,7 +48,7 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
             "text": text.trim(),
         }
 
-        if (selectsLanguage == "generic" && sortorder == "orderedAllLines") {
+        if (selectsLanguage == "generic" && textType == "orderedAllLines") {
             setOutputs("cards generated entirely from text (deck name and info must still be set)")
             const resultOfCardGeneration: FlashCardDeck = generateAllLinesDeck(text.trim(), deckName, deckInfo)
             const result: string = JSON.stringify(resultOfCardGeneration)
