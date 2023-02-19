@@ -7,10 +7,13 @@ import { characterSRSactionCreators, State } from '../state/index';
 import {FileUploader} from "../components/FileUploader";
 import {DragAndDropState} from "../interfaces/dragAndDropState";
 import {FlashCard} from "../interfaces/flashcard";
+import {
+    generateAllLinesDeck,
+} from "../applogic/pageHelpers/createDeckHelper";
 
 const CreateDeck: React.FunctionComponent<IPage> = props => {
     const backendUrl: string = "https://chinesesentencemining-6z6zb.ondigitalocean.app/texttodeck"//"http://127.0.0.1:5000/texttodeck"
-    const [selects, setSelects] = useState<string>("simplified")
+    const [selectsLanguage, setSelectsLanguage] = useState<string>("simplified")
     const [sortorder, setsortorder] = useState<string>("chronological")
     const [textType, setTextType] = useState<string>("rawText")
     const [outputs, setOutputs] = useState<string>("")
@@ -37,30 +40,37 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
         const bodyDict = {
             "deckName": deckName,
             "deckInfo": deckInfo,
-            "script": selects,
+            "script": selectsLanguage,
             "cardOrder": sortorder,
             "vocab": vocab.split(/(\s+)/),
             "textType": textType,
             "sentencenames": [],
             "text": text.trim(),
         }
-        const headers = new Headers();
-        headers.append('Content-type', 'application/json');
-        const options = {
-            method: 'POST',
-            headers,
-            body: JSON.stringify(bodyDict)
-        }
 
-        fetch(backendUrl, options)
-            .then(response => response.json())
-            .then(data => {
-                const stringedResponse = JSON.stringify(data)
-                if (stringedResponse != null) {
-                    setOutputs(stringedResponse.toString())
-                }
-                download(deckName, stringedResponse)
-            })
+        if (selectsLanguage == "generic" && sortorder == "orderedAllLines") {
+            setOutputs("cards generated entirely from text (deck name and info must still be set)")
+            const resultOfCardGeneration: FlashCardDeck = generateAllLinesDeck(text.trim(), deckName, deckInfo)
+            const result: string = JSON.stringify(resultOfCardGeneration)
+            download(deckName, result)
+        }else {
+            const headers = new Headers();
+            headers.append('Content-type', 'application/json');
+            const options = {
+                method: 'POST',
+                headers,
+                body: JSON.stringify(bodyDict)
+            }
+            fetch(backendUrl, options)
+                .then(response => response.json())
+                .then(data => {
+                    const res: string = JSON.stringify(data)
+                    if (res != null) {
+                        setOutputs(res.toString())
+                    }
+                    download(deckName, res)
+                })
+        }
     }
 
     const isEmptyString = (data: string): boolean => typeof data === "string" && data.trim().length == 0;
@@ -79,10 +89,11 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
             </p>
             <div>
                 <p>Currently, only simplified characters are supported. Traditional characters will be supported at some point</p>
-                <p>value: {selects}</p>
-                <select value={selects} onChange={e => setSelects(e.target.value)}>
+                <p>value: {selectsLanguage}</p>
+                <select value={selectsLanguage} onChange={e => setSelectsLanguage(e.target.value)}>
                     <option>simplified</option>
                     <option>traditional</option>
+                    <option>generic</option>
                 </select>
             </div>
             <div>
@@ -99,6 +110,7 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
                 <select value={textType} onChange={e => setTextType(e.target.value)}>
                     <option>rawText</option>
                     <option>ordered2Line</option>
+                    <option>orderedAllLines</option>
                 </select>
             </div>
             <div>

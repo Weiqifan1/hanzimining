@@ -9,7 +9,6 @@ import {DragAndDropState} from "../interfaces/dragAndDropState";
 import {FlashCard} from "../interfaces/flashcard";
 
 const LoadAndSave: React.FunctionComponent<IPage> = props => {
-
     const dispatch = useDispatch();
     const {createSRSobject} = bindActionCreators(characterSRSactionCreators, dispatch)
     const characterSRSstate = useSelector(

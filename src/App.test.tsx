@@ -5,6 +5,7 @@ import App from './App';
 import {FlashCard} from "./interfaces/flashcard";
 import {FlashCardDeck} from "./interfaces/flashcarddeck";
 import {deleteOrEditCardOrder} from '../src/state/reducers/characterSRSreducer'
+import {generateAllLinesDeck} from "./applogic/pageHelpers/createDeckHelper";
 
 /*
 test('renders learn react link', () => {
@@ -13,6 +14,27 @@ test('renders learn react link', () => {
   expect(linkElement).toBeInTheDocument();
 });
 */
+
+const test_createDeckHelpers_basicMultilineText = (): string => {
+  return "cardname1\nfrontside1\nbackside1\n" +
+      "primaryinfo1\nsecondaryinfo1\nnotablecards1\ntags1\n" +
+      "\n" +
+      "{cardname2a\ncardname2b}\nfrontside2\n{backside2a\n  \n\nbackside2b\nbackside2c\n\n}\n" +
+      "primaryinfo2\n{secondaryinfo2}\n{notablecards2}\n{tags2a tags2b   tags2c tags2d  }\n" +
+      "\n\n\n\n\n" +
+      "{cardname3a\ncardname3b}\n{frontside3a\n   frontside3b  }\n\n" +
+      "primaryinfo3\n{secondaryinfo3}\n{notablecards3}\n{tags3a tags3b   tags3c tags3d  }\n" +
+      "\n" +
+      "cardname4\nfrontside4\nbackside4\n" +
+      "primaryinfo4\nsecondaryinfo4\nnotablecards4\ntags4\n"
+}
+
+test('test createDeckHelpers generateAllLinesDeck', () => {
+  const inputtext: string = test_createDeckHelpers_basicMultilineText()
+  const result: FlashCardDeck = generateAllLinesDeck(inputtext, "deckname...", "deckInfo...")
+
+  expect(5).toBe(5)
+})
 
 test('test delteOrChangeOrder, changeOrder - late to early', () => {
   const changeOrder: string = "5,2"
