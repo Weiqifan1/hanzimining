@@ -32,8 +32,57 @@ const test_createDeckHelpers_basicMultilineText = (): string => {
 test('test createDeckHelpers generateAllLinesDeck', () => {
   const inputtext: string = test_createDeckHelpers_basicMultilineText()
   const result: FlashCardDeck = generateAllLinesDeck(inputtext, "deckname...", "deckInfo...")
+  expect(result.cards.length).toBe(4)
+  expect(result.deckName).toBe("deckname...")
+  expect(result.deckInfo).toBe("deckInfo...")
+  expect(result.settings).toStrictEqual({})
+  expect(result.tags).toStrictEqual({
+    "tags1": "tags1",
+    "tags2a": "tags2a",
+    "tags2b": "tags2b",
+    "tags2c": "tags2c",
+    "tags2d": "tags2d",
+    "tags3a": "tags3a",
+    "tags3b": "tags3b",
+    "tags3c": "tags3c",
+    "tags3d": "tags3d",
+    "tags4": "tags4"
+  })
+  const card1: FlashCard = result.cards[0]
+  expect(card1.cardNumber).toBe(1)
+  expect(card1.cardName).toBe("cardname1")
+  expect(card1.frontSide).toBe("frontside1")
+  expect(card1.backSide).toBe("backside1")
+  expect(card1.primaryInfo).toBe("primaryinfo1")
+  expect(card1.secondaryInfo).toBe("secondaryinfo1")
+  expect(card1.tags).toStrictEqual(["tags1"])
 
-  expect(5).toBe(5)
+  const card2: FlashCard = result.cards[1]
+  expect(card2.cardNumber).toBe(2)
+  expect(card2.cardName).toBe("cardname2a\ncardname2b")
+  expect(card2.frontSide).toBe("frontside2")
+  expect(card2.backSide).toBe("backside2a\n  \n\nbackside2b\nbackside2c")
+  expect(card2.primaryInfo).toBe("primaryinfo2")
+  expect(card2.secondaryInfo).toBe("secondaryinfo2")
+  expect(card2.tags).toStrictEqual(["tags2a","tags2b","tags2c","tags2d"])
+
+  const card3: FlashCard = result.cards[2]
+  expect(card3.cardNumber).toBe(3)
+  expect(card3.cardName).toBe("cardname3a\ncardname3b")
+  expect(card3.frontSide).toBe("frontside3a\n   frontside3b")
+  expect(card3.backSide).toBe("")
+  expect(card3.primaryInfo).toBe("primaryinfo3")
+  expect(card3.secondaryInfo).toBe("secondaryinfo3")
+  expect(card3.tags).toStrictEqual(["tags3a","tags3b","tags3c","tags3d"])
+
+  const card4: FlashCard = result.cards[3]
+  expect(card4.cardNumber).toBe(4)
+  expect(card4.cardName).toBe("cardname4")
+  expect(card4.frontSide).toBe("frontside4")
+  expect(card4.backSide).toBe("backside4")
+  expect(card4.primaryInfo).toBe("primaryinfo4")
+  expect(card4.secondaryInfo).toBe("secondaryinfo4")
+  expect(card4.tags).toStrictEqual(["tags4"])
 })
 
 test('test delteOrChangeOrder, changeOrder - late to early', () => {
