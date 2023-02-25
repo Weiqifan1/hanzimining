@@ -6,6 +6,7 @@ import {FlashCard} from "./interfaces/flashcard";
 import {FlashCardDeck} from "./interfaces/flashcarddeck";
 import {deleteOrEditCardOrder} from '../src/state/reducers/characterSRSreducer'
 import {generateAllLinesDeck} from "./applogic/pageHelpers/createDeckHelper";
+import {mergeDecks} from "./applogic/pageHelpers/mergeDeckHelper";
 
 /*
 test('renders learn react link', () => {
@@ -15,12 +16,24 @@ test('renders learn react link', () => {
 });
 */
 
+const test_mergeDeck_flashcard = (): FlashCardDeck => {
+  const inputtext: string = test_createDeckHelpers_basicMultilineText()
+  const result: FlashCardDeck = generateAllLinesDeck(inputtext, "deckname...", "deckInfo...")
+  return result
+}
+
+const test_mergeDeck_flashcard_2 = (): FlashCardDeck => {
+  const inputtext: string = test_createDeckHelpers_basicMultilineText_2()
+  const result: FlashCardDeck = generateAllLinesDeck(inputtext, "deckname_2_...", "deckInfo_2_...")
+  return result
+}
+
 const test_createDeckHelpers_basicMultilineText = (): string => {
   return "cardname1\nfrontside1\nbackside1\n" +
-      "primaryinfo1\nsecondaryinfo1\nnotablecards1\ntags1\n" +
+      "primaryinfo1\nsecondaryinfo1\n2 3\ntags1\n" +
       "\n" +
       "{cardname2a\ncardname2b}\nfrontside2\n{backside2a\n  \n\nbackside2b\nbackside2c\n\n}\n" +
-      "primaryinfo2\n{secondaryinfo2}\n{notablecards2}\n{tags2a tags2b   tags2c tags2d  }\n" +
+      "primaryinfo2\n{secondaryinfo2}\n{1 3}\n{tags2a tags2b   tags2c tags2d  }\n" +
       "\n\n\n\n\n" +
       "{cardname3a\ncardname3b}\n{frontside3a\n   frontside3b  }\n\n" +
       "primaryinfo3\n{secondaryinfo3}\n{notablecards3}\n{tags3a tags3b   tags3c tags3d  }\n" +
@@ -28,6 +41,60 @@ const test_createDeckHelpers_basicMultilineText = (): string => {
       "cardname4\nfrontside4\nbackside4\n" +
       "primaryinfo4\nsecondaryinfo4\nnotablecards4\ntags4\n"
 }
+
+const test_createDeckHelpers_basicMultilineText_2 = (): string => {
+  return "cardname1\nfrontside1\nbackside1\n" +
+      "primaryinfo1\nsecondaryinfo1\n2 3\ntags1\n" +
+      "\n" +
+      "{cardname2a\ncardname2b}\nfrontside2\n{backside2a\n  \n\nbackside2b\nbackside2c\n\n}\n" +
+      "primaryinfo2\n{secondaryinfo2}\n{1 3}\n{tags2a tags2b   tags2c tags2d  }\n" +
+      "\n\n\n\n\n" +
+      "{cardname3a\ncardname3b}\n{frontside3a\n   frontside3b  }\n\n" +
+      "primaryinfo3\n{secondaryinfo3}\n{notablecards3}\n{tags3a tags3b   tags3c tags3d  }\n" +
+      "\n" +
+      "cardname4\nfrontside4\nbackside4\n" +
+      "primaryinfo4\nsecondaryinfo4\nnotablecards4\ntags4\n"
+}
+
+test('test mergeDeck', () => {
+  const olddeck: FlashCardDeck = test_mergeDeck_flashcard()
+  const newcarddatatoadd: FlashCardDeck = test_mergeDeck_flashcard_2()
+  const resultOfMerge: FlashCardDeck = mergeDecks(olddeck, newcarddatatoadd)
+  expect(resultOfMerge.deckName).toBe("deckname...")
+  expect(resultOfMerge.deckInfo).toBe("deckInfo...")
+
+  const card1: FlashCard = resultOfMerge.cards[0]
+  expect(card1.cardNumber).toBe(1)
+  expect(card1.cardName).toBe("cardname1")
+  expect(card1.frontSide).toBe("frontside1")
+  expect(card1.backSide).toBe("backside1")
+  expect(card1.primaryInfo).toBe("primaryinfo1")
+  expect(card1.secondaryInfo).toBe("secondaryinfo1")
+  expect(card1.tags).toStrictEqual(["tags1"])
+
+  const card5: FlashCard = resultOfMerge.cards[4]
+  expect(card5.cardNumber).toBe(5)
+  expect(card5.cardName).toBe("cardname1")
+  expect(card5.frontSide).toBe("frontside1")
+  expect(card5.backSide).toBe("backside1")
+  expect(card5.primaryInfo).toBe("primaryinfo1")
+  expect(card5.secondaryInfo).toBe("secondaryinfo1")
+  expect(card5.notableCards.toString()).toBe("6,7")
+  expect(card5.tags).toStrictEqual(["tags1"])
+
+  expect(resultOfMerge.tags).toStrictEqual({
+    "tags1": "tags1\ntags1",
+    "tags2a": "tags2a\ntags2a",
+    "tags2b": "tags2b\ntags2b",
+    "tags2c": "tags2c\ntags2c",
+    "tags2d": "tags2d\ntags2d",
+    "tags3a": "tags3a\ntags3a",
+    "tags3b": "tags3b\ntags3b",
+    "tags3c": "tags3c\ntags3c",
+    "tags3d": "tags3d\ntags3d",
+    "tags4": "tags4\ntags4"
+  })
+})
 
 test('test createDeckHelpers generateAllLinesDeck', () => {
   const inputtext: string = test_createDeckHelpers_basicMultilineText()

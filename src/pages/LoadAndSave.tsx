@@ -7,6 +7,11 @@ import { characterSRSactionCreators, State } from '../state/index';
 import {FileUploader} from "../components/FileUploader";
 import {DragAndDropState} from "../interfaces/dragAndDropState";
 import {FlashCard} from "../interfaces/flashcard";
+import {mergeDecks} from "../applogic/pageHelpers/mergeDeckHelper";
+
+function clearMergeInputField() {
+    (document.getElementById("deckToMerge") as HTMLInputElement).value = ""
+}
 
 const LoadAndSave: React.FunctionComponent<IPage> = props => {
     const dispatch = useDispatch();
@@ -18,7 +23,32 @@ const LoadAndSave: React.FunctionComponent<IPage> = props => {
         dragging: false,
         file: null
     })
-    
+
+    const mergeInputDeck = () => {
+        const deckToMerge: string = ((document.getElementById("deckToMerge") as HTMLInputElement).value.trim());
+        try{
+            let testLarge: FlashCardDeck = JSON.parse(deckToMerge);
+            const srsStateCards: number = characterSRSstate.cards.length
+            var sortedCards: number[] = []//characterSRSstate.cards.map(function(val){val.cardNumber}).sort()
+            for (let i = 0;i < srsStateCards;i++) {
+                sortedCards.push(characterSRSstate.cards[i].cardNumber)
+            }
+            sortedCards.sort()
+            if (sortedCards[sortedCards.length-1] == srsStateCards) {
+                const convertText: FlashCardDeck = mergeDecks(characterSRSstate, testLarge)
+                createSRSobject(convertText)
+                console.log("hello")
+
+            }else {
+                (document.getElementById("deckToMerge") as HTMLInputElement).value = "malformedOldDeck"
+            }
+        }
+        catch(e){
+            console.log("error occurred during JSON parsing :")
+            console.log(e)
+        }
+    }
+
     const processJsonInput = () => {
         const content: string = ((document.getElementById("inserthanzi") as HTMLInputElement).value);
         try {
@@ -28,8 +58,6 @@ const LoadAndSave: React.FunctionComponent<IPage> = props => {
             let allCards: FlashCard[] = characterSRSobj.cards
             let cardsWithHistory: FlashCard[] = allCards.filter(each => testIfListOfNum(each.repetitionHistory))
             let cardsNoHistory: FlashCard[] = allCards.filter(each => !testIfListOfNum(each.repetitionHistory))
-
-            //var newCard: FlashCard = {...eachCard, repetitionValue: newRepetitionNumber}
             let cardsWithCreatedHistory: FlashCard[] = cardsNoHistory.map(each =>
             {
                 var newCard: FlashCard = {...each, repetitionHistory: [1,1,1,1,1,1,1,1,1,1]}
@@ -37,9 +65,7 @@ const LoadAndSave: React.FunctionComponent<IPage> = props => {
             })
 
             let allNewHistory: FlashCard[] = cardsWithHistory.concat(cardsWithCreatedHistory)
-
             let newSRS: FlashCardDeck = {...characterSRSobj, cards: allNewHistory}
-
             createSRSobject(newSRS)
         }
         catch(e){
@@ -125,6 +151,13 @@ const LoadAndSave: React.FunctionComponent<IPage> = props => {
                style={{width: "370px"}}></input>
         <p>***</p>
         <FileUploader editParaList={handleDragAndDrop} paraList={uploadData}/>
+        <p>**************</p>
+        <p>
+            <label htmlFor="deckToMerge">deckToMerge</label>
+            <textarea id="deckToMerge" required rows={5}> </textarea>
+        </p>
+        <button type="button" onClick={() => mergeInputDeck()}>MergeWithCurrentDeck</button>
+        <button type="button" onClick={() => clearMergeInputField()}>ClearMergeField</button>
         <p>******** Heisig character example decks that can be download (keywords has to be added by the user) **********</p>
         <button type="button" onClick={() => getCharactersJson(
             "heisigKanjiV5-3030noKeys.json",
