@@ -38,12 +38,12 @@ const LoadAndSave: React.FunctionComponent<IPage> = props => {
                 const convertText: FlashCardDeck = mergeDecks(characterSRSstate, testLarge)
                 createSRSobject(convertText)
                 console.log("hello")
-
             }else {
                 (document.getElementById("deckToMerge") as HTMLInputElement).value = "malformedOldDeck"
             }
         }
         catch(e){
+            (document.getElementById("deckToMerge") as HTMLInputElement).value = "error occurred during JSON parsing"
             console.log("error occurred during JSON parsing :")
             console.log(e)
         }
@@ -63,7 +63,6 @@ const LoadAndSave: React.FunctionComponent<IPage> = props => {
                 var newCard: FlashCard = {...each, repetitionHistory: [1,1,1,1,1,1,1,1,1,1]}
                 return newCard
             })
-
             let allNewHistory: FlashCard[] = cardsWithHistory.concat(cardsWithCreatedHistory)
             let newSRS: FlashCardDeck = {...characterSRSobj, cards: allNewHistory}
             createSRSobject(newSRS)

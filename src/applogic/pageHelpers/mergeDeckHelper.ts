@@ -1,5 +1,6 @@
 import {FlashCardDeck} from "../../interfaces/flashcarddeck";
 import {FlashCard} from "../../interfaces/flashcard";
+import {mapkeys} from "../flashcardHelperFunctions/gettingFlashCards";
 
 
 function updateDeckNumbers(newDeck: FlashCardDeck, numberOfCardsInOldDeck: number) {
@@ -88,11 +89,4 @@ export function mergeDecks(oldDeck: FlashCardDeck, newDeck: FlashCardDeck): Flas
 
    const updatedWholeDeck: FlashCardDeck = {...oldDeck, cards: updatedCards, tags: updatedDeckTags}
    return updatedWholeDeck
-}
-
-function mapkeys <K>(m: Map<K, any>): K[]
-function mapkeys (m: { [key: string]: any }): string[]
-function mapkeys (m: any): any {
-   if (m instanceof Map) return Array.from(m.keys())
-   return Object.keys(m)
 }

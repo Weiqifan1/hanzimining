@@ -5,8 +5,9 @@ import App from './App';
 import {FlashCard} from "./interfaces/flashcard";
 import {FlashCardDeck} from "./interfaces/flashcarddeck";
 import {deleteOrEditCardOrder} from '../src/state/reducers/characterSRSreducer'
-import {generateAllLinesDeck} from "./applogic/pageHelpers/createDeckHelper";
+import {generateAllLinesDeck, replaceDeckNameAndInfo} from "./applogic/pageHelpers/createDeckHelper";
 import {mergeDecks} from "./applogic/pageHelpers/mergeDeckHelper";
+import {mapkeys} from "./applogic/flashcardHelperFunctions/gettingFlashCards";
 
 /*
 test('renders learn react link', () => {
@@ -18,7 +19,7 @@ test('renders learn react link', () => {
 
 const test_mergeDeck_flashcard = (): FlashCardDeck => {
   const inputtext: string = test_createDeckHelpers_basicMultilineText()
-  const result: FlashCardDeck = generateAllLinesDeck(inputtext, "deckname...", "deckInfo...")
+  const result: FlashCardDeck = generateAllLinesDeck(inputtext, "deckname_2_...", "deckInfo_2_...")
   return result
 }
 
@@ -30,7 +31,7 @@ const test_mergeDeck_flashcard_2 = (): FlashCardDeck => {
 
 const test_createDeckHelpers_basicMultilineText = (): string => {
   return "cardname1\nfrontside1\nbackside1\n" +
-      "primaryinfo1\nsecondaryinfo1\n2 3\ntags1\n" +
+      "primaryinfo1\nsecondaryinfo1\n2 3\ntags1 deckname_2_... deckInfo_2_...\n" +
       "\n" +
       "{cardname2a\ncardname2b}\nfrontside2\n{backside2a\n  \n\nbackside2b\nbackside2c\n\n}\n" +
       "primaryinfo2\n{secondaryinfo2}\n{1 3}\n{tags2a tags2b   tags2c tags2d  }\n" +
@@ -55,13 +56,13 @@ const test_createDeckHelpers_basicMultilineText_2 = (): string => {
       "cardname4\nfrontside4\nbackside4\n" +
       "primaryinfo4\nsecondaryinfo4\nnotablecards4\ntags4\n"
 }
-
-test('test mergeDeck', () => {
+test('test replaceDeckNameAndInfo', () => {
   const olddeck: FlashCardDeck = test_mergeDeck_flashcard()
-  const newcarddatatoadd: FlashCardDeck = test_mergeDeck_flashcard_2()
-  const resultOfMerge: FlashCardDeck = mergeDecks(olddeck, newcarddatatoadd)
-  expect(resultOfMerge.deckName).toBe("deckname...")
-  expect(resultOfMerge.deckInfo).toBe("deckInfo...")
+  const newname: string = "newname"
+  const newinfo: string = "newinfo"
+  const resultOfMerge: FlashCardDeck = replaceDeckNameAndInfo(olddeck, newname, newinfo)
+  expect(resultOfMerge.deckName).toBe("newname")
+  expect(resultOfMerge.deckInfo).toBe("newinfo")
 
   const card1: FlashCard = resultOfMerge.cards[0]
   expect(card1.cardNumber).toBe(1)
@@ -70,7 +71,51 @@ test('test mergeDeck', () => {
   expect(card1.backSide).toBe("backside1")
   expect(card1.primaryInfo).toBe("primaryinfo1")
   expect(card1.secondaryInfo).toBe("secondaryinfo1")
-  expect(card1.tags).toStrictEqual(["tags1"])
+  expect(card1.notableCards.toString()).toBe("2,3")
+  expect(card1.tags).toStrictEqual(["tags1", "newname", "deckInfo_2_..."])
+
+  const card4: FlashCard = resultOfMerge.cards[3]
+  expect(card4.cardNumber).toBe(4)
+  expect(card4.cardName).toBe("cardname4")
+  expect(card4.frontSide).toBe("frontside4")
+  expect(card4.backSide).toBe("backside4")
+  expect(card4.primaryInfo).toBe("primaryinfo4")
+  expect(card4.secondaryInfo).toBe("secondaryinfo4")
+  expect(card4.notableCards.toString()).toBe("")
+  expect(card4.tags).toStrictEqual(["tags4"])
+
+  expect(resultOfMerge.tags).toStrictEqual({
+    "tags1": "tags1",
+    "newname": "newinfo\ndeckname_2_...",
+    "deckInfo_2_...": "deckInfo_2_...",
+    "tags2a": "tags2a",
+    "tags2b": "tags2b",
+    "tags2c": "tags2c",
+    "tags2d": "tags2d",
+    "tags3a": "tags3a",
+    "tags3b": "tags3b",
+    "tags3c": "tags3c",
+    "tags3d": "tags3d",
+    "tags4": "tags4"
+  })
+})
+
+test('test mergeDeck', () => {
+  const olddeck: FlashCardDeck = test_mergeDeck_flashcard()
+  const newcarddatatoadd: FlashCardDeck = test_mergeDeck_flashcard_2()
+  const resultOfMerge: FlashCardDeck = mergeDecks(olddeck, newcarddatatoadd)
+  expect(resultOfMerge.deckName).toBe("deckname_2_...")
+  expect(resultOfMerge.deckInfo).toBe("deckInfo_2_...")
+
+  const card1: FlashCard = resultOfMerge.cards[0]
+  expect(card1.cardNumber).toBe(1)
+  expect(card1.cardName).toBe("cardname1")
+  expect(card1.frontSide).toBe("frontside1")
+  expect(card1.backSide).toBe("backside1")
+  expect(card1.primaryInfo).toBe("primaryinfo1")
+  expect(card1.secondaryInfo).toBe("secondaryinfo1")
+  expect(card1.notableCards.toString()).toBe("2,3")
+  expect(card1.tags).toStrictEqual(["tags1", "deckname_2_...", "deckInfo_2_..."])
 
   const card5: FlashCard = resultOfMerge.cards[4]
   expect(card5.cardNumber).toBe(5)
@@ -83,6 +128,8 @@ test('test mergeDeck', () => {
   expect(card5.tags).toStrictEqual(["tags1"])
 
   expect(resultOfMerge.tags).toStrictEqual({
+    "deckInfo_2_...": "deckInfo_2_...\n",
+    "deckname_2_...": "deckname_2_...\n",
     "tags1": "tags1\ntags1",
     "tags2a": "tags2a\ntags2a",
     "tags2b": "tags2b\ntags2b",
@@ -103,18 +150,20 @@ test('test createDeckHelpers generateAllLinesDeck', () => {
   expect(result.deckName).toBe("deckname...")
   expect(result.deckInfo).toBe("deckInfo...")
   expect(result.settings).toStrictEqual({})
-  expect(result.tags).toStrictEqual({
-    "tags1": "tags1",
-    "tags2a": "tags2a",
-    "tags2b": "tags2b",
-    "tags2c": "tags2c",
-    "tags2d": "tags2d",
-    "tags3a": "tags3a",
-    "tags3b": "tags3b",
-    "tags3c": "tags3c",
-    "tags3d": "tags3d",
-    "tags4": "tags4"
-  })
+  expect(mapkeys(result.tags).length).toBe(12)
+  expect(result.tags["tags1"]).toBe("tags1")
+  expect(result.tags["deckname_2_..."]).toBe("deckname_2_...")
+  expect(result.tags["deckInfo_2_..."]).toBe("deckInfo_2_...")
+  expect(result.tags["tags2a"]).toBe("tags2a")
+  expect(result.tags["tags2b"]).toBe("tags2b")
+  expect(result.tags["tags2c"]).toBe("tags2c")
+  expect(result.tags["tags2d"]).toBe("tags2d")
+  expect(result.tags["tags3a"]).toBe("tags3a")
+  expect(result.tags["tags3b"]).toBe("tags3b")
+  expect(result.tags["tags3c"]).toBe("tags3c")
+  expect(result.tags["tags3d"]).toBe("tags3d")
+  expect(result.tags["tags4"]).toBe("tags4")
+
   const card1: FlashCard = result.cards[0]
   expect(card1.cardNumber).toBe(1)
   expect(card1.cardName).toBe("cardname1")
@@ -122,7 +171,7 @@ test('test createDeckHelpers generateAllLinesDeck', () => {
   expect(card1.backSide).toBe("backside1")
   expect(card1.primaryInfo).toBe("primaryinfo1")
   expect(card1.secondaryInfo).toBe("secondaryinfo1")
-  expect(card1.tags).toStrictEqual(["tags1"])
+  expect(card1.tags).toStrictEqual(["tags1", "deckname_2_...", "deckInfo_2_..."])
 
   const card2: FlashCard = result.cards[1]
   expect(card2.cardNumber).toBe(2)

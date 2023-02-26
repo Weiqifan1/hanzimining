@@ -8,18 +8,20 @@ import { characterSRSactionCreators,
     State } from '../state/index';
 import {FlashCardDeck} from "../interfaces/flashcarddeck";
 import {FlashCard} from "../interfaces/flashcard";
-import tags from "./Tags";
+import {replaceDeckNameAndInfo,
+} from "../applogic/pageHelpers/createDeckHelper";
 
 const EditDeck: React.FunctionComponent<IPage> = props => {
     const addCharactersReference = useRef<HTMLInputElement | null>(null);
     useEffect(()=>{addCharactersReference.current?.focus();},[])
-
     const dispatch = useDispatch();
     //edit deck
     const {createDeck} = bindActionCreators(characterSRSactionCreators, dispatch)
     const {addNewCardsToDeck} = bindActionCreators(characterSRSactionCreators, dispatch)
     //deleteOrEditCardOrder
     const {deleteOrEditCardOrder} = bindActionCreators(characterSRSactionCreators, dispatch)
+    //create and read SRS
+    const {createSRSobject} = bindActionCreators(characterSRSactionCreators, dispatch)
     const characterSRSstate: FlashCardDeck = useSelector(
         (state: State) => state.characterSRS
     )
@@ -60,6 +62,13 @@ const EditDeck: React.FunctionComponent<IPage> = props => {
             cards: []
         }
         createDeck([], newdeck)
+    }
+
+    function changeDeckNameAndInfo() {
+        const deck: FlashCardDeck = characterSRSstate
+        const card: FlashCard[] = deck.cards
+        const updatedDeck: FlashCardDeck = replaceDeckNameAndInfo(characterSRSstate, localdeckName, localdeckInfo)
+        createSRSobject(updatedDeck)
     }
 
     function addFormInputToDeck() {
@@ -134,6 +143,9 @@ const EditDeck: React.FunctionComponent<IPage> = props => {
             <button type="button" onClick={
                 () => createDeckGetData() }>
                 {"create deck"}</button>
+            <button type="button" onClick={
+                () => changeDeckNameAndInfo() }>
+                {"change deck name and info"}</button>
         </section>
     }
 

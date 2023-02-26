@@ -1,5 +1,6 @@
 import {FlashCardDeck} from "../../interfaces/flashcarddeck";
 import {FlashCard} from "../../interfaces/flashcard";
+import {mapkeys} from "../flashcardHelperFunctions/gettingFlashCards";
 
 function doGenerateCards(remainingRawText: string): string[][] {
     const maxUserSetFields = 7 //the user might set any of 8 fields
@@ -108,6 +109,53 @@ function generateCards(rawText: string): FlashCard[] {
     const result: string[][] = doGenerateCards(rawText)
     const cardList: FlashCard[] = result.map(each => arrayToCard(each, result.length))
     return cardList
+}
+
+function updateCardTags(allcards: FlashCard[], oldname: string, newname: string): FlashCard[] {
+    var updatedCards: FlashCard[] = []
+    for (let i = 0; i < allcards.length; i++) {
+        const currentcard: FlashCard = allcards[i]
+        const curretTagList: string[] = currentcard.tags
+        var updatedTags: string[] = []
+        for (let k = 0; k < curretTagList.length; k++) {
+            const currentTag: string = curretTagList[k]
+            if (currentTag == oldname) {
+                updatedTags.push(newname.trim())
+            } else {
+                updatedTags.push(currentTag)
+            }
+        }
+        const updatedCard: FlashCard = {...currentcard, tags: updatedTags}
+        updatedCards.push(updatedCard)
+    }
+    return updatedCards
+}
+
+function updateTagList(allTags: Record<string, string>, newname: string, newinfo: string, oldname: string, oldinfo: string): Record<string, string> {
+    var newtags: Record<string, string> = {}
+    const oldTagNames: string[] = mapkeys(allTags)
+    for (let i = 0; i < oldTagNames.length; i++) {
+        const oldTagName: string = oldTagNames[i]
+        const oldTagValue: string = allTags[oldTagName]
+        if (oldTagName == oldname) {
+            const updatedvalue: string = newinfo + "\n" + oldTagValue
+            newtags[newname] = updatedvalue
+        }else {
+            newtags[oldTagName] = oldTagValue
+        }
+    }
+    return newtags;
+}
+
+export function replaceDeckNameAndInfo(inputDeck: FlashCardDeck, newname: string, newinfo: string): FlashCardDeck {
+    const allcards: FlashCard[] = inputDeck.cards
+    const allTags: Record<string, string> = inputDeck.tags
+    const oldname: string = inputDeck.deckName
+    const oldinfo: string = inputDeck.deckInfo
+    const updatedCards: FlashCard[] = updateCardTags(allcards, oldname, newname);
+    const updatedTags: Record<string, string> = updateTagList(allTags, newname, newinfo, oldname, oldinfo)
+    const updatedDeck: FlashCardDeck = {...inputDeck, cards: updatedCards, tags: updatedTags, deckName: newname, deckInfo: newinfo}
+    return updatedDeck
 }
 
 export function generateAllLinesDeck(rawText: string, deckName: string, deckInfo: string): FlashCardDeck {

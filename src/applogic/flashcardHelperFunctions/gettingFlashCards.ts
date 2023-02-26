@@ -37,25 +37,32 @@ export const cardExistInDeck = (cardNumber: number, currentState: FlashCardDeck)
 }
 
 export const getFlashCard = (cardNumber: number, currentState: FlashCardDeck): FlashCard => {
-   const cardCandidates: FlashCard[]  = currentState.cards.filter(x=>{
-       return (x.cardNumber === cardNumber)
-   })
-   if (cardCandidates.length > 0) {
-       return cardCandidates[0]
-   } else {
-       const newCard: FlashCard = {
-           cardNumber: 0,
-           cardName: "",
-           frontSide: "",
-           backSide: "",
-           primaryInfo: "",
-           secondaryInfo: "",
-           notableCards: [],
-           dateOfLastReview: "",
-           repetitionValue: 0,
-           repetitionHistory: [],
-           tags: []
-       }
-       return newCard
-   }
+    const cardCandidates: FlashCard[] = currentState.cards.filter(x => {
+        return (x.cardNumber === cardNumber)
+    })
+    if (cardCandidates.length > 0) {
+        return cardCandidates[0]
+    } else {
+        const newCard: FlashCard = {
+            cardNumber: 0,
+            cardName: "",
+            frontSide: "",
+            backSide: "",
+            primaryInfo: "",
+            secondaryInfo: "",
+            notableCards: [],
+            dateOfLastReview: "",
+            repetitionValue: 0,
+            repetitionHistory: [],
+            tags: []
+        }
+        return newCard
+    }
+}
+
+export function mapkeys<K>(m: Map<K, any>): K[]
+export function mapkeys(m: { [key: string]: any }): string[]
+export function mapkeys (m: any): any {
+    if (m instanceof Map) return Array.from(m.keys())
+    return Object.keys(m)
 }
