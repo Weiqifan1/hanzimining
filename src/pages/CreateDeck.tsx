@@ -11,8 +11,13 @@ import {
     generateAllLinesDeck,
 } from "../applogic/pageHelpers/createDeckHelper";
 
+//skriv kode til at forbinde til endpoint /texttovocab, saa jeg kan downloade vocab fra raa text
+
 const CreateDeck: React.FunctionComponent<IPage> = props => {
-    const backendUrl: string = "https://chinesesentencemining-6z6zb.ondigitalocean.app/texttodeck"//"http://127.0.0.1:5000/texttodeck"
+    const downloadDeckUrl: string = "https://chinesesentencemining-6z6zb.ondigitalocean.app/texttodeck"
+    //const downloadDeckUrl: string = "http://127.0.0.1:5000/texttodeck"
+    const downloadVocabUrl: string = "https://chinesesentencemining-6z6zb.ondigitalocean.app/texttovocab"
+    //const downloadVocabUrl: string = "http://127.0.0.1:5000/texttovocab"
     const [selectsLanguage, setSelectsLanguage] = useState<string>("simplified")
     const [sortorder, setsortorder] = useState<string>("chronological")
     const [textType, setTextType] = useState<string>("rawText")
@@ -20,13 +25,57 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
 
     const download = (filename: string, text:string) => {
         const element = document.createElement('a');
-        const file = new Blob([text], {
-            type: "text/plain;charset=utf-8",
+        const dict = JSON.parse(text)
+        const res = dict["output"]
+        const file = new Blob([res], {
+            type: "text/plain;charset=utf-8"
         });
         element.href = URL.createObjectURL(file);
         element.download = filename + ".txt";
         document.body.appendChild(element);
         element.click();
+    }
+
+    const handleVocabWithInfo = () => {
+        handleVocab(downloadVocabUrl)
+    }
+
+    const handleVocab = (endpint: string) => {
+        const deckName: string = ((document.getElementById("deckName") as HTMLInputElement).value.trim());
+        const deckInfo: string = ((document.getElementById("deckInfo") as HTMLInputElement).value.trim());
+        const vocab: string = ((document.getElementById("vocab") as HTMLInputElement).value.trim());
+        const text: string = ((document.getElementById("text") as HTMLInputElement).value.trim());
+        if (isEmptyString(deckName) || isEmptyString(deckInfo) || isEmptyString(text)) {
+            setOutputs("there is an error in in the input. make sure all fields are set")
+        }
+        const bodyDict = {
+            "deckName": deckName,
+            "deckInfo": deckInfo,
+            "script": selectsLanguage,
+            "cardOrder": sortorder,
+            "vocab": vocab.split(/(\s+)/),
+            "textType": textType,
+            "sentencenames": [],
+            "text": text.trim(),
+        }
+        const headers = new Headers();
+        headers.append('Content-type', 'application/json');
+        const options = {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(bodyDict)
+        }
+        fetch(endpint, options)
+            .then(response => response.json())
+            .then(data => {
+                const res: string = JSON.stringify(data)
+                if (res != null) {
+                    setOutputs("no errors")
+                    //setOutputs(res.toString())
+                }
+                download(deckName + "_vocab", res)
+            })
+
     }
 
     const handleDownload = () => {
@@ -61,12 +110,13 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
                 headers,
                 body: JSON.stringify(bodyDict)
             }
-            fetch(backendUrl, options)
+            fetch(downloadDeckUrl, options)
                 .then(response => response.json())
                 .then(data => {
                     const res: string = JSON.stringify(data)
                     if (res != null) {
-                        setOutputs(res.toString())
+                        setOutputs("no errors")
+                        //setOutputs(res.toString())
                     }
                     download(deckName, res)
                 })
@@ -74,10 +124,12 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
     }
 
     const isEmptyString = (data: string): boolean => typeof data === "string" && data.trim().length == 0;
-
+//handleVocab
     return (
+
         <section>
             <button type="button" onClick={() => handleDownload()}>text to deck</button>
+            <button type="button" onClick={() => handleVocabWithInfo()}>text to vocab with info</button>
         <form>
             <p>
                 <label htmlFor="deckName">deckName</label>

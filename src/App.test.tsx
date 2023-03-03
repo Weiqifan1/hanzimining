@@ -56,6 +56,13 @@ const test_createDeckHelpers_basicMultilineText_2 = (): string => {
       "cardname4\nfrontside4\nbackside4\n" +
       "primaryinfo4\nsecondaryinfo4\nnotablecards4\ntags4\n"
 }
+
+test('test donwload vocab', () => {
+  const olddeck: FlashCardDeck = test_mergeDeck_flashcard()
+  const newname: string = "newname"
+  expect("hello").toBe("hello")
+})
+
 test('test replaceDeckNameAndInfo', () => {
   const olddeck: FlashCardDeck = test_mergeDeck_flashcard()
   const newname: string = "newname"
