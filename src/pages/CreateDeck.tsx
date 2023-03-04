@@ -26,10 +26,15 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
     const [textType, setTextType] = useState<string>("rawText")
     const [outputs, setOutputs] = useState<string>("")
 
-    const download = (filename: string, text:string) => {
+    const download = (filename: string, text:string, isVocab: boolean) => {
         const element = document.createElement('a');
         const dict = JSON.parse(text)
-        const res = dict["output"]
+        var res = ""
+        if (isVocab) {
+            res = dict["output"]
+        }else {
+            res = text
+        }
         const file = new Blob([res], {
             type: "text/plain;charset=utf-8"
         });
@@ -38,6 +43,17 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
         document.body.appendChild(element);
         element.click();
     }
+
+    //         console.log("save file code initiated")
+    //         const element = document.createElement('a');
+    //         const file = new Blob([text], {
+    //             type: "text/plain;charset=utf-8",
+    //         });
+    //         element.href = URL.createObjectURL(file);
+    //         element.download = filename + ".txt";
+    //         document.body.appendChild(element);
+    //         element.click();
+    //         console.log("save file code executed")
 
     const handleVocabWithInfo = () => {
         handleVocab(downloadVocabInfoUrl)
@@ -81,7 +97,7 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
                     setOutputs("no errors")
                     //setOutputs(res.toString())
                 }
-                download(deckName + "_vocab", res)
+                download(deckName + "_vocab", res, true)
             })
 
     }
@@ -109,7 +125,7 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
             setOutputs("cards generated entirely from text (deck name and info must still be set)")
             const resultOfCardGeneration: FlashCardDeck = generateAllLinesDeck(text.trim(), deckName, deckInfo)
             const result: string = JSON.stringify(resultOfCardGeneration)
-            download(deckName, result)
+            download(deckName, result, false)
         }else {
             const headers = new Headers();
             headers.append('Content-type', 'application/json');
@@ -126,7 +142,7 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
                         setOutputs("no errors")
                         //setOutputs(res.toString())
                     }
-                    download(deckName, res)
+                    download(deckName, res, false)
                 })
         }
     }
