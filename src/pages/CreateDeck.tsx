@@ -16,8 +16,11 @@ import {
 const CreateDeck: React.FunctionComponent<IPage> = props => {
     const downloadDeckUrl: string = "https://chinesesentencemining-6z6zb.ondigitalocean.app/texttodeck"
     //const downloadDeckUrl: string = "http://127.0.0.1:5000/texttodeck"
-    const downloadVocabUrl: string = "https://chinesesentencemining-6z6zb.ondigitalocean.app/texttovocab"
-    //const downloadVocabUrl: string = "http://127.0.0.1:5000/texttovocab"
+    const downloadVocabInfoUrl: string = "https://chinesesentencemining-6z6zb.ondigitalocean.app/texttovocabinfo"
+    //const downloadVocabInfoUrl: string = "http://127.0.0.1:5000/texttovocabinfo"
+    const downloadVocabRawUrl: string = "https://chinesesentencemining-6z6zb.ondigitalocean.app/texttovocabraw"
+    //const downloadVocabRawUrl: string = "http://127.0.0.1:5000/texttovocabraw"
+
     const [selectsLanguage, setSelectsLanguage] = useState<string>("simplified")
     const [sortorder, setsortorder] = useState<string>("chronological")
     const [textType, setTextType] = useState<string>("rawText")
@@ -37,7 +40,12 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
     }
 
     const handleVocabWithInfo = () => {
-        handleVocab(downloadVocabUrl)
+        handleVocab(downloadVocabInfoUrl)
+    }
+
+    //downloadVocabRawUrl
+    const handleVocabRaw = () => {
+        handleVocab(downloadVocabRawUrl)
     }
 
     const handleVocab = (endpint: string) => {
@@ -124,12 +132,12 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
     }
 
     const isEmptyString = (data: string): boolean => typeof data === "string" && data.trim().length == 0;
-//handleVocab
     return (
 
         <section>
             <button type="button" onClick={() => handleDownload()}>text to deck</button>
             <button type="button" onClick={() => handleVocabWithInfo()}>text to vocab with info</button>
+            <button type="button" onClick={() => handleVocabRaw()}>text to vocab raw</button>
         <form>
             <p>
                 <label htmlFor="deckName">deckName</label>
