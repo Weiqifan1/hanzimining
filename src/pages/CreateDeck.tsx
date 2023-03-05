@@ -204,6 +204,13 @@ const CreateDeck: React.FunctionComponent<IPage> = props => {
                 <textarea value={outputs} required rows={2}> </textarea>
             </div>
         </form>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
         </section>
             )
 };
