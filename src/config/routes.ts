@@ -10,7 +10,7 @@ import Home from "../pages/Home";
 
 const routes: IRoute[] = [
     {
-        path: '/',
+        path: '/hanzimining',
         name: 'Home',
         component: Home,
         exact: true
