@@ -6,8 +6,15 @@ import SearchFlashcards from "../pages/SearchFlashcards";
 import Statistics from "../pages/Statistics";
 import IRoute from "../interfaces/route";
 import CreateDeck from "../pages/CreateDeck";
+import Home from "../pages/Home";
 
 const routes: IRoute[] = [
+    {
+        path: '/',
+        name: 'Home',
+        component: Home,
+        exact: true
+    },
     {
         path: '/loadandsave',
         name: 'LoadAndSave',
