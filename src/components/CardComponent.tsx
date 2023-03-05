@@ -1,5 +1,5 @@
 import classes from "./CardComponent.module.css"
-import {PropsWithChildren, useState} from "react";
+import {PropsWithChildren, ReactElement, useState} from "react";
 import React from "react";
 import {FlashCard} from "../interfaces/flashcard";
 import { useDispatch, useSelector } from "react-redux";
@@ -81,10 +81,22 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: C
         return display
     }
 
+    const backSideDisplay = (): boolean => {
+        const readAloud: boolean = props.cardDisplay.readAloud
+
+        const res: boolean = props.show
+        return res
+    }
+    const renderBackSide = (): ReactElement => {
+        return <section>
+            { backSideDisplay() ? <li className={classes.characterListElement}>{props.content.backSide}</li> : <li className={classes.characterListElement}></li>}
+        </section>
+    }
+
     const displayOriginalCharacter = (): JSX.Element => {
         const display: JSX.Element = <section>
             <ul>
-                { props.show ? <li className={classes.characterListElement}>{props.content.backSide}</li> : <li className={classes.characterListElement}></li>}
+                {renderBackSide}
                 {<section><br/></section>}
                 { props.show ? <li onInput={(e) =>
                     tempCardName = FlashCardStateManipulation.editStringvalue(e, props.content.cardName)}
