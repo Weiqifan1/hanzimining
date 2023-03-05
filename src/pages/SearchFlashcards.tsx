@@ -2,10 +2,11 @@
 import React, {useState} from "react";
 import IPage from "../interfaces/page";
 import {useDispatch, useSelector} from "react-redux";
-import {showPrimaryFlashcardInfoActionCreator, showSecondaryFlashcardInfoActionCreator, State} from '../state/index';
+import {cardDisplayActionCreator, State} from '../state/index';
 import CardListComponent from "../components/CardListComponent"
 import {FlashCard} from "../interfaces/flashcard";
 import {bindActionCreators} from "redux";
+import CardDisplay from "../interfaces/cardDisplay";
 
 const SearchFlashcards: React.FunctionComponent<IPage> = props => {
 
@@ -31,27 +32,22 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
     const [backSideSubstring, setBackSideSubstring] = useState("")
     const handleChangeBackSideSubstringFilter = (e: React.FormEvent<HTMLInputElement>) => {setBackSideSubstring(e.currentTarget.value)}
 
-
-    //show primary and secondary information
-
     const dispatch = useDispatch();
-    const{setShowPrimaryFlashCardInfo} = bindActionCreators(showPrimaryFlashcardInfoActionCreator, dispatch)
-    const{setShowSecondaryFlashCardInfo} = bindActionCreators(showSecondaryFlashcardInfoActionCreator, dispatch)
 
-    const showPrimaryFlashCardInfoState: boolean = useSelector(
-        (state: State) => state.showPrimaryFlashCardInfo
+    const {cardDisplayChangeState} = bindActionCreators(cardDisplayActionCreator, dispatch)
+    const showCardDisplay: CardDisplay = useSelector(
+        (state: State) => state.cardDisplay
     )
-    const showSecondaryFlashCardInfoState: boolean = useSelector(
-        (state: State) => state.showSecondaryFlashCardInfo
-    )
-    var showPrimaryInformationLocalState: boolean = showPrimaryFlashCardInfoState
-    var showSecondaryInformationLocalState: boolean = showSecondaryFlashCardInfoState
+    var cardDisplayLocalState: CardDisplay = showCardDisplay
     const changeShowPrimaryInformationValue = () => {
-        setShowPrimaryFlashCardInfo(!showPrimaryInformationLocalState)
+        const currentValue: boolean = cardDisplayLocalState.showPrimaryCardInfo
+        const updatedValue: CardDisplay = {...cardDisplayLocalState, showPrimaryCardInfo: !currentValue}
+        cardDisplayChangeState(updatedValue, cardDisplayLocalState)
     }
-
     const changeShowSecondaryInformationValue = () => {
-        setShowSecondaryFlashCardInfo(!showSecondaryInformationLocalState)
+        const currentValue: boolean = cardDisplayLocalState.showSecondaryCardInfo
+        const updatedValue: CardDisplay = {...cardDisplayLocalState, showSecondaryCardInfo: !currentValue}
+        cardDisplayChangeState(updatedValue, cardDisplayLocalState)
     }
 
     function sortbyIndexNumberAscendingInclUnknown() {
@@ -194,8 +190,8 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
         <button type="button" onClick={toggleSize}>toggle size {maxCardsToDisplay}</button>
         <button type="button" onClick={clearData}>clear data</button>
         <button type="button" onClick={sortbyIndexNumberAscendingInclUnknown}>sortAllCardsByCharNumberAscending</button>
-        <button type="button" onClick={changeShowPrimaryInformationValue}>showPrimary:{showPrimaryInformationLocalState.toString()}</button>
-        <button type="button" onClick={changeShowSecondaryInformationValue}>showSecondary:{showSecondaryInformationLocalState.toString()}</button>
+        <button type="button" onClick={changeShowPrimaryInformationValue}>showPrimary:{cardDisplayLocalState.showPrimaryCardInfo.toString()}</button>
+        <button type="button" onClick={changeShowSecondaryInformationValue}>showSecondary:{cardDisplayLocalState.showSecondaryCardInfo.toString()}</button>
         <p></p>
         <button type="button" onClick={sortbyIndexNumberAscending}>sortKnownCardsByCharNumberAscending</button>
         <button type="button" onClick={sortByReviewNumberAscending}>sortKnownCardsByReviewValueAscending</button>
@@ -214,7 +210,7 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
         <input type="text" id="backside" name="backside" value={backSideSubstring} onChange={handleChangeBackSideSubstringFilter} />
         <label htmlFor="tag">tag:</label>
         <input type="text" id="tag" name="tag" value={tagSubstringFilter} onChange={handleChangeTagSubstringFilter} />
-        <CardListComponent data={displayChars} showPrimary={showPrimaryInformationLocalState} showSecondary={showSecondaryInformationLocalState}/>
+        <CardListComponent data={displayChars} cardDisplay={cardDisplayLocalState}/>
     </section>
 };
 

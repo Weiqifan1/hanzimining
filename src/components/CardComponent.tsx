@@ -12,10 +12,10 @@ import {
     getFlashCard,
     getTagFromDeck
 } from "../applogic/flashcardHelperFunctions/gettingFlashCards";
+import CardDisplay from "../interfaces/cardDisplay";
 
-
-const CardComponent: React.FC<{content: FlashCard, show: boolean, showPrimary: boolean, showSecondary: boolean}> =
-    (props: PropsWithChildren<{content: FlashCard, show: boolean, showPrimary: boolean, showSecondary: boolean}>) => {
+const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: CardDisplay}> =
+    (props: PropsWithChildren<{content: FlashCard, show: boolean, cardDisplay: CardDisplay}>) => {
 
     const dispatch = useDispatch();
     const {editListItem} = bindActionCreators(characterSRSactionCreators, dispatch)
@@ -113,12 +113,12 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, showPrimary: b
                         Object.keys(characterSRSstate.tags))}
                     contentEditable="true">
                     {FlashCardStateManipulation.displayStringList(content.tags)}</li>  : <li></li>}
-                { props.show&&props.showPrimary ? <li onInput={(e) =>
+                { props.show&&props.cardDisplay.showPrimaryCardInfo ? <li onInput={(e) =>
                     tempPrimaryInfo = FlashCardStateManipulation.editStringvalue(e, props.content.primaryInfo)}
                                    contentEditable="true">
                     {convertStringToListOfStrings(content.primaryInfo, "primary info:")}</li> : <li></li>}
 
-                { props.show&&props.showSecondary ? <li onInput={(e) =>
+                { props.show&&props.cardDisplay.showSecondaryCardInfo ? <li onInput={(e) =>
                     tempSecondaryInfo = FlashCardStateManipulation.editStringvalue(e, props.content.secondaryInfo)}
                                                         contentEditable="true">
                     {convertStringToListOfStrings(content.secondaryInfo, "secondary info:")}</li> : <li></li>}
@@ -139,7 +139,7 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, showPrimary: b
                 <li>{input.frontSide}</li>
                 <li>{FlashCardStateManipulation.displayNumberList(input.notableCards)}</li>
                <li>{input.primaryInfo}</li>
-                {props.showSecondary ? <li>{input.secondaryInfo}</li> : <li></li>}
+                {props.cardDisplay.showSecondaryCardInfo ? <li>{input.secondaryInfo}</li> : <li></li>}
             </ul>
         </section>
         return display

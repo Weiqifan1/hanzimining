@@ -5,14 +5,14 @@ import {useDispatch, useSelector} from "react-redux";
 import {bindActionCreators} from "redux";
 import { characterSRSactionCreators,
     previousCharactersActionCreators,
-    showPrimaryFlashcardInfoActionCreator,
-    showSecondaryFlashcardInfoActionCreator,
+    cardDisplayActionCreator,
     State } from '../state/index';
 import {FlashCard} from "../interfaces/flashcard";
 import {FlashCardDeck} from "../interfaces/flashcarddeck";
 import characterSRSlogic from "../interfaces/characterSRSlogic";
 import {calculateNextCharacter} from "../applogic/characterSRSlogic/calculateCharacterSRSorder/characterSRSlogicBoundary";
 import CardComponent from "../components/CardComponent";
+import CardDisplay from "../interfaces/cardDisplay";
 
 const Practice: React.FunctionComponent<IPage> = props => {
 
@@ -33,17 +33,13 @@ const Practice: React.FunctionComponent<IPage> = props => {
     const previousCharactersState: [FlashCard[], FlashCard[], FlashCard[]] = useSelector(
         (state: State) => state.previousCharacters
     )
-    const{setShowPrimaryFlashCardInfo} = bindActionCreators(showPrimaryFlashcardInfoActionCreator, dispatch)
-    const{setShowSecondaryFlashCardInfo} = bindActionCreators(showSecondaryFlashcardInfoActionCreator, dispatch)
 
-    const showPrimaryFlashCardInfoState: boolean = useSelector(
-        (state: State) => state.showPrimaryFlashCardInfo
+    const {cardDisplayChangeState} = bindActionCreators(cardDisplayActionCreator, dispatch)
+    const showCardDisplay: CardDisplay = useSelector(
+        (state: State) => state.cardDisplay
     )
-    const showSecondaryFlashCardInfoState: boolean = useSelector(
-        (state: State) => state.showSecondaryFlashCardInfo
-    )
-    var showPrimaryInformationLocalState: boolean = showPrimaryFlashCardInfoState
-    var showSecondaryInformationLocalState: boolean = showSecondaryFlashCardInfoState
+    var cardDisplayLocalState: CardDisplay = showCardDisplay
+
 
     const todoPageContent = (): ReactElement => {
         let contentOrNotEnough;
@@ -62,8 +58,7 @@ const Practice: React.FunctionComponent<IPage> = props => {
                 contentOrNotEnough = generateCardComponent(
                     srscalculationResult.currentContent,
                     showCharacterSRSContentElement,
-                    showPrimaryInformationLocalState,
-                    showSecondaryInformationLocalState)
+                    cardDisplayLocalState)
             }else {
                 contentOrNotEnough = <p>Content type is undefined!!! this is an error</p>
             }
@@ -76,7 +71,7 @@ const Practice: React.FunctionComponent<IPage> = props => {
         if (showPreviusCard) {
             const previusCard: FlashCard = getMostRecentCard()
             if (previusCard.cardNumber > 0) {
-                const cardComponent = generateCardComponent(previusCard, true, false, false)
+                const cardComponent = generateCardComponent(previusCard, true, {showPrimaryCardInfo: false, showSecondaryCardInfo: false, readAloud: false})
                 return cardComponent
             }else {
                 return <p>no previus card</p>
@@ -86,11 +81,10 @@ const Practice: React.FunctionComponent<IPage> = props => {
         }
     }
 
-    const generateCardComponent = (content: FlashCard, showSRSContent: boolean, showPrimary: boolean, showSecondary: boolean) => {
+    const generateCardComponent = (content: FlashCard, showSRSContent: boolean, cardDisplay: CardDisplay) => {
         return <CardComponent content={content}
                        show={showSRSContent}
-                       showPrimary={showPrimary}
-                       showSecondary={showSecondary}/>
+                       cardDisplay={cardDisplay}/>
     }
 
     const displayNumberOfCharacters = (): ReactElement => {
@@ -340,22 +334,38 @@ const Practice: React.FunctionComponent<IPage> = props => {
     }
 
     const changeShowPrimaryInformationValue = () => {
-        setShowPrimaryFlashCardInfo(!showPrimaryInformationLocalState)
+        const currentValue: boolean = cardDisplayLocalState.showPrimaryCardInfo
+        const updatedValue: CardDisplay = {...cardDisplayLocalState, showPrimaryCardInfo: !currentValue}
+        cardDisplayChangeState(updatedValue, cardDisplayLocalState)
     }
 
     const changeShowSecondaryInformationValue = () => {
-        setShowSecondaryFlashCardInfo(!showSecondaryInformationLocalState)
+        const currentValue: boolean = cardDisplayLocalState.showSecondaryCardInfo
+        const updatedValue: CardDisplay = {...cardDisplayLocalState, showSecondaryCardInfo: !currentValue}
+        cardDisplayChangeState(updatedValue, cardDisplayLocalState)
+    }
+
+    const changeReadAloud = () => {
+        const currentValue: boolean = cardDisplayLocalState.readAloud
+        const updatedValue: CardDisplay = {...cardDisplayLocalState, readAloud: !currentValue}
+        cardDisplayChangeState(updatedValue, cardDisplayLocalState)
     }
 
     const showPrimaryInformationReactElement = (): ReactElement => {
         return <section>
-            <button type="button" onClick={changeShowPrimaryInformationValue}>showPrimary:{showPrimaryInformationLocalState.toString()}</button>
+            <button type="button" onClick={changeShowPrimaryInformationValue}>showPrimary:{cardDisplayLocalState.showPrimaryCardInfo.toString()}</button>
         </section>
     }
 
     const showSecondaryInformationReactElement = (): ReactElement => {
         return <section>
-            <button type="button" onClick={changeShowSecondaryInformationValue}>showSecondary:{showSecondaryInformationLocalState.toString()}</button>
+            <button type="button" onClick={changeShowSecondaryInformationValue}>showSecondary:{cardDisplayLocalState.showSecondaryCardInfo.toString()}</button>
+        </section>
+    }
+
+    const readAloudReactElement = (): ReactElement => {
+        return <section>
+            <button type="button" onClick={changeReadAloud}>readAloud:{cardDisplayLocalState.readAloud.toString()}</button>
         </section>
     }
 
@@ -366,6 +376,7 @@ const Practice: React.FunctionComponent<IPage> = props => {
         {addCharactersPageContent()}
         {showPrimaryInformationReactElement()}
         {showSecondaryInformationReactElement()}
+        {readAloudReactElement()}
         <p>***</p>
         {buttonsToShowAndHandleCharacterSRSContentElement()}
         <p>***</p>

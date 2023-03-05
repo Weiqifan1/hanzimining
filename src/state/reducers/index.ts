@@ -1,14 +1,12 @@
 import {combineReducers} from "redux";
 import characterSRSreducer from "./characterSRSreducer"
 import previousCharactersReducer from "./previousCharactersReducer";
-import showSecondaryFlashCardInfoReducer from "./showSecondaryFlashCardInfoReducer";
-import showPrimaryFlashCardInfoReducer from "./showPrimaryFlashCardInfoReducer";
+import cardDisplayReducers from "./cardDisplayReducers";
 
 const reducers = combineReducers({
+    cardDisplay: cardDisplayReducers,
     characterSRS: characterSRSreducer,
-    previousCharacters: previousCharactersReducer,
-    showPrimaryFlashCardInfo: showPrimaryFlashCardInfoReducer,
-    showSecondaryFlashCardInfo: showSecondaryFlashCardInfoReducer
+    previousCharacters: previousCharactersReducer
 });
 
 export default reducers;
