@@ -27,6 +27,7 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: C
     const [showNotableChardButtons, setShowNotableChardButtons] = useState<boolean>(false)
     const [tagToDisplay, setTagToDisplay] = useState<String>("")
     const [showTagButtons, setShowTagButtons] = useState<boolean>(false)
+    //const [selectSentenceField, setSelectSentenceField] = useState<boolean>(false)
 
     const content: FlashCard = props.content
     var tempReviewValue: number = props.content.repetitionValue
@@ -81,22 +82,46 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: C
         return display
     }
 
-    const backSideDisplay = (): boolean => {
-        const readAloud: boolean = props.cardDisplay.readAloud
-
-        const res: boolean = props.show
-        return res
+    const renderFrontSide = (): ReactElement => {
+        const ordinaryFrontSide: ReactElement = <section> <li onInput={(e) =>
+            tempKeyword = FlashCardStateManipulation.editStringvalue(e, props.content.frontSide)}
+                                                              contentEditable="true">
+            {content.frontSide}</li> </section>
+        const audioFrontSide: ReactElement = <section> <li>audio</li> </section>
+        if (!props.show && props.cardDisplay.readAloud) {
+            return audioFrontSide
+        } else {
+            return ordinaryFrontSide
+        }
     }
-    const renderBackSide = (): ReactElement => {
-        return <section>
-            { backSideDisplay() ? <li className={classes.characterListElement}>{props.content.backSide}</li> : <li className={classes.characterListElement}></li>}
+
+    function selectText() {
+        const input = (document.getElementById('audioid') as HTMLFormElement)//content.backSide;
+        try {
+            input.focus()
+            input.select()
+        }catch (e) {
+            console.log("no audio id")
+            console.log(e)
+        }
+    }
+
+    function displayAudioField() {
+        const withAudio: ReactElement = <section>
+            <textarea id="audioid" className={classes.audioText} >{props.content.backSide}</textarea>
         </section>
+
+        if (!props.show && props.cardDisplay.readAloud) {
+            return withAudio
+        }else {
+            return <section></section>
+        }
     }
 
     const displayOriginalCharacter = (): JSX.Element => {
         const display: JSX.Element = <section>
             <ul>
-                {renderBackSide}
+                { props.show ? <li className={classes.characterListElement}>{props.content.backSide}</li> : <li className={classes.characterListElement}></li>}
                 {<section><br/></section>}
                 { props.show ? <li onInput={(e) =>
                     tempCardName = FlashCardStateManipulation.editStringvalue(e, props.content.cardName)}
@@ -112,10 +137,7 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: C
                                    contentEditable="true">
                     {content.dateOfLastReview}</li> : <li></li>}
                 { props.show ? <li>{content.repetitionHistory}</li> : <li></li>}
-                <li onInput={(e) =>
-                    tempKeyword = FlashCardStateManipulation.editStringvalue(e, props.content.frontSide)}
-                    contentEditable="true">
-                    {content.frontSide}</li>
+                {renderFrontSide()}
                 { props.show ? <li onInput={(e) =>
                     tempNotableCards = FlashCardStateManipulation.editNumberList(e, props.content.notableCards)}
                     contentEditable="true">
@@ -248,9 +270,11 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: C
         <button type="button" onClick={() => saveEdit()}>saveEditOn {content.cardNumber}</button>
         <button type="button" onClick={() => toggleShowNotableCards()}>showNotableCardButtons{showNotableChardButtons.valueOf()}</button>
         <button type="button" onClick={() => toggleShowTagButtons()}>showTagButtons{showTagButtons.valueOf()}</button>
+        <button type="button" onClick={() => selectText()}>selectText</button>
         {displayNotableCardButtons()}
         {displayTagButtons()}
         {displayTag()}
+        {displayAudioField()}
         {displayCard()}
     </section>
 }
