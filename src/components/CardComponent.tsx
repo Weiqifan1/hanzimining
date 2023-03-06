@@ -108,18 +108,22 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: C
     }
 
     const displayAudio = () => {
-        return <section>
-            {displayAudioFieldWhenBacksideIsShown()}
-            {displayAudioFieldWhenFrontsideIsShown()}
-            {<button type="button" onClick={() => selectText()}>selectText</button>}
-        </section>
+        if (props.cardDisplay.readAloud) {
+            return <section>
+                {displayAudioFieldWhenBacksideIsShown()}
+                {displayAudioFieldWhenFrontsideIsShown()}
+                {<button type="button" onClick={() => selectText()}>selectText</button>}
+            </section>
+        }else {
+            return <section></section>
+        }
     }
 
     const displayAudioFieldWhenBacksideIsShown = () => {
         const withAudio: ReactElement = <section>
             <textarea id="audioid" className={classes.audioText} >{props.content.backSide}</textarea>
         </section>
-        if (!props.show && props.cardDisplay.readAloud) {
+        if (!props.show) {
             return withAudio
         }else {
             return <section></section>
@@ -130,7 +134,7 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: C
         const withAudio: ReactElement = <section>
             <textarea id="audioid" className={classes.audioText} >{props.content.backSide}</textarea>
         </section>
-        if (props.show && props.cardDisplay.readAloud) {
+        if (props.show) {
             return withAudio
         }else {
             return <section></section>
