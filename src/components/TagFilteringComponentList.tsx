@@ -18,8 +18,26 @@ const TagFilteringComponentList: React.FC<{content: Record<string, string>, setf
         return res;
     }
 
+    function addElement() {
+        const allKeys: number[] = Object.keys(props.content).map(each => parseInt(each)).sort()
+        var largestElement: number = 0;
+        for (let i = 0; i < allKeys.length; i++) {
+            const mynum: number = allKeys[i]
+            if (mynum > largestElement) {
+                largestElement = mynum
+            }
+        }
+        largestElement = largestElement + 1
+        var currentRecord: Record<string, string> = props.content
+        currentRecord[largestElement.toString()] = "testTag" + largestElement
+        console.log("nyt element")
+        console.log(largestElement)
+        props.setfunction(currentRecord)
+    }
+
     const display: JSX.Element = <section>
         <p>her er teksten</p>
+        <button type="button" onClick={addElement}>addElement</button>
         <ul>
             {contentList(props.content).map((item) => (
                 <TagFilteringComponent content={props.content} setFunction={props.setfunction} eachKey={item[0]} eachValue={item[1]} />

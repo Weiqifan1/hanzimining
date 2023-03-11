@@ -25,9 +25,12 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
             if (a.cardNumber < b.cardNumber) {return -1; }
             if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
 
-    const [localTagsFilter, setLocalTagsFilter] = useState<Map<string, string>>(new Map<string, string>())
-    const doSetLocalTagsFilter = (input: Map<string, string>) => {
+    const [localTagsFilter, setLocalTagsFilter] = useState<Record<string, string>>({})
+    const [shouldRerender, setShouldRerender] = useState<boolean>(false)
+    const doSetLocalTagsFilter = (input: Record<string, string>) => {
+        console.log("nyt elem er sat")
         setLocalTagsFilter(input)
+        setShouldRerender(!shouldRerender)
     }
 
     const [displayChars, setDisplayChars] = useState<FlashCard[]>([])
@@ -67,12 +70,12 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
         filterCards(sortedByNumber, localTagsFilter)
     }
 
-    function filterByTags(inp: FlashCard[], localTagsFilter: Map<string, string>): FlashCard[] {
+    function filterByTags(inp: FlashCard[], localTagsFilter: Record<string, string>): FlashCard[] {
         console.log("filterByTags")
         return inp;
     }
 
-    const filterCards = (inp: FlashCard[], localTagsFilter: Map<string, string>) => {
+    const filterCards = (inp: FlashCard[], localTagsFilter: Record<string, string>) => {
         const inputListOfCards: FlashCard[] = filterByTags(inp, localTagsFilter)
         if (numberIntervalFilter.length > 0) {
             const result = displayByInterval(inputListOfCards)
@@ -220,13 +223,13 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
         })
         return result
     }
-
+/*
     const tempAuto: Record<string, string> = {
         "1": "tag1 include",
         "4": "tag4 exclude",
         "2": "tag2 exclude",
         "3": "tag3 only"
-    }
+    }*/
 
     return <section>
         <h1>Search current flashcard Deck</h1>
@@ -246,7 +249,7 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
         <button type="button" onClick={sortByReviewNumberDescending}>sortKnownCardsByReviewValueDescending</button>
         <button type="button" onClick={sortByLastReviewDateDescending}>sortKnownCardsByLastReviewDateDescending</button>
         <p></p>
-        <TagFilteringComponentList content={tempAuto} setfunction={doSetLocalTagsFilter}/>
+        <TagFilteringComponentList content={localTagsFilter} setfunction={doSetLocalTagsFilter}/>
         <label htmlFor="interval">interval:</label>
         <input type="text" id="interval" name="interval" value={numberIntervalFilter} onChange={handleChangeNumberIntervalFilter} />
         <label htmlFor="fontside">fontside:</label>
@@ -258,6 +261,7 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
         <CardListComponent data={displayChars} cardDisplay={cardDisplayLocalState}/>
     </section>
     //characterSRSstate.tags
+    //localTagsFilter
 };
 
 
