@@ -37,7 +37,6 @@ const LoadAndSave: React.FunctionComponent<IPage> = props => {
             if (sortedCards[sortedCards.length-1] == srsStateCards) {
                 const convertText: FlashCardDeck = mergeDecks(characterSRSstate, testLarge)
                 createSRSobject(convertText)
-                console.log("hello")
             }else {
                 (document.getElementById("deckToMerge") as HTMLInputElement).value = "malformedOldDeck"
             }

@@ -1,4 +1,3 @@
-
 import React, {useState} from "react";
 import IPage from "../interfaces/page";
 import {useDispatch, useSelector} from "react-redux";
@@ -7,6 +6,8 @@ import CardListComponent from "../components/CardListComponent"
 import {FlashCard} from "../interfaces/flashcard";
 import {bindActionCreators} from "redux";
 import CardDisplay from "../interfaces/cardDisplay";
+import DisplayTags from "../components/DisplayTags";
+import AutocompleteField from "../components/AutocompleteField";
 
 const SearchFlashcards: React.FunctionComponent<IPage> = props => {
 
@@ -19,7 +20,15 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
     function prepareNumberToDisplaySize(data: number): number{
         return data > MAXCARDSTODISPLAY ? MAXCARDSTODISPLAY : data
     }
-    const allCards: FlashCard[] = characterSRSstate.cards.sort(function sortByCardNumbers(a: FlashCard, b: FlashCard){if (a.cardNumber < b.cardNumber) {return -1; }if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
+    const allCards: FlashCard[] = characterSRSstate.cards.sort(
+        function sortByCardNumbers(a: FlashCard, b: FlashCard){
+            if (a.cardNumber < b.cardNumber) {return -1; }
+            if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
+
+    const [localTagsFilter, setLocalTagsFilter] = useState<Map<string, string>>(new Map<string, string>())
+    const doSetLocalTagsFilter = (input: Map<string, string>) => {
+        setLocalTagsFilter(input)
+    }
 
     const [displayChars, setDisplayChars] = useState<FlashCard[]>([])
     const [maxCardsToDisplay, setMaxCardsToDisplay] = useState<number>(prepareNumberToDisplaySize(characterSRSstate.cards.length))
@@ -51,10 +60,20 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
     }
 
     function sortbyIndexNumberAscendingInclUnknown() {
-        const sortedByNumber: FlashCard[] = allCards.sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.cardNumber < b.cardNumber) {return -1; }if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
-        filterCards(sortedByNumber)
+        const sortedByNumber: FlashCard[] = allCards.sort(
+            function sortSmallToLarge(a: FlashCard, b: FlashCard){
+                if (a.cardNumber < b.cardNumber) {return -1; }
+                if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
+        filterCards(sortedByNumber, localTagsFilter)
     }
-    const filterCards = (inputListOfCards: FlashCard[]) => {
+
+    function filterByTags(inp: FlashCard[], localTagsFilter: Map<string, string>): FlashCard[] {
+        console.log("filterByTags")
+        return inp;
+    }
+
+    const filterCards = (inp: FlashCard[], localTagsFilter: Map<string, string>) => {
+        const inputListOfCards: FlashCard[] = filterByTags(inp, localTagsFilter)
         if (numberIntervalFilter.length > 0) {
             const result = displayByInterval(inputListOfCards)
             setDisplayChars(result.slice(0,maxCardsToDisplay))
@@ -78,11 +97,17 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
     }
 
     function sortbyIndexNumberAscending() {
-        const sortedByNumber: FlashCard[] = removeUnknown(allCards).sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.cardNumber < b.cardNumber) {return -1; }if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
+        const sortedByNumber: FlashCard[] = removeUnknown(allCards).sort(
+            function sortSmallToLarge(a: FlashCard, b: FlashCard){
+                if (a.cardNumber < b.cardNumber) {return -1; }
+                if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
         setDisplayChars(sortedByNumber.slice(0,maxCardsToDisplay))
     }
     function sortbyIndexNumberDescending() {
-        const sortedByNumber: FlashCard[] = removeUnknown(allCards).sort(function sortToLargeToSmall(a: FlashCard, b: FlashCard){if (a.cardNumber < b.cardNumber) {return 1; }if (a.cardNumber > b.cardNumber) {return -1;}return 0;})
+        const sortedByNumber: FlashCard[] = removeUnknown(allCards).sort(
+            function sortToLargeToSmall(a: FlashCard, b: FlashCard){
+                if (a.cardNumber < b.cardNumber) {return 1; }
+                if (a.cardNumber > b.cardNumber) {return -1;}return 0;})
         setDisplayChars(sortedByNumber.slice(0,maxCardsToDisplay))
     }
 
@@ -108,20 +133,32 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
     }
 
     function sortByReviewNumberAscending() {
-        const sortedByReviewValue: FlashCard[] = removeUnknown(allCards).sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.repetitionValue < b.repetitionValue) {return -1; }if (a.repetitionValue > b.repetitionValue) {return 1;}return 0;})
+        const sortedByReviewValue: FlashCard[] = removeUnknown(allCards).sort(
+            function sortSmallToLarge(a: FlashCard, b: FlashCard){
+                if (a.repetitionValue < b.repetitionValue) {return -1; }
+                if (a.repetitionValue > b.repetitionValue) {return 1;}return 0;})
         setDisplayChars(sortedByReviewValue.slice(0,maxCardsToDisplay))
     }
     function sortByReviewNumberDescending() {
-        const sortedByReviewValue: FlashCard[] = removeUnknown(allCards).sort(function sortLargeToSmall(a: FlashCard, b: FlashCard){if (a.repetitionValue < b.repetitionValue) {return 1; }if (a.repetitionValue > b.repetitionValue) {return -1;}return 0;})
+        const sortedByReviewValue: FlashCard[] = removeUnknown(allCards).sort(
+            function sortLargeToSmall(a: FlashCard, b: FlashCard){
+                if (a.repetitionValue < b.repetitionValue) {return 1; }
+                if (a.repetitionValue > b.repetitionValue) {return -1;}return 0;})
         setDisplayChars(sortedByReviewValue.slice(0,maxCardsToDisplay))
     }
 
     function sortByLastReviewDateAscending() {
-        const sortedByLastReviewDate: FlashCard[] = removeUnknown(allCards).sort(function sortSmallToLarge(a: FlashCard, b: FlashCard){if (a.dateOfLastReview < b.dateOfLastReview) {return -1; }if (a.dateOfLastReview > b.dateOfLastReview) {return 1;}return 0;})
+        const sortedByLastReviewDate: FlashCard[] = removeUnknown(allCards).sort(
+            function sortSmallToLarge(a: FlashCard, b: FlashCard){
+                if (a.dateOfLastReview < b.dateOfLastReview) {return -1; }
+                if (a.dateOfLastReview > b.dateOfLastReview) {return 1;}return 0;})
         setDisplayChars(sortedByLastReviewDate.slice(0,maxCardsToDisplay))
     }
     function sortByLastReviewDateDescending() {
-        const sortedByLastReviewDate: FlashCard[] = removeUnknown(allCards).sort(function sortLargeToSmall(a: FlashCard, b: FlashCard){if (a.dateOfLastReview < b.dateOfLastReview) {return 1; }if (a.dateOfLastReview > b.dateOfLastReview) {return -1;}return 0;})
+        const sortedByLastReviewDate: FlashCard[] = removeUnknown(allCards).sort(
+            function sortLargeToSmall(a: FlashCard, b: FlashCard){
+                if (a.dateOfLastReview < b.dateOfLastReview) {return 1; }
+                if (a.dateOfLastReview > b.dateOfLastReview) {return -1;}return 0;})
         setDisplayChars(sortedByLastReviewDate.slice(0,maxCardsToDisplay))
     }
 
@@ -202,6 +239,7 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
         <button type="button" onClick={sortByReviewNumberDescending}>sortKnownCardsByReviewValueDescending</button>
         <button type="button" onClick={sortByLastReviewDateDescending}>sortKnownCardsByLastReviewDateDescending</button>
         <p></p>
+        <AutocompleteField content={characterSRSstate.tags} setfunction={doSetLocalTagsFilter}/>
         <label htmlFor="interval">interval:</label>
         <input type="text" id="interval" name="interval" value={numberIntervalFilter} onChange={handleChangeNumberIntervalFilter} />
         <label htmlFor="fontside">fontside:</label>
