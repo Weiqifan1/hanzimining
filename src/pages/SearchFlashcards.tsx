@@ -7,7 +7,7 @@ import {FlashCard} from "../interfaces/flashcard";
 import {bindActionCreators} from "redux";
 import CardDisplay from "../interfaces/cardDisplay";
 import DisplayTags from "../components/DisplayTags";
-import AutocompleteField from "../components/AutocompleteField";
+import TagFilteringComponentList from "../components/TagFilteringComponentList";
 
 const SearchFlashcards: React.FunctionComponent<IPage> = props => {
 
@@ -221,6 +221,13 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
         return result
     }
 
+    const tempAuto: Record<string, string> = {
+        "1": "tag1 include",
+        "4": "tag4 exclude",
+        "2": "tag2 exclude",
+        "3": "tag3 only"
+    }
+
     return <section>
         <h1>Search current flashcard Deck</h1>
         <p>number of cards: {characterSRSstate.cards.length}</p>
@@ -239,7 +246,7 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
         <button type="button" onClick={sortByReviewNumberDescending}>sortKnownCardsByReviewValueDescending</button>
         <button type="button" onClick={sortByLastReviewDateDescending}>sortKnownCardsByLastReviewDateDescending</button>
         <p></p>
-        <AutocompleteField content={characterSRSstate.tags} setfunction={doSetLocalTagsFilter}/>
+        <TagFilteringComponentList content={tempAuto} setfunction={doSetLocalTagsFilter}/>
         <label htmlFor="interval">interval:</label>
         <input type="text" id="interval" name="interval" value={numberIntervalFilter} onChange={handleChangeNumberIntervalFilter} />
         <label htmlFor="fontside">fontside:</label>
@@ -250,6 +257,7 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
         <input type="text" id="tag" name="tag" value={tagSubstringFilter} onChange={handleChangeTagSubstringFilter} />
         <CardListComponent data={displayChars} cardDisplay={cardDisplayLocalState}/>
     </section>
+    //characterSRSstate.tags
 };
 
 
