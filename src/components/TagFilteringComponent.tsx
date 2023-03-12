@@ -46,7 +46,7 @@ const TagFilteringComponent: React.FC<{content: Record<string, string>, setFunct
             <input type="text" id="filtervalue" name="filtervalue" value={filterValue} onChange={handleChangeFilterValue} />
 
             <button type="button" onClick={removeTagFilteringComponent}>remove {props.eachKey}</button>
-            <p>her er et tal {props.eachKey} og en string {props.eachValue}</p>
+            <p>tag: {props.eachKey} filter value: {props.eachValue}</p>
         </section>
 
         return display

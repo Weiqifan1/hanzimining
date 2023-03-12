@@ -35,9 +35,15 @@ const TagFilteringComponentList: React.FC<{content: Record<string, string>, setf
         props.setfunction(currentRecord)
     }
 
+    const clear = () => {
+        var currentRecord: Record<string, string> = {}
+        props.setfunction(currentRecord)
+    }
+
     const display: JSX.Element = <section>
         <p>her er teksten</p>
         <button type="button" onClick={addElement}>addElement</button>
+        <button type="button" onClick={clear}>clear</button>
         <ul>
             {contentList(props.content).map((item) => (
                 <TagFilteringComponent content={props.content} setFunction={props.setfunction} eachKey={item[0]} eachValue={item[1]} />
