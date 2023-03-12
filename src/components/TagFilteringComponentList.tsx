@@ -5,7 +5,7 @@ import CardComponent from "./CardComponent";
 import TagFilteringComponent from "./TagFilteringComponent";
 import {SortingValueAll} from "../interfaces/types/sortingValue";
 
-const TagFilteringComponentList: React.FC<{content: Record<string, string>, setfunction: any }> =
+const TagFilteringComponentList: React.FC<{deckTagList: string[], content: Record<string, string>, setfunction: any }> =
     (props) => {
 
     const contentList = (input: Record<string, string>): [number, string][] => {
@@ -45,7 +45,7 @@ const TagFilteringComponentList: React.FC<{content: Record<string, string>, setf
         <button type="button" onClick={clear}>clear</button>
         <ul>
             {contentList(props.content).map((item) => (
-                <TagFilteringComponent content={props.content} setFunction={props.setfunction} eachKey={item[0]} eachValue={item[1]} />
+                <TagFilteringComponent deckTagList={props.deckTagList} content={props.content} setFunction={props.setfunction} eachKey={item[0]} eachValue={item[1]} />
                 ))}
         </ul>
     </section>

@@ -16,6 +16,7 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
     const characterSRSstate = useSelector(
         (state: State) => state.characterSRS
     )
+    const allTagKeys: string[] = Object.keys(characterSRSstate.tags)
 
     function prepareNumberToDisplaySize(data: number): number{
         return data > MAXCARDSTODISPLAY ? MAXCARDSTODISPLAY : data
@@ -243,7 +244,7 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
         <button type="button" onClick={sortByReviewNumberDescending}>sortKnownCardsByReviewValueDescending</button>
         <button type="button" onClick={sortByLastReviewDateDescending}>sortKnownCardsByLastReviewDateDescending</button>
         <p></p>
-        <TagFilteringComponentList content={localTagsFilter} setfunction={doSetLocalTagsFilter}/>
+        <TagFilteringComponentList deckTagList={allTagKeys} content={localTagsFilter} setfunction={doSetLocalTagsFilter}/>
         <label htmlFor="interval">interval:</label>
         <input type="text" id="interval" name="interval" value={numberIntervalFilter} onChange={handleChangeNumberIntervalFilter} />
         <label htmlFor="fontside">fontside:</label>
