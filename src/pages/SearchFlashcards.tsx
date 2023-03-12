@@ -25,6 +25,7 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
             if (a.cardNumber < b.cardNumber) {return -1; }
             if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
 
+    //tag filtering
     const [localTagsFilter, setLocalTagsFilter] = useState<Record<string, string>>({})
     const [shouldRerender, setShouldRerender] = useState<boolean>(false)
     const doSetLocalTagsFilter = (input: Record<string, string>) => {
@@ -223,13 +224,6 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
         })
         return result
     }
-/*
-    const tempAuto: Record<string, string> = {
-        "1": "tag1 include",
-        "4": "tag4 exclude",
-        "2": "tag2 exclude",
-        "3": "tag3 only"
-    }*/
 
     return <section>
         <h1>Search current flashcard Deck</h1>
@@ -260,8 +254,6 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
         <input type="text" id="tag" name="tag" value={tagSubstringFilter} onChange={handleChangeTagSubstringFilter} />
         <CardListComponent data={displayChars} cardDisplay={cardDisplayLocalState}/>
     </section>
-    //characterSRSstate.tags
-    //localTagsFilter
 };
 
 

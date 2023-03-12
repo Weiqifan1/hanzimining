@@ -3,9 +3,13 @@ import {FlashCardDeck} from "../interfaces/flashcarddeck";
 import DisplayTagItem from "./DisplayTagItem";
 import CardComponent from "./CardComponent";
 
-
 const TagFilteringComponent: React.FC<{content: Record<string, string>, setFunction: any, eachKey: number, eachValue: string}> =
     (props) => {
+
+        const [tagName, setTagName] = useState("")
+        const handleChangeTagName = (e: React.FormEvent<HTMLInputElement>) => {setTagName(e.currentTarget.value)}
+        const [filterValue, setFilterValue] = useState("")
+        const handleChangeFilterValue = (e: React.FormEvent<HTMLInputElement>) => {setFilterValue(e.currentTarget.value)}
 
         const removeTagFilteringComponent = () => {
             const allKeys: number[] = Object.keys(props.content).map(each => parseInt(each)).sort()
@@ -27,7 +31,20 @@ const TagFilteringComponent: React.FC<{content: Record<string, string>, setFunct
             props.setFunction(updatedRecord)
         }
 
+        const saveTagFilteringState = () => {
+            var listToUpdate: Record<string, string> = props.content
+            listToUpdate[props.eachKey.toString()] = tagName + " " + filterValue
+            props.setFunction(listToUpdate)
+        }
+
         const display: JSX.Element = <section>
+            <button type="button" onClick={saveTagFilteringState}>save</button>
+            <label htmlFor="tagname">tag name:</label>
+            <input type="text" id="tagname" name="tagname" value={tagName} onChange={handleChangeTagName} />
+
+            <label htmlFor="filtervalue">filter value:</label>
+            <input type="text" id="filtervalue" name="filtervalue" value={filterValue} onChange={handleChangeFilterValue} />
+
             <button type="button" onClick={removeTagFilteringComponent}>remove {props.eachKey}</button>
             <p>her er et tal {props.eachKey} og en string {props.eachValue}</p>
         </section>
