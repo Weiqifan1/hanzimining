@@ -3,6 +3,7 @@ import {FlashCardDeck} from "../interfaces/flashcarddeck";
 import DisplayTagItem from "./DisplayTagItem";
 import CardComponent from "./CardComponent";
 import TagFilteringComponent from "./TagFilteringComponent";
+import {SortingValueAll} from "../interfaces/types/sortingValue";
 
 const TagFilteringComponentList: React.FC<{content: Record<string, string>, setfunction: any }> =
     (props) => {
@@ -29,9 +30,7 @@ const TagFilteringComponentList: React.FC<{content: Record<string, string>, setf
         }
         largestElement = largestElement + 1
         var currentRecord: Record<string, string> = props.content
-        currentRecord[largestElement.toString()] = "testTag" + largestElement
-        console.log("nyt element")
-        console.log(largestElement)
+        currentRecord[largestElement.toString()] = SortingValueAll[0]
         props.setfunction(currentRecord)
     }
 

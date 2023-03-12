@@ -2,14 +2,16 @@ import React, {PropsWithChildren, useState} from "react";
 import {FlashCardDeck} from "../interfaces/flashcarddeck";
 import DisplayTagItem from "./DisplayTagItem";
 import CardComponent from "./CardComponent";
-
+import {isSortingValue, SortingValueAll} from "../interfaces/types/sortingValue";
 const TagFilteringComponent: React.FC<{content: Record<string, string>, setFunction: any, eachKey: number, eachValue: string}> =
     (props) => {
 
-        const [tagName, setTagName] = useState("")
+        const [tagName, setTagName] = useState<string>("")
         const handleChangeTagName = (e: React.FormEvent<HTMLInputElement>) => {setTagName(e.currentTarget.value)}
-        const [filterValue, setFilterValue] = useState("")
-        const handleChangeFilterValue = (e: React.FormEvent<HTMLInputElement>) => {setFilterValue(e.currentTarget.value)}
+        const [filterValue, setFilterValue] = useState<string>("")
+        const handleChangeFilterValue = (e: React.FormEvent<HTMLInputElement>) => {
+            const currentString: string = e.currentTarget.value
+            setFilterValue(currentString)}
 
         const removeTagFilteringComponent = () => {
             const allKeys: number[] = Object.keys(props.content).map(each => parseInt(each)).sort()
@@ -33,7 +35,13 @@ const TagFilteringComponent: React.FC<{content: Record<string, string>, setFunct
 
         const saveTagFilteringState = () => {
             var listToUpdate: Record<string, string> = props.content
-            listToUpdate[props.eachKey.toString()] = tagName + " " + filterValue
+            var newValue: string = SortingValueAll[0]
+            var valueToTest: string = filterValue
+            if (valueToTest != null && valueToTest.length > 0 && isSortingValue(valueToTest.toUpperCase())) {
+                newValue = valueToTest.toUpperCase()
+            }
+            setFilterValue(newValue)
+            listToUpdate[props.eachKey.toString()] = tagName + " " + newValue
             props.setFunction(listToUpdate)
         }
 
