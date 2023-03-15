@@ -8,14 +8,11 @@ import {isSortingValue, SortingValueAll} from "../interfaces/types/sortingValue"
 const TagFilteringComponent: React.FC<{deckTagList: string[], content: Record<string, string>, setFunction: any, eachKey: number, eachValue: string}> =
     (props) => {
 
+        const [suggestionsTagName, setSuggestionsTagName] = useState<string[]>([]);
+        const [suggestionsFilterValue, setSuggestionsFilterValue] = useState<string[]>(SortingValueAll);
         const [tagName, setTagName] = useState<string>("")
-        const handleChangeTagName = (e: React.FormEvent<HTMLInputElement>) => {setTagName(e.currentTarget.value)}
         const [filterValue, setFilterValue] = useState<string>("")
-        const handleChangeFilterValue = (e: React.FormEvent<HTMLInputElement>) => {
-            const currentString: string = e.currentTarget.value
-            setFilterValue(currentString)}
 
-        //bug: cant delete individual tag filter
         const removeTagFilteringComponent = () => {
             const allKeys: number[] = Object.keys(props.content).map(each => parseInt(each))
             var updatedList: string[] = [];
@@ -54,15 +51,16 @@ const TagFilteringComponent: React.FC<{deckTagList: string[], content: Record<st
             setTagName(newName)
             setFilterValue(newValue)
             props.setFunction(listToUpdate)
+
+            setFilterValue("")
+            setTagName("")
         }
 
         const saveTagFilteringState = () => {
             handleNewFilteringValue();
         }
 
-        const [suggestions, setSuggestions] = useState<string[]>([]);
-
-        function getSuggestions(value: string): string[] {
+        function getSuggestionsTagName(value: string): string[] {
             return props.deckTagList.filter(language =>
                 language.startsWith(value.trim().toLowerCase())
             );
@@ -70,14 +68,13 @@ const TagFilteringComponent: React.FC<{deckTagList: string[], content: Record<st
 
         const display: JSX.Element = <section>
             <button type="button" onClick={saveTagFilteringState}>save</button>
-            <label htmlFor="tagname">tag name:</label>
 
             <AutoSuggest
-                suggestions={suggestions}
-                onSuggestionsClearRequested={() => setSuggestions([])}
+                suggestions={suggestionsTagName}
+                onSuggestionsClearRequested={() => setSuggestionsTagName([])}
                 onSuggestionsFetchRequested={({ value }) => {
                     setTagName(value);
-                    setSuggestions(getSuggestions(value));
+                    setSuggestionsTagName(getSuggestionsTagName(value));
                 }}
                 onSuggestionSelected={(_, { suggestionValue }) =>
                     console.log("Selected: " + suggestionValue)
@@ -94,8 +91,27 @@ const TagFilteringComponent: React.FC<{deckTagList: string[], content: Record<st
                 highlightFirstSuggestion={true}
             />
 
-            <label htmlFor="filtervalue">filter value:</label>
-            <input type="text" id="filtervalue" name="filtervalue" value={filterValue} onChange={handleChangeFilterValue} />
+            <AutoSuggest
+                suggestions={suggestionsFilterValue}
+                onSuggestionsClearRequested={() => setSuggestionsFilterValue(suggestionsFilterValue)}
+                onSuggestionsFetchRequested={({ value }) => {
+                    setFilterValue(value);
+                    //setSuggestionsFilterValue(getSuggestionsFilterValue(value));
+                }}
+                onSuggestionSelected={(_, { suggestionValue }) =>
+                    console.log("Selected: " + suggestionValue)
+                }
+                getSuggestionValue={suggestion => suggestion}
+                renderSuggestion={suggestion => <span>{suggestion}</span>}
+                inputProps={{
+                    placeholder: "Type filter value",
+                    value: filterValue,
+                    onChange: (_, { newValue, method }) => {
+                        setFilterValue(newValue);
+                    }
+                }}
+                highlightFirstSuggestion={true}
+            />
 
             <button type="button" onClick={removeTagFilteringComponent}>remove {props.eachKey}</button>
             <p>tag: {props.eachKey} filter value: {props.eachValue}</p>
