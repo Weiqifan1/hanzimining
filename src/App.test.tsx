@@ -8,6 +8,7 @@ import {deleteOrEditCardOrder} from '../src/state/reducers/characterSRSreducer'
 import {generateAllLinesDeck, replaceDeckNameAndInfo} from "./applogic/pageHelpers/createDeckHelper";
 import {mergeDecks} from "./applogic/pageHelpers/mergeDeckHelper";
 import {mapkeys} from "./applogic/flashcardHelperFunctions/gettingFlashCards";
+import {calculateFilter} from "./applogic/FlashcardDisplayLogic/FlashCardFiltering";
 
 /*
 test('renders learn react link', () => {
@@ -56,6 +57,37 @@ const test_createDeckHelpers_basicMultilineText_2 = (): string => {
       "cardname4\nfrontside4\nbackside4\n" +
       "primaryinfo4\nsecondaryinfo4\nnotablecards4\ntags4\n"
 }
+
+const test_generateCard = (numb: number, tags: string[]): FlashCard => {
+  const card: FlashCard = {cardNumber: numb, cardName: "", frontSide: "", backSide: "",
+    primaryInfo: "", secondaryInfo: "", notableCards: [],  dateOfLastReview: "", repetitionValue: 0, repetitionHistory: [], tags: tags}
+  return card
+}
+
+const test_flashcardsForTesting = (): FlashCard[] => {
+  var card1: FlashCard = test_generateCard(1, ["t1-8"])
+  var card2: FlashCard = test_generateCard(2, ["t1-8", "t2-8"])
+  var card3: FlashCard = test_generateCard(3, ["t1-8", "t2-8", "t3-8"])
+  var card4: FlashCard = test_generateCard(4, ["t1-8", "t2-8", "t3-8", "t4-8"])
+  var card5: FlashCard = test_generateCard(5, ["t1-8", "t2-8", "t3-8", "t4-8", "t5-8"])
+  var card6: FlashCard = test_generateCard(6, ["t1-8", "t2-8", "t3-8", "t4-8", "t5-8", "t6-8"])
+  var card7: FlashCard = test_generateCard(7, ["t1-8", "t2-8", "t3-8", "t4-8", "t5-8", "t6-8", "t7-8"])
+  var card8: FlashCard = test_generateCard(8, ["t1-8", "t2-8", "t3-8", "t4-8", "t5-8", "t6-8", "t7-8", "t8-8"])
+  return [card1, card2, card3, card4, card5, card6, card7, card8]
+}
+
+test("test flash card filtering", () => {
+  var rec: Record<string, string> = {}
+  rec["1"] = "t2-8 ONLY"
+  rec["2"] = "t3-8 NOTHING"
+  rec["3"] = "t6-8 INCLUDE"
+  rec["4"] = "t4-8 EXCLUDE"
+  const inp: FlashCard[] = test_flashcardsForTesting()
+
+      ///, localTagsFilter: Record<string, string>
+  const filteringCalc: number[] = calculateFilter(inp, rec)
+  expect([2, 3, 6, 7, 8]).toStrictEqual([2, 3, 6, 7, 8])
+})
 
 test('test donwload vocab', () => {
   const olddeck: FlashCardDeck = test_mergeDeck_flashcard()
