@@ -10,14 +10,6 @@ import {mergeDecks} from "./applogic/pageHelpers/mergeDeckHelper";
 import {mapkeys} from "./applogic/flashcardHelperFunctions/gettingFlashCards";
 import {calculateFilter} from "./applogic/FlashcardDisplayLogic/FlashCardFiltering";
 
-/*
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
-*/
-
 const test_mergeDeck_flashcard = (): FlashCardDeck => {
   const inputtext: string = test_createDeckHelpers_basicMultilineText()
   const result: FlashCardDeck = generateAllLinesDeck(inputtext, "deckname_2_...", "deckInfo_2_...")
@@ -84,9 +76,8 @@ test("test flash card filtering", () => {
   rec["4"] = "t4-8 EXCLUDE"
   const inp: FlashCard[] = test_flashcardsForTesting()
 
-      ///, localTagsFilter: Record<string, string>
   const filteringCalc: number[] = calculateFilter(inp, rec)
-  expect([2, 3, 6, 7, 8]).toStrictEqual([2, 3, 6, 7, 8])
+  expect(filteringCalc).toStrictEqual([2, 3, 6, 7, 8])
 })
 
 test('test donwload vocab', () => {
