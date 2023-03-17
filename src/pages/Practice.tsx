@@ -13,6 +13,7 @@ import characterSRSlogic from "../interfaces/characterSRSlogic";
 import {calculateNextCharacter} from "../applogic/characterSRSlogic/calculateCharacterSRSorder/characterSRSlogicBoundary";
 import CardComponent from "../components/CardComponent";
 import CardDisplay from "../interfaces/cardDisplay";
+import {filterByTags, getSettings_filtercardsbytag} from "../applogic/FlashcardDisplayLogic/FlashCardFiltering";
 
 const Practice: React.FunctionComponent<IPage> = props => {
 
@@ -40,17 +41,23 @@ const Practice: React.FunctionComponent<IPage> = props => {
     )
     var cardDisplayLocalState: CardDisplay = showCardDisplay
 
-
     const todoPageContent = (): ReactElement => {
         let contentOrNotEnough;
+        //update cards to select from, by taking filtering into account
+        //const localTagsFilter: Record<string, string> =
+        const filteredCards: FlashCard[] = getSettings_filtercardsbytag(characterSRSstate)
+        //const updatedSrs: FlashCardDeck = {...characterSRSstate}
+        const updatedSrs: FlashCardDeck = {...characterSRSstate, cards: filteredCards}
+
         const srslogic: characterSRSlogic = {
-            characterSRS: characterSRSstate,
+            characterSRS: updatedSrs,
             currentContent: undefined,
             mostRecentContentObjects: previousCharactersState[2],
             notEnoughCharacters: false
         }
         const srscalculationResult: characterSRSlogic = calculateNextCharacter(srslogic)
         if (srscalculationResult.notEnoughCharacters) {
+
             contentOrNotEnough = <p>not enough characters. add more to deck</p>
         }else {
             if (srscalculationResult.currentContent) {

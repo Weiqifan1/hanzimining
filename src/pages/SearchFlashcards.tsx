@@ -8,8 +8,11 @@ import {bindActionCreators} from "redux";
 import CardDisplay from "../interfaces/cardDisplay";
 import DisplayTags from "../components/DisplayTags";
 import TagFilteringComponentList from "../components/TagFilteringComponentList";
-import {calculateFilter} from "../applogic/FlashcardDisplayLogic/FlashCardFiltering";
-import {getSettings_filtercardsbytag} from "../applogic/flashcardHelperFunctions/settingsHelper";
+import {
+    calculateFilter, dogetSettings_filtercardsbytag,
+    filterByTags,
+    getSettings_filtercardsbytag
+} from "../applogic/FlashcardDisplayLogic/FlashCardFiltering";
 
 const SearchFlashcards: React.FunctionComponent<IPage> = props => {
 
@@ -29,7 +32,7 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
             if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
 
     //tag filtering
-    const [localTagsFilter, setLocalTagsFilter] = useState<Record<string, string>>(getSettings_filtercardsbytag(characterSRSstate))
+    const [localTagsFilter, setLocalTagsFilter] = useState<Record<string, string>>(dogetSettings_filtercardsbytag(characterSRSstate))
     //const [localTagsFilter, setLocalTagsFilter] = useState<Record<string, string>>(setInitialLocalTagsFilter(localSettings))
     const [shouldRerender, setShouldRerender] = useState<boolean>(false)
     const [cardNumAfterFiltering, setCardNumAfterFiltering] = useState<FlashCard[]>([])
@@ -74,12 +77,6 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
                 if (a.cardNumber < b.cardNumber) {return -1; }
                 if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
         filterCards(sortedByNumber, localTagsFilter)
-    }
-
-    function filterByTags(inp: FlashCard[], localTagsFilter: Record<string, string>): FlashCard[] {
-        const cardsToUse: number[] = calculateFilter(inp, localTagsFilter)
-        const filteredCards: FlashCard[] = inp.filter(eachCard => cardsToUse.includes(eachCard.cardNumber))
-        return filteredCards;
     }
 
     const filterCards = (inp: FlashCard[], localTagsFilter: Record<string, string>) => {

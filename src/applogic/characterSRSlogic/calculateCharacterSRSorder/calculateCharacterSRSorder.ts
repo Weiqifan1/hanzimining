@@ -3,8 +3,8 @@ import {FlashCard} from "../../../interfaces/flashcard";
 import {getReviewPriority} from "./calculateContentReviewPriority";
 
 export const doCalculateNextCharacter = (input: characterSRSlogic): characterSRSlogic => {
-    const fiveMostRecent: FlashCard[] = getMostRecentlyPracticed(input, 10)
-    const reviewPrioritySorted: FlashCard[] = getReviewPriority(input.characterSRS.cards, fiveMostRecent)
+    const tenMostRecent: FlashCard[] = getMostRecentlyPracticed(input, 10)
+    const reviewPrioritySorted: FlashCard[] = getReviewPriority(input.characterSRS.cards, tenMostRecent)
     if (reviewPrioritySorted.length === 0){
         //there are no characters that can be shown
         const returnObject: characterSRSlogic = {

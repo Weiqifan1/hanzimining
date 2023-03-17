@@ -6,6 +6,8 @@ import { characterSRSactionCreators, State} from '../state/index';
 import {FlashCard} from "../interfaces/flashcard";
 import {FlashCardDeck} from "../interfaces/flashcarddeck";
 import {editListItemInBulk} from "../state/action-creators/characterSRSactionCreator";
+import {useState} from "react";
+import {filterByTags, getSettings_filtercardsbytag} from "../applogic/FlashcardDisplayLogic/FlashCardFiltering";
 
 const Statistics : React.FunctionComponent<IPage> = props => {
     const dispatch = useDispatch();
@@ -13,6 +15,7 @@ const Statistics : React.FunctionComponent<IPage> = props => {
     const characterSRSstate: FlashCardDeck = useSelector(
         (state: State) => state.characterSRS
     )
+    const [filteredCards, setFilteredCards] = useState<FlashCard[]>(getSettings_filtercardsbytag(characterSRSstate))
 
     const countCardNumbers = (input: FlashCard[]): number[] => {
         var result: number[] = []
@@ -25,17 +28,22 @@ const Statistics : React.FunctionComponent<IPage> = props => {
         return result
     }
 
-    const generateCountingDisplay = (input: FlashCard[]): string[] => {
+    const generateCountingDisplay = (input: FlashCard[], state: FlashCardDeck): string[] => {
         var result: string[] = []
         const countedNumbers: number[] = countCardNumbers(input)
+        const countFilteredCardNumbers: number[] = countCardNumbers(getSettings_filtercardsbytag(characterSRSstate))
+
         for (let i = 0; i < countedNumbers.length; i++) {
-            const currentLine: string = 'reviewNumber: ' + i + ' count: ' + countedNumbers[i]
+            var currentLine: string = 'reviewNumber: ' + i + ' count: ' + countedNumbers[i]
+            if (i < countFilteredCardNumbers.length) {
+                currentLine = currentLine + ' ' + '('+ countFilteredCardNumbers[i] +')'
+            }
             result.push(currentLine)
         }
         return result
     }
 
-    const reviewNumbersCount: string[] = generateCountingDisplay(characterSRSstate.cards)
+    const reviewNumbersCount: string[] = generateCountingDisplay(characterSRSstate.cards, characterSRSstate)
 
     const newReviewNumbers = (oldReviewNumber: number, numberToAdd: number): number => {
         if (numberToAdd > 0) {
@@ -112,6 +120,7 @@ const Statistics : React.FunctionComponent<IPage> = props => {
 
     return <div>
         <h1> The Statistics page </h1>
+        <p>number of cards: {characterSRSstate.cards.length} after filtering: {filteredCards.length}</p>
         <button type="button" onClick={increasePositiveReviewNumbersByOne}>increaseByOne</button>
         <button type="button" onClick={reducePositiveReviewNumbersByOne}>reduceByOne</button>
         <button type="button" onClick={resetCardHistory}>resetHistory</button>

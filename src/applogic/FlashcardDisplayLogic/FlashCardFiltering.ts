@@ -1,5 +1,26 @@
 import {FlashCard} from "../../interfaces/flashcard";
 import {isSortingValue} from "../../interfaces/types/sortingValue";
+import {FlashCardDeck} from "../../interfaces/flashcarddeck";
+
+export const getSettings_filtercardsbytag = (currentState: FlashCardDeck): FlashCard[] => {
+    return filterByTags(currentState.cards, dogetSettings_filtercardsbytag(currentState))
+}
+
+export const dogetSettings_filtercardsbytag = (currentState: FlashCardDeck): Record<string, string> => {
+    const subcategoryname: string = "filtercardsbytag"
+    const settings:  Record<string, Record<string, string>> = currentState.settings
+    var subcategory: Record<string, string> = {}
+    if (settings[subcategoryname]) {
+        subcategory = settings[subcategoryname]
+    }
+    return subcategory
+}
+
+export function filterByTags(inp: FlashCard[], localTagsFilter: Record<string, string>): FlashCard[] {
+    const cardsToUse: number[] = calculateFilter(inp, localTagsFilter)
+    const filteredCards: FlashCard[] = inp.filter(eachCard => cardsToUse.includes(eachCard.cardNumber))
+    return filteredCards;
+}
 
 export const calculateFilter = (inp: FlashCard[], localTagsFilter: Record<string, string>):　number[] => {
     var cardsToUse: number[] = []
