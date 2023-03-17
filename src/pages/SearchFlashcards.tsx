@@ -9,6 +9,7 @@ import CardDisplay from "../interfaces/cardDisplay";
 import DisplayTags from "../components/DisplayTags";
 import TagFilteringComponentList from "../components/TagFilteringComponentList";
 import {calculateFilter} from "../applogic/FlashcardDisplayLogic/FlashCardFiltering";
+import {getSettings_filtercardsbytag} from "../applogic/flashcardHelperFunctions/settingsHelper";
 
 const SearchFlashcards: React.FunctionComponent<IPage> = props => {
 
@@ -28,7 +29,8 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
             if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
 
     //tag filtering
-    const [localTagsFilter, setLocalTagsFilter] = useState<Record<string, string>>({})
+    const [localTagsFilter, setLocalTagsFilter] = useState<Record<string, string>>(getSettings_filtercardsbytag(characterSRSstate))
+    //const [localTagsFilter, setLocalTagsFilter] = useState<Record<string, string>>(setInitialLocalTagsFilter(localSettings))
     const [shouldRerender, setShouldRerender] = useState<boolean>(false)
     const [cardNumAfterFiltering, setCardNumAfterFiltering] = useState<FlashCard[]>([])
 

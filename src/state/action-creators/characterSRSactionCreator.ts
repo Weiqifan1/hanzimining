@@ -128,3 +128,15 @@ export const deleteOrEditCardOrder = (toDelete: string, toChange: string, deck: 
         })
     }
 }
+
+export const replacesettings_filtercardsbytag = (settingsToReplace: Record<string, string>, deck: FlashCardDeck) => {
+    return (dispatch: Dispatch<CharacterSRSaction>) => {
+        dispatch({
+            type: CharacterSRSactionTypes.REPLACESETTINGS_FILTERCARDSBYTAG,
+            payload: {
+                CharactersSRS: deck,
+                SettingsToReplace: settingsToReplace
+            }
+        })
+    }
+}

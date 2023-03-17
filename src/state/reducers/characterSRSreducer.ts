@@ -254,6 +254,13 @@ export function deleteOrEditCardOrder(CharsToBeDeleted: string, OrderToBeChanged
     }
 }
 
+export function replacesettings_filtercardsbytag(SettingsToReplace: Record<string, string>, CharactersSRS: FlashCardDeck): FlashCardDeck {
+    var settingsToUpdate: Record<string, Record<string, string>> = CharactersSRS.settings
+    settingsToUpdate["filtercardsbytag"] = SettingsToReplace
+    const updatedDeck: FlashCardDeck = {...CharactersSRS, settings: settingsToUpdate}
+    return updatedDeck
+}
+
 function deleteCards(input: number[], CharactersSRS: FlashCardDeck): FlashCardDeck {
     if (input == null || input.length == 0) {
         return CharactersSRS
@@ -411,6 +418,8 @@ const characterSRSreducer = (state: FlashCardDeck = initialState, action: Charac
             return createDeck(action.payload.Content, action.payload.CharactersSRS)
         case CharacterSRSactionTypes.DELETEOREDITCARDORDER:
             return deleteOrEditCardOrder(action.payload.CharsToBeDeleted, action.payload.OrderToBeChanged, action.payload.CharactersSRS)
+        case CharacterSRSactionTypes.REPLACESETTINGS_FILTERCARDSBYTAG:
+            return replacesettings_filtercardsbytag(action.payload.SettingsToReplace, action.payload.CharactersSRS)
         default:
             return state
     }

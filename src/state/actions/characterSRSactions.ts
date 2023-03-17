@@ -76,4 +76,12 @@ interface DeleteOrEditCardOrder {
     }
 }
 
-export type CharacterSRSaction = CreateSRSobject | EditListItem | EditListItemsInBulk | AddNewTag | RemoveTag | EditSingleTag | AddNewCardToDeck | CreateDeck | DeleteOrEditCardOrder
+interface ReplaceSettings_FilterCardsByTag {
+    type: CharacterSRSactionTypes.REPLACESETTINGS_FILTERCARDSBYTAG
+    payload: {
+        CharactersSRS: FlashCardDeck,
+        SettingsToReplace: Record<string, string>
+    }
+}
+
+export type CharacterSRSaction = CreateSRSobject | EditListItem | EditListItemsInBulk | AddNewTag | RemoveTag | EditSingleTag | AddNewCardToDeck | CreateDeck | DeleteOrEditCardOrder | ReplaceSettings_FilterCardsByTag

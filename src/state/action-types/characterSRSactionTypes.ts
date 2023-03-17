@@ -7,5 +7,6 @@ export enum CharacterSRSactionTypes{
     REMOVETAG = "removetag",
     EDITSINGLETAG = "editsingletag",
     CREATENEWDECK = "createnewdeck",
-    DELETEOREDITCARDORDER = "deleteoreditcardorder"
+    DELETEOREDITCARDORDER = "deleteoreditcardorder",
+    REPLACESETTINGS_FILTERCARDSBYTAG = "replacesettings_filtercardsbytag"
 }
