@@ -8,6 +8,7 @@ import {bindActionCreators} from "redux";
 import CardDisplay from "../interfaces/cardDisplay";
 import DisplayTags from "../components/DisplayTags";
 import TagFilteringComponentList from "../components/TagFilteringComponentList";
+import {calculateFilter} from "../applogic/FlashcardDisplayLogic/FlashCardFiltering";
 
 const SearchFlashcards: React.FunctionComponent<IPage> = props => {
 
@@ -74,7 +75,11 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
 
     function filterByTags(inp: FlashCard[], localTagsFilter: Record<string, string>): FlashCard[] {
         console.log("filterByTags")
-        return inp;
+        //calculateFilter
+        const cardsToUse: number[] = calculateFilter(inp, localTagsFilter)
+        const filteredCards: FlashCard[] = inp.filter(eachCard => cardsToUse.includes(eachCard.cardNumber))
+        console.log("filterByTags done")
+        return filteredCards;
     }
 
     const filterCards = (inp: FlashCard[], localTagsFilter: Record<string, string>) => {

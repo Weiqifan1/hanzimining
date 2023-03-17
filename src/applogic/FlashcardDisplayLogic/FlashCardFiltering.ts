@@ -48,9 +48,13 @@ function handleFilterString(eachstr: string, secureCardList: FlashCard[], uncert
 }
 
 const hasTag = (tag: string, flashCard: FlashCard): boolean => {
-    if (flashCard != null && flashCard.tags != null && flashCard.tags.includes(tag)) {
-        return true
-    }else {
+    try {
+        if (flashCard && flashCard.tags && flashCard.tags?.includes(tag)) {
+            return true
+        }else {
+            return false
+        }
+    }catch (e) {
         return false
     }
 }
