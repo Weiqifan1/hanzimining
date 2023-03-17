@@ -33,7 +33,6 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
     const [cardNumAfterFiltering, setCardNumAfterFiltering] = useState<FlashCard[]>([])
 
     const doSetLocalTagsFilter = (input: Record<string, string>) => {
-        console.log("nyt elem er sat")
         setLocalTagsFilter(input)
         setShouldRerender(!shouldRerender)
     }
@@ -76,11 +75,8 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
     }
 
     function filterByTags(inp: FlashCard[], localTagsFilter: Record<string, string>): FlashCard[] {
-        console.log("filterByTags")
-        //calculateFilter
         const cardsToUse: number[] = calculateFilter(inp, localTagsFilter)
         const filteredCards: FlashCard[] = inp.filter(eachCard => cardsToUse.includes(eachCard.cardNumber))
-        console.log("filterByTags done")
         return filteredCards;
     }
 

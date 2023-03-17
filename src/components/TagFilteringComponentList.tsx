@@ -40,7 +40,6 @@ const TagFilteringComponentList: React.FC<{deckTagList: string[], content: Recor
     }
 
     const display: JSX.Element = <section>
-        <p>her er teksten</p>
         <button type="button" onClick={addElement}>addElement</button>
         <button type="button" onClick={clear}>clear</button>
         <ul>

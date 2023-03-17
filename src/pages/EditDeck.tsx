@@ -81,13 +81,12 @@ const EditDeck: React.FunctionComponent<IPage> = props => {
             backSide: localbackSide,
             primaryInfo: localprimaryInfo,
             secondaryInfo: localsecondaryInfo,
-            notableCards: [],//generateNotableCards(localnotableCards, deck),
+            notableCards: [],
             dateOfLastReview: "0001-01-01",
             repetitionValue: 0,
             repetitionHistory: [],
             tags: generateTags(localtags, deck)
         }
-
         addNewCardsToDeck([newCard], characterSRSstate)
     }
 

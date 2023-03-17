@@ -203,7 +203,7 @@ const Practice: React.FunctionComponent<IPage> = props => {
             {...current,
                 repetitionValue: updatedReviewValue,
                 dateOfLastReview: updatedDate,
-                repetitionHistory: generateRepetitionHistoryOfLength10(current.repetitionHistory, increaseOrDecreaseReviewValue)
+                repetitionHistory: generateRepetitionHistoryOfLength30(current.repetitionHistory, increaseOrDecreaseReviewValue)
             }
         const updatedCharacterSRS: FlashCardDeck = {...characterSRSstate}
         setShowCharacterSRSContentElement(false)
@@ -215,12 +215,12 @@ const Practice: React.FunctionComponent<IPage> = props => {
         editListItemInBulk([updatedContent], updatedCharacterSRS)
     }
 
-    const generateRepetitionHistoryOfLength10 = (oldHistory: number[], increaseOrDecrease: number): number[] => {
-        const basicHistory: number[] = [1,1,1,1,1,1,1,1,1,0]
+    const generateRepetitionHistoryOfLength30 = (oldHistory: number[], increaseOrDecrease: number): number[] => {
+        const basicHistory: number[] = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0]
         if (oldHistory == null ||
             oldHistory == undefined ||
-            oldHistory.length < 10 ||
-            oldHistory.length > 10) {
+            oldHistory.length < 30 ||
+            oldHistory.length > 30) {
             return basicHistory
         }else {
             if (increaseOrDecrease > 0) {

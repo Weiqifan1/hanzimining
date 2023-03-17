@@ -7,7 +7,7 @@ import {addNewCardsToDeck} from "../action-creators/characterSRSactionCreator";
 const initialState: FlashCardDeck = {
     deckName: '',
     deckInfo: '',
-    settings: {} as Record<string, string>,
+    settings: {} as Record<string, Record<string, string>>,
     tags: {} as Record<string, string>,
     cards: []
 }

@@ -7,6 +7,7 @@ import Statistics from "../pages/Statistics";
 import IRoute from "../interfaces/route";
 import CreateDeck from "../pages/CreateDeck";
 import Home from "../pages/Home";
+import Settings from "../pages/Settings";
 
 const routes: IRoute[] = [
     {
@@ -56,6 +57,12 @@ const routes: IRoute[] = [
         path: '/statistics',
         name: 'Statistics',
         component: Statistics,
+        exact: true
+    },
+    {
+        path: '/settings',
+        name: 'Settings',
+        component: Settings,
         exact: true
     }
 ]
