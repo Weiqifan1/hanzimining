@@ -30,6 +30,8 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
     //tag filtering
     const [localTagsFilter, setLocalTagsFilter] = useState<Record<string, string>>({})
     const [shouldRerender, setShouldRerender] = useState<boolean>(false)
+    const [cardNumAfterFiltering, setCardNumAfterFiltering] = useState<FlashCard[]>([])
+
     const doSetLocalTagsFilter = (input: Record<string, string>) => {
         console.log("nyt elem er sat")
         setLocalTagsFilter(input)
@@ -84,6 +86,7 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
 
     const filterCards = (inp: FlashCard[], localTagsFilter: Record<string, string>) => {
         const inputListOfCards: FlashCard[] = filterByTags(inp, localTagsFilter)
+        setCardNumAfterFiltering(inputListOfCards)
         if (numberIntervalFilter.length > 0) {
             const result = displayByInterval(inputListOfCards)
             setDisplayChars(result.slice(0,maxCardsToDisplay))
@@ -233,7 +236,7 @@ const SearchFlashcards: React.FunctionComponent<IPage> = props => {
 
     return <section>
         <h1>Search current flashcard Deck</h1>
-        <p>number of cards: {characterSRSstate.cards.length}</p>
+        <p>number of cards: {characterSRSstate.cards.length} after filtering: {cardNumAfterFiltering.length} cards displayed: {displayChars.length}</p>
         <button type="button" onClick={toggleSize}>toggle size {maxCardsToDisplay}</button>
         <button type="button" onClick={clearData}>clear data</button>
         <button type="button" onClick={sortbyIndexNumberAscendingInclUnknown}>sortAllCardsByCharNumberAscending</button>
