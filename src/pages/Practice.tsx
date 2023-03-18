@@ -13,7 +13,11 @@ import characterSRSlogic from "../interfaces/characterSRSlogic";
 import {calculateNextCharacter} from "../applogic/characterSRSlogic/calculateCharacterSRSorder/characterSRSlogicBoundary";
 import CardComponent from "../components/CardComponent";
 import CardDisplay from "../interfaces/cardDisplay";
-import {filterByTags, getSettings_filtercardsbytag} from "../applogic/FlashcardDisplayLogic/FlashCardFiltering";
+import {
+    filterByTags,
+    getSettings_filtercardsbytag,
+    getSettings_filtercardsbytag_numbers
+} from "../applogic/FlashcardDisplayLogic/FlashCardFiltering";
 
 const Practice: React.FunctionComponent<IPage> = props => {
 
@@ -40,12 +44,13 @@ const Practice: React.FunctionComponent<IPage> = props => {
         (state: State) => state.cardDisplay
     )
     var cardDisplayLocalState: CardDisplay = showCardDisplay
+    const localTagsFilterNumbers: Set<number> = getSettings_filtercardsbytag_numbers(characterSRSstate)
 
     const todoPageContent = (): ReactElement => {
         let contentOrNotEnough;
         //update cards to select from, by taking filtering into account
         //const localTagsFilter: Record<string, string> =
-        const filteredCards: FlashCard[] = getSettings_filtercardsbytag(characterSRSstate)
+        const filteredCards: FlashCard[] = characterSRSstate.cards.filter(each => localTagsFilterNumbers.has(each.cardNumber))
         //const updatedSrs: FlashCardDeck = {...characterSRSstate}
         const updatedSrs: FlashCardDeck = {...characterSRSstate, cards: filteredCards}
 
@@ -100,7 +105,7 @@ const Practice: React.FunctionComponent<IPage> = props => {
         const allCharacters: number = characterSRSstate.cards.filter(eachContent => {
             return eachContent.repetitionValue > 0
         }).length
-        return <p>highest character: {finalCharValue} all characters: {allCharacters}</p>
+        return <p>highest character: {finalCharValue} all characters: {allCharacters} filtered: {localTagsFilterNumbers.size}</p>
     }
 
     //used to either add new character or delete old ones (remove it from the deck)

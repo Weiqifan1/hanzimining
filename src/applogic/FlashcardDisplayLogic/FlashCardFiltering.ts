@@ -2,6 +2,12 @@ import {FlashCard} from "../../interfaces/flashcard";
 import {isSortingValue} from "../../interfaces/types/sortingValue";
 import {FlashCardDeck} from "../../interfaces/flashcarddeck";
 
+export const getSettings_filtercardsbytag_numbers = (currentState: FlashCardDeck): Set<number> => {
+    const cards: FlashCard[] = filterByTags(currentState.cards, dogetSettings_filtercardsbytag(currentState))
+    const cardnumbers: Set<number> = new Set(cards.map(each => each.cardNumber))
+    return cardnumbers
+}
+
 export const getSettings_filtercardsbytag = (currentState: FlashCardDeck): FlashCard[] => {
     return filterByTags(currentState.cards, dogetSettings_filtercardsbytag(currentState))
 }
