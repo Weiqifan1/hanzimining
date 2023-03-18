@@ -26,7 +26,7 @@ const Settings: React.FunctionComponent<IPage> = props => {
     const [localfiltercardsbytag, setLocalfiltercardsbytag] = useState<Record<string, string>>(getSettings_filtercardsbytag(characterSRSstate))
     const doSetLocalfiltercardsbytag = (input: Record<string, string>) => {
         setLocalfiltercardsbytag(input)
-        replacesettings_filtercardsbytag(localfiltercardsbytag, characterSRSstate)
+        replacesettings_filtercardsbytag(input, characterSRSstate)
         setShouldRerender(!shouldRerender)
     }
 

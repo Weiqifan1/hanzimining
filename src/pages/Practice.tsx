@@ -24,6 +24,7 @@ const Practice: React.FunctionComponent<IPage> = props => {
     const addCharactersReference = useRef<HTMLInputElement | null>(null);
     useEffect(()=>{addCharactersReference.current?.focus();},[])
 
+    //the current card being looked at
     var currentContent: FlashCard;
     const [showCharacterSRSContentElement, setShowCharacterSRSContentElement] = useState<boolean>(false)
     const [showPreviusCard, setShowPreviusCard] = useState<boolean>(false)
@@ -66,6 +67,7 @@ const Practice: React.FunctionComponent<IPage> = props => {
             contentOrNotEnough = <p>not enough characters. add more to deck</p>
         }else {
             if (srscalculationResult.currentContent) {
+                //set global content variable
                 currentContent = srscalculationResult.currentContent
                 contentOrNotEnough = generateCardComponent(
                     srscalculationResult.currentContent,
@@ -157,7 +159,18 @@ const Practice: React.FunctionComponent<IPage> = props => {
     }
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key.toString() === ' ' || event.key.toString() === "ArrowRight") {
+        const spaceOrRightArrow: boolean = event.key.toString() === ' ' || event.key.toString() === "ArrowRight"
+
+        //if the use wants to test themselves by writing the backside of the card
+        if (spaceOrRightArrow
+                && currentContent
+                && addMoreCharactersTextField
+                && addMoreCharactersTextField != " "
+                && currentContent.backSide.indexOf(addMoreCharactersTextField.trim()) > -1) {
+            setAddMoreCharactersTextField("")
+            increaseReviewValueWithOne()
+        }else if (spaceOrRightArrow) {
+            //mark the card correct
             setAddMoreCharactersTextField("")
             if (showCharacterSRSContentElement) {
                 increaseReviewValueWithOne()
@@ -165,6 +178,7 @@ const Practice: React.FunctionComponent<IPage> = props => {
                 setShowCharacterSRSContentElementFunc()
             }
         }else if(event.key.toString() === "ArrowLeft"){
+            //mark the card incorrect
             setAddMoreCharactersTextField("")
             if (showCharacterSRSContentElement) {
                 decreaseReviewValueWithOne()

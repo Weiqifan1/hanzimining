@@ -31,14 +31,24 @@ const Statistics : React.FunctionComponent<IPage> = props => {
     const generateCountingDisplay = (input: FlashCard[], state: FlashCardDeck): string[] => {
         var result: string[] = []
         const countedNumbers: number[] = countCardNumbers(input)
-        const countFilteredCardNumbers: number[] = countCardNumbers(getSettings_filtercardsbytag(characterSRSstate))
+        const filteredCards: FlashCard[] = getSettings_filtercardsbytag(characterSRSstate)
+        const countFilteredCardNumbers: number[] = countCardNumbers(filteredCards)
 
-        for (let i = 0; i < countedNumbers.length; i++) {
-            var currentLine: string = 'reviewNumber: ' + i + ' count: ' + countedNumbers[i]
-            if (i < countFilteredCardNumbers.length) {
-                currentLine = currentLine + ' ' + '('+ countFilteredCardNumbers[i] +')'
+        //statistics display with no filtered cards
+        if (filteredCards && input && filteredCards.length == input.length) {
+            for (let i = 0; i < countedNumbers.length; i++) {
+                const currentLine: string = 'reviewNumber: ' + i + ' count: ' + countedNumbers[i]
+                result.push(currentLine)
             }
-            result.push(currentLine)
+        }else {
+        //statistics display with filtered cards
+            for (let i = 0; i < countedNumbers.length; i++) {
+                var currentLine: string = 'reviewNumber: ' + i + ' count: ' + countedNumbers[i]
+                if (i < countFilteredCardNumbers.length) {
+                    currentLine = currentLine + ' ' + '('+ countFilteredCardNumbers[i] +')'
+                }
+                result.push(currentLine)
+            }
         }
         return result
     }

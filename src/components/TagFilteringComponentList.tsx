@@ -42,6 +42,7 @@ const TagFilteringComponentList: React.FC<{deckTagList: string[], content: Recor
     const clear = () => {
         var currentRecord: Record<string, string> = {}
         props.setfunction(currentRecord)
+        doSetShow()
     }
 
     const showFitler = (): JSX.Element  => {
