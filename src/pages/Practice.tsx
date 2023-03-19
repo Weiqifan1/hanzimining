@@ -159,7 +159,10 @@ const Practice: React.FunctionComponent<IPage> = props => {
     }
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        const spaceOrRightArrow: boolean = event.key.toString() === ' ' || event.key.toString() === "ArrowRight"
+        const spaceOrRightArrow: boolean = event.key.toString() === ' '
+            || event.key.toString() === "ArrowRight"
+            || event.key.toString() === '‘'
+            || event.key.toString() === '`'
 
         //if the use wants to test themselves by writing the backside of the card
         if (spaceOrRightArrow
