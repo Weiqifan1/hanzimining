@@ -14,7 +14,7 @@ const Home: React.FunctionComponent<IPage> = props => {
 
     return <section>
         <h1>Home</h1>
-        <p>...</p>
+        <p>... test</p>
     </section>
 };
 
