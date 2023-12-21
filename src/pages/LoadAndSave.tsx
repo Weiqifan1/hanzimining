@@ -25,6 +25,14 @@ const LoadAndSave: React.FunctionComponent<IPage> = props => {
         file: null
     })
 
+    //text passed from FileInput
+    const [content, setContent] = useState('');
+    const handleContent = (fileContent: string) => {
+        setContent(fileContent);
+        let testLarge: FlashCardDeck = JSON.parse(fileContent);
+        createSRSobject(testLarge);
+    }
+
     const mergeInputDeck = () => {
         const deckToMerge: string = ((document.getElementById("deckToMerge") as HTMLInputElement).value.trim());
         try{
@@ -139,7 +147,7 @@ const LoadAndSave: React.FunctionComponent<IPage> = props => {
 
     return <section>
         <h1>Load and download flashcard files</h1>
-        <FileInput />
+        <FileInput onContentChange={handleContent}/>
 
         <button type="button" onClick={() => downloadCharacterSRSobject()}>download changes</button>
         <button type="button" onClick={() => processJsonInput()}>process json</button>
