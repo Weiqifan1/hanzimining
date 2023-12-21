@@ -8,6 +8,7 @@ import {FileUploader} from "../components/FileUploader";
 import {DragAndDropState} from "../interfaces/dragAndDropState";
 import {FlashCard} from "../interfaces/flashcard";
 import {mergeDecks} from "../applogic/pageHelpers/mergeDeckHelper";
+import FileInput from '../components/FileInput';
 
 function clearMergeInputField() {
     (document.getElementById("deckToMerge") as HTMLInputElement).value = ""
@@ -138,6 +139,8 @@ const LoadAndSave: React.FunctionComponent<IPage> = props => {
 
     return <section>
         <h1>Load and download flashcard files</h1>
+        <FileInput />
+
         <button type="button" onClick={() => downloadCharacterSRSobject()}>download changes</button>
         <button type="button" onClick={() => processJsonInput()}>process json</button>
         <button type="button" onClick={() => clearInputField()}>clear data</button>
