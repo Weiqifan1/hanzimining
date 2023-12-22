@@ -13,6 +13,10 @@ import {
     getTagFromDeck
 } from "../applogic/flashcardHelperFunctions/gettingFlashCards";
 import CardDisplay from "../interfaces/cardDisplay";
+import ScrollableTextArea from "./ScrollableTextAreaComponent";
+import EditablePrimaryInfo from "./EditableTextAreaComponent";
+import EditableTextAreaComponent from "./EditableTextAreaComponent";
+import EditableTextArea from "./EditableTextAreaComponent";
 
 const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: CardDisplay}> =
     (props: PropsWithChildren<{content: FlashCard, show: boolean, cardDisplay: CardDisplay}>) => {
@@ -70,18 +74,7 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: C
         }
     }
 
-    function convertStringToListOfStrings(primaryOrSEcondaryInfo: string, infoStringToDisplay: string) {
-        var mylist = primaryOrSEcondaryInfo.split("\n")
-        const display: JSX.Element = <section>
-            <ul>
-                <li><strong>{infoStringToDisplay}</strong></li>
-                {mylist.map(
-                    each => <li style={{textAlign: 'left'}}>`{each}` </li>
-                )}
-            </ul>
-        </section>
-        return display
-    }
+
 
     const renderFrontSide = (): ReactElement => {
         const ordinaryFrontSide: ReactElement = <section> <li onInput={(e) =>
@@ -170,19 +163,37 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: C
                         Object.keys(characterSRSstate.tags))}
                     contentEditable="true">
                     {FlashCardStateManipulation.displayStringList(content.tags)}</li>  : <li></li>}
-                { props.show&&props.cardDisplay.showPrimaryCardInfo ? <li onInput={(e) =>
-                    tempPrimaryInfo = FlashCardStateManipulation.editStringvalue(e, props.content.primaryInfo)}
-                                   contentEditable="true">
-                    {convertStringToListOfStrings(content.primaryInfo, "primary info:")}</li> : <li></li>}
 
-                { props.show&&props.cardDisplay.showSecondaryCardInfo ? <li onInput={(e) =>
-                    tempSecondaryInfo = FlashCardStateManipulation.editStringvalue(e, props.content.secondaryInfo)}
-                                                        contentEditable="true">
-                    {convertStringToListOfStrings(content.secondaryInfo, "secondary info:")}</li> : <li></li>}
+                <li><EditableTextArea
+                    show={props.cardDisplay.showPrimaryCardInfo}
+                    info={props.content.primaryInfo}
+                    infoStringToDisplay={"primary info:"}
+                    onInputChange={(e: React.ChangeEvent<HTMLTextAreaElement>, currentInfo: string) => FlashCardStateManipulation.editStringvalue(e, currentInfo)}
+                /></li>
+
+                <li><EditableTextArea
+                    show={props.cardDisplay.showSecondaryCardInfo}
+                    info={props.content.secondaryInfo}
+                    infoStringToDisplay={"secondary info:"}
+                    onInputChange={(e: React.ChangeEvent<HTMLTextAreaElement>, currentInfo: string) => FlashCardStateManipulation.editStringvalue(e, currentInfo)}
+                /></li>
+
             </ul>
         </section>
         return display
     }
+
+
+        /*
+        { props.show&&props.cardDisplay.showPrimaryCardInfo ? <li onInput={(e) =>
+            tempPrimaryInfo = FlashCardStateManipulation.editStringvalue(e, props.content.primaryInfo)}
+                           contentEditable="true">
+            {convertStringToListOfStrings(content.primaryInfo, "primary info:")}</li> : <li></li>}
+
+        { props.show&&props.cardDisplay.showSecondaryCardInfo ? <li onInput={(e) =>
+            tempSecondaryInfo = FlashCardStateManipulation.editStringvalue(e, props.content.secondaryInfo)}
+                                                contentEditable="true">
+            {convertStringToListOfStrings(content.secondaryInfo, "secondary info:")}</li> : <li></li>}*/
 
     const displayNotableCard = (input: FlashCard): JSX.Element  => {
         const display: JSX.Element = <section>
@@ -195,12 +206,30 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: C
                 <li>{input.repetitionHistory}</li>
                 <li>{input.frontSide}</li>
                 <li>{FlashCardStateManipulation.displayNumberList(input.notableCards)}</li>
-               <li>{input.primaryInfo}</li>
-                {props.cardDisplay.showSecondaryCardInfo ? <li>{input.secondaryInfo}</li> : <li></li>}
+                <li>{props.cardDisplay.showPrimaryCardInfo ?
+                        <ScrollableTextArea text={input.primaryInfo}/> : null}</li>
+                <li>{props.cardDisplay.showSecondaryCardInfo ?
+                        <ScrollableTextArea text={input.secondaryInfo}/> : null}</li>
             </ul>
         </section>
         return display
     }
+//{props.cardDisplay.showPrimaryCardInfo ? <li>{input.primaryInfo}</li> : <li></li>}
+/*
+
+                {props.cardDisplay.showPrimaryCardInfo ? <li>{input.primaryInfo}</li> : <li></li>}s
+                {props.cardDisplay.showSecondaryCardInfo ? <li>{input.secondaryInfo}</li> : <li></li>}
+
+    const ScrollableTextArea = (text: string) => {
+        return (
+            <textarea
+                value={text}
+                style={{ width: '300px', height: '200px', overflowY: 'auto' }}
+                readOnly
+            />
+        );
+    };
+*/
 
     const toggleShowNotableCards = () => {
         if (showNotableChardButtons) {
