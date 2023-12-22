@@ -11,7 +11,6 @@ const FileInput =  ({ onContentChange }: FileInputProps) => {
     // Using 'any' type to avoid TypeScript errors
     const [files, setFiles] = useState<any[]>([]);
     const [content, setContent] = useState("");
-    const [display, setDisplay] = useState("");
 
     const handleInit = () => {
         console.log('FilePond instance has initialised');
@@ -29,16 +28,13 @@ const FileInput =  ({ onContentChange }: FileInputProps) => {
                     const reader = new FileReader();
 
                     reader.onload = (e) => {
-                        //setContent(e.target?.result as string || '');
                         const content = e.target?.result as string || '';
-                        onContentChange(content); //
-                        //setDisplay(content.length);
+                        onContentChange(content);
                     };
 
                     reader.readAsText(file);
                 }}
                 onupdatefiles={fileItems => {
-                    // Using 'any' for the file items to avoid TypeScript errors
                     setFiles(fileItems.map(fileItem => fileItem.file));
                 }}
             />
