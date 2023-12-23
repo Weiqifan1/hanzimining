@@ -32,14 +32,23 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: C
     const [tagToDisplay, setTagToDisplay] = useState<String>("")
     const [showTagButtons, setShowTagButtons] = useState<boolean>(false)
     const [localCard, setLocalCard] = useState<FlashCard>(props.content)
-    //const [selectSentenceField, setSelectSentenceField] = useState<boolean>(false)
+
+    // primary and secondary information
+    const [tempPrimaryInfo, setTempPrimaryInfo] = useState(props.content.primaryInfo);
+    const handlePrimaryInfoInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+            // handle the input change here, maybe with something like:
+        setTempPrimaryInfo(event.target.value);
+    };
+    const [tempSecondaryInfo, setTempSecondaryInfo] = useState(props.content.secondaryInfo);
+    const handleSecondaryInfoInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setTempSecondaryInfo(event.target.value);
+    };
+
 
     const content: FlashCard = props.content
     var tempReviewValue: number = props.content.repetitionValue
     var tempDateOfLastReview: string = props.content.dateOfLastReview
     var tempKeyword: string = props.content.frontSide
-    var tempPrimaryInfo: string = props.content.primaryInfo
-    var tempSecondaryInfo: string = props.content.secondaryInfo
     var tempNotableCards: number[] = props.content.notableCards
     var tempCardName: string = props.content.cardName
     var tempTagsOnCard: string[] = props.content.tags
@@ -73,8 +82,6 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: C
             editListItem(newContentObject, characterSRSstate)
         }
     }
-
-
 
     const renderFrontSide = (): ReactElement => {
         const ordinaryFrontSide: ReactElement = <section> <li onInput={(e) =>
@@ -164,24 +171,29 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: C
                     contentEditable="true">
                     {FlashCardStateManipulation.displayStringList(content.tags)}</li>  : <li></li>}
 
+
                 <li><EditableTextArea
-                    show={props.cardDisplay.showPrimaryCardInfo}
-                    info={props.content.primaryInfo}
+                    showCard={props.show}
+                    showArea={props.cardDisplay.showPrimaryCardInfo}
+                    info={tempPrimaryInfo}//props.content.primaryInfo
                     infoStringToDisplay={"primary info:"}
-                    onInputChange={(e: React.ChangeEvent<HTMLTextAreaElement>, currentInfo: string) => FlashCardStateManipulation.editStringvalue(e, currentInfo)}
+                    onInputChange={handlePrimaryInfoInputChange}
                 /></li>
 
                 <li><EditableTextArea
-                    show={props.cardDisplay.showSecondaryCardInfo}
-                    info={props.content.secondaryInfo}
+                    showCard={props.show}
+                    showArea={props.cardDisplay.showSecondaryCardInfo}
+                    info={tempSecondaryInfo}//props.content.secondaryInfo
                     infoStringToDisplay={"secondary info:"}
-                    onInputChange={(e: React.ChangeEvent<HTMLTextAreaElement>, currentInfo: string) => FlashCardStateManipulation.editStringvalue(e, currentInfo)}
+                    onInputChange={handleSecondaryInfoInputChange}
                 /></li>
 
             </ul>
         </section>
         return display
     }
+
+
 
 
         /*
