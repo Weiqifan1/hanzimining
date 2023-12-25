@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {bindActionCreators} from "redux";
 import { characterSRSactionCreators, State } from '../state/index';
 import FileInputMainDeck from '../components/FileInputMainDeck';
+import FileInputMergeFiles from "../components/FileInputMergeFiles";
 
 
 const MergeFiles: React.FunctionComponent<IPage> = props => {
@@ -14,8 +15,14 @@ const MergeFiles: React.FunctionComponent<IPage> = props => {
         (state: State) => state.characterSRS
     )
 
+    const handleContent = (fileContent: string) => {
+        let testLarge: FlashCardDeck = JSON.parse(fileContent);
+        createSRSobject(testLarge);
+    }
+
     return <section>
         <h1>Merge deck files</h1>
+        <FileInputMergeFiles onContentChange={handleContent}/>
 
     </section>
 };
