@@ -8,6 +8,7 @@ import IRoute from "../interfaces/route";
 import CreateDeck from "../pages/CreateDeck";
 import Home from "../pages/Home";
 import Settings from "../pages/Settings";
+import MergeFiles from "../pages/MergeFiles";
 
 const routes: IRoute[] = [
     {
@@ -27,8 +28,19 @@ const routes: IRoute[] = [
         name: 'CreateDeck',
         component: CreateDeck,
         exact: true
-    }
-    ,
+    },
+    {
+        path: '/mergefiles',
+        name: 'MergeFiles',
+        component: MergeFiles,
+        exact: true
+    },
+    {
+        path: '/editdeck',
+        name: 'EditDeck',
+        component: EditDeck,
+        exact: true
+    },
     {
         path: '/searchflashcards',
         name: 'Search',
@@ -39,12 +51,6 @@ const routes: IRoute[] = [
         path: '/practice',
         name: 'Practice',
         component: Practice,
-        exact: true
-    },
-    {
-        path: '/editdeck',
-        name: 'EditDeck',
-        component: EditDeck,
         exact: true
     },
     {
