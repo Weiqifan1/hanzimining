@@ -4,7 +4,7 @@ import {FlashCardDeck} from "../interfaces/flashcarddeck";
 import { useDispatch, useSelector } from "react-redux";
 import {bindActionCreators} from "redux";
 import { characterSRSactionCreators, State } from '../state/index';
-import FileInput from '../components/FileInput';
+import FileInputMainDeck from '../components/FileInputMainDeck';
 
 
 const MergeFiles: React.FunctionComponent<IPage> = props => {

@@ -7,7 +7,7 @@ interface FileInputProps {
     onContentChange: (content: string) => void;
 }
 
-const FileInput =  ({ onContentChange }: FileInputProps) => {
+const FileInputMainDeck =  ({ onContentChange }: FileInputProps) => {
     // Using 'any' type to avoid TypeScript errors
     const [files, setFiles] = useState<any[]>([]);
     const [content, setContent] = useState("");
@@ -43,4 +43,4 @@ const FileInput =  ({ onContentChange }: FileInputProps) => {
     );
 };
 
-export default FileInput;
+export default FileInputMainDeck;

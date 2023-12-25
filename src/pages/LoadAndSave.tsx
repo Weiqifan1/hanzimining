@@ -4,7 +4,7 @@ import {FlashCardDeck} from "../interfaces/flashcarddeck";
 import { useDispatch, useSelector } from "react-redux";
 import {bindActionCreators} from "redux";
 import { characterSRSactionCreators, State } from '../state/index';
-import FileInput from '../components/FileInput';
+import FileInputMainDeck from '../components/FileInputMainDeck';
 
 function clearMergeInputField() {
     (document.getElementById("deckToMerge") as HTMLInputElement).value = ""
@@ -46,7 +46,7 @@ const LoadAndSave: React.FunctionComponent<IPage> = props => {
 
     return <section>
         <h1>Load and download flashcard files</h1>
-        <FileInput onContentChange={handleContent}/>
+        <FileInputMainDeck onContentChange={handleContent}/>
 
         <button type="button" onClick={() => downloadCharacterSRSobject()}>download changes</button>
         <p>{characterSRSstate.cards.length}</p>
