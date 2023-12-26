@@ -20,9 +20,13 @@ const MergeFiles: React.FunctionComponent<IPage> = props => {
         createSRSobject(testLarge);
     }
 
+    const handleContent2 = (fileContent: FlashCardDeck[]) => {
+        console.log("Antal Decks: " + fileContent.length)
+    }
+
     return <section>
         <h1>Merge deck files</h1>
-        <FileInputMergeFiles onContentChange={handleContent}/>
+        <FileInputMergeFiles handleContent={handleContent2}/>
 
     </section>
 };
