@@ -9,12 +9,13 @@ type Props = {
     // other props as needed
 };
 
-
 const FileInputMergeFiles: React.FC<Props> = ({ handleContent }) => {
 
     //lav mappen om til: Map<number, [string, FlashCardDeck | null]>
     const [flashCardDecks, setFlashCardDecks] =
         useState<Map<string, [number, FlashCardDeck | null]>>(new Map());
+
+    const pond = React.useRef<any>(null);
 
     function updateDeckState(deck: Map<string, [number, FlashCardDeck | null]>) {
         setFlashCardDecks(deck);
@@ -105,10 +106,24 @@ const FileInputMergeFiles: React.FC<Props> = ({ handleContent }) => {
         }
     }
 
+    const removeAllFiles = () => {
+        // logic to remove all files
+        if (pond.current) {
+            const fileItems = pond.current.getFiles();
+            // Loop over the file items and remove each one
+            fileItems.forEach((fileItem: any) => {
+                pond.current.removeFile(fileItem.id);
+            });
+        }
+        const emptyMap: Map<string, [number, FlashCardDeck | null]> = new Map();
+        updateDeckState(emptyMap);
+    }
 
     return (
         <div>
+            <button onClick={removeAllFiles}>Remove All Files</button>
             <FilePond
+                ref={(ref) => (pond.current = ref)}
                 allowMultiple={true}
                 acceptedFileTypes={['application/json']} // If files are JSON
                 onaddfile={handleProcessedFile}
