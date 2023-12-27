@@ -1,5 +1,5 @@
-import {FlashCardDeck} from "../interfaces/flashcarddeck";
-import {FlashCard} from "../interfaces/flashcard";
+import {FlashCardDeck} from "../../interfaces/flashcarddeck";
+import {FlashCard} from "../../interfaces/flashcard";
 
 
 export const testDeckList = (): FlashCardDeck[] => [testDeck_a(), testDeck_b(), testDeck_c()]

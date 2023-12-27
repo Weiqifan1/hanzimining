@@ -1,14 +1,14 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import {addNewCardToDeck} from '../src/state/reducers/characterSRSreducer'
-import App from './App';
-import {FlashCard} from "./interfaces/flashcard";
-import {FlashCardDeck} from "./interfaces/flashcarddeck";
-import {deleteOrEditCardOrder} from '../src/state/reducers/characterSRSreducer'
-import {generateAllLinesDeck, replaceDeckNameAndInfo} from "./applogic/pageHelpers/createDeckHelper";
-import {mergeDecks} from "./applogic/pageHelpers/mergeDeckHelper";
-import {mapkeys} from "./applogic/flashcardHelperFunctions/gettingFlashCards";
-import {calculateFilter} from "./applogic/FlashcardDisplayLogic/FlashCardFiltering";
+import {addNewCardToDeck} from '../../state/reducers/characterSRSreducer'
+import App from '../../App';
+import {FlashCard} from "../../interfaces/flashcard";
+import {FlashCardDeck} from "../../interfaces/flashcarddeck";
+import {deleteOrEditCardOrder} from '../../state/reducers/characterSRSreducer'
+import {generateAllLinesDeck, replaceDeckNameAndInfo} from "../../applogic/pageHelpers/createDeckHelper";
+import {mergeDecks} from "../../applogic/pageHelpers/mergeDeckHelper";
+import {mapkeys} from "../../applogic/flashcardHelperFunctions/gettingFlashCards";
+import {calculateFilter} from "../../applogic/FlashcardDisplayLogic/FlashCardFiltering";
 
 const test_mergeDeck_flashcard = (): FlashCardDeck => {
   const inputtext: string = test_createDeckHelpers_basicMultilineText()
