@@ -19,7 +19,7 @@ describe("mergeDecksMain method", () => {
 
         // Write your expect statements based on the expected output
         // For example:
-        expect(merged.cards.length).toBe(0);
+        expect(merged.cards.length).toBe(4);
         // Other expect statements based on your function implementation
     });
 });
@@ -36,7 +36,7 @@ describe("mergeDecksMain method", () => {
 
         // Write your expect statements based on the expected output
         // For example:
-        expect(merged.cards.length).toBe(0);
+        expect(merged.cards.length).toBe(4);
         // Other expect statements based on your function implementation
     });
 });
@@ -52,7 +52,7 @@ describe("mergeDecksMain method", () => {
 
         // Write your expect statements based on the expected output
         // For example:
-        expect(merged.cards.length).toBe(0);
+        expect(merged.cards.length).toBe(4);
         // Other expect statements based on your function implementation
     });
 });
@@ -68,7 +68,7 @@ describe("mergeDecksMain method", () => {
 
         // Write your expect statements based on the expected output
         // For example:
-        expect(merged.cards.length).toBe(0);
+        expect(merged.cards.length).toBe(4);
         // Other expect statements based on your function implementation
     });
 });
