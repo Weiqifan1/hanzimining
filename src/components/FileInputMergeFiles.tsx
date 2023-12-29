@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { FilePond } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
 import {FlashCardDeck} from "../interfaces/flashcarddeck";
+import {FlashCard} from "../interfaces/flashcard";
+import {getHashCode} from "../applogic/pageHelpers/mergeDeckHelper";
 //import { FlashCardDeck } from './FlashCardDeck'; // Assume this is where you import from
 
 type Props = {
@@ -9,7 +11,7 @@ type Props = {
     // other props as needed
 };
 
-const FileInputMergeFiles: React.FC<Props> = ({ handleContent }) => {
+export const FileInputMergeFiles: React.FC<Props> = ({ handleContent }) => {
 
     //lav mappen om til: Map<number, [string, FlashCardDeck | null]>
     const [flashCardDecks, setFlashCardDecks] =
@@ -23,18 +25,6 @@ const FileInputMergeFiles: React.FC<Props> = ({ handleContent }) => {
         handleContent(flatDeck);
     }
 
-    function getHashCode(deck: FlashCardDeck): string {
-        // Convert object to string
-        // You might want to select certain properties of the `FlashCardDeck` object if not all are needed
-        let str = JSON.stringify(deck);
-
-        let hash = 5381;
-        for (let i = 0; i < str.length; i++) {
-            let char = str.charCodeAt(i);
-            hash = ((hash << 5) + hash) + char; /* hash * 33 + c */
-        }
-        return hash.toString();
-    }
 
     const readAndParseFile = (file: any): Promise<FlashCardDeck | null> => {
         return new Promise((resolve, reject) => {

@@ -90,3 +90,36 @@ export function mergeDecks(oldDeck: FlashCardDeck, newDeck: FlashCardDeck): Flas
    const updatedWholeDeck: FlashCardDeck = {...oldDeck, cards: updatedCards, tags: updatedDeckTags}
    return updatedWholeDeck
 }
+
+//***************  new merge deck ********************
+
+
+export const getHashCode = (deck: FlashCardDeck): string => {
+   // Convert object to string
+   // You might want to select certain properties of the `FlashCardDeck` object if not all are needed
+   let str = JSON.stringify(deck);
+
+   let hash = 5381;
+   for (let i = 0; i < str.length; i++) {
+      let char = str.charCodeAt(i);
+      hash = ((hash << 5) + hash) + char; /* hash * 33 + c */
+   }
+   return hash.toString();
+}
+
+
+
+
+export const getHashCodeCard = (deck: FlashCard): string => {
+   // Convert object to string
+   // You might want to select certain properties of the `FlashCardDeck` object if not all are needed
+   let str = JSON.stringify(deck);
+
+   let hash = 5381;
+   for (let i = 0; i < str.length; i++) {
+      let char = str.charCodeAt(i);
+      hash = ((hash << 5) + hash) + char; /* hash * 33 + c */
+   }
+   return hash.toString();
+}
+
