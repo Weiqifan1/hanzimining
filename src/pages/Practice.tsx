@@ -1,5 +1,5 @@
 
-import React, {ReactElement, useEffect, useRef, useState} from "react";
+import React, {MutableRefObject, ReactElement, useEffect, useRef, useState} from "react";
 import IPage from "../interfaces/page";
 import {useDispatch, useSelector} from "react-redux";
 import {bindActionCreators} from "redux";
@@ -26,6 +26,8 @@ const Practice: React.FunctionComponent<IPage> = props => {
 
     //the current card being looked at
     var currentContent: FlashCard;
+
+    const previousCard: MutableRefObject<FlashCard[]> = useRef<FlashCard[]>([]);
     const [showCharacterSRSContentElement, setShowCharacterSRSContentElement] = useState<boolean>(false)
     const [showPreviusCard, setShowPreviusCard] = useState<boolean>(false)
     const [addMoreCharactersTextField, setAddMoreCharactersTextField] = useState<string>("");
@@ -46,6 +48,21 @@ const Practice: React.FunctionComponent<IPage> = props => {
     )
     var cardDisplayLocalState: CardDisplay = showCardDisplay
     const localTagsFilterNumbers: Set<number> = getSettings_filtercardsbytag_numbers(characterSRSstate)
+
+    const previuscharacterLocalUpdate = (newChar: FlashCard | undefined): void => {
+        if (newChar) {
+            if (
+                previousCard.current.length > 0 &&
+                previousCard.current[0].cardNumber !== newChar.cardNumber
+            ) {
+                const updatedPrevius: FlashCard[] = [newChar, ...previousCard.current];
+                previousCard.current = updatedPrevius.slice(0, 2); // Limit to 2 elements if needed
+            } else if (previousCard.current.length === 0) {
+                const updatedPrevius: FlashCard[] = [newChar];
+                previousCard.current = updatedPrevius.slice(0, 1); // Limit to 1 element
+            }
+        }
+    };
 
     const todoPageContent = (): ReactElement => {
         let contentOrNotEnough;
@@ -69,6 +86,7 @@ const Practice: React.FunctionComponent<IPage> = props => {
             if (srscalculationResult.currentContent) {
                 //set global content variable
                 currentContent = srscalculationResult.currentContent
+                previuscharacterLocalUpdate(currentContent)
                 contentOrNotEnough = generateCardComponent(
                     srscalculationResult.currentContent,
                     showCharacterSRSContentElement,
@@ -81,19 +99,30 @@ const Practice: React.FunctionComponent<IPage> = props => {
         return contentOrNotEnough
     }
 
-    const showPreviusCharacter = (): ReactElement => {
-        if (showPreviusCard) {
-            const previusCard: FlashCard = getMostRecentCard()
-            if (previusCard.cardNumber > 0) {
-                const cardComponent = generateCardComponent(previusCard, true, {showPrimaryCardInfo: false, showSecondaryCardInfo: false, readAloud: false})
-                return cardComponent
-            }else {
-                return <p>no previus card</p>
+    const showPreviusCharacter = (
+        localpreviusCard: FlashCard[],
+        localshowPreviusCard: boolean
+    ): ReactElement => {
+        console.log('Breakpoint hit with:', { localpreviusCard, localshowPreviusCard });
+
+        if (localshowPreviusCard && localpreviusCard.length > 1) {
+            // Access the most recent card in the array
+            const mostRecentCard = localpreviusCard[1];
+
+            if (mostRecentCard.cardNumber > 0) {
+                const cardComponent = generateCardComponent(
+                    mostRecentCard, // Pass the most recent card
+                    showCharacterSRSContentElement,
+                    cardDisplayLocalState
+                );
+                return cardComponent;
+            } else {
+                return <p>no previus card</p>;
             }
-        }else {
-            return <section></section>
+        } else {
+            return <section></section>;
         }
-    }
+    };
 
     const generateCardComponent = (content: FlashCard, showSRSContent: boolean, cardDisplay: CardDisplay) => {
         return <CardComponent content={content}
@@ -107,7 +136,14 @@ const Practice: React.FunctionComponent<IPage> = props => {
         const allCharacters: number = characterSRSstate.cards.filter(eachContent => {
             return eachContent.repetitionValue > 0
         }).length
-        return <p>highest character: {finalCharValue} all characters: {allCharacters} filtered: {localTagsFilterNumbers.size}</p>
+        //return <p>highest character: {finalCharValue} all characters: {allCharacters} filtered: {localTagsFilterNumbers.size}</p>
+        return (
+            <section>
+                highest character: {finalCharValue} -
+                all characters: {allCharacters} -
+                filtered: {localTagsFilterNumbers.size}
+            </section>
+        );
     }
 
     //used to either add new character or delete old ones (remove it from the deck)
@@ -200,7 +236,8 @@ const Practice: React.FunctionComponent<IPage> = props => {
                 onKeyDown={handleKeyDown}
                 value={addMoreCharactersTextField} id="addMoreCharacters"
                 placeholder="addCharacters"
-                onInput={changeOnNewCharacterInputField}>
+                onInput={changeOnNewCharacterInputField}
+                autoComplete="off">
             </input>
             <button type="button" onClick={deleteANumberOfCharacters}>deleteLatestCharacters</button>
         </section>
@@ -380,21 +417,14 @@ const Practice: React.FunctionComponent<IPage> = props => {
         cardDisplayChangeState(updatedValue, cardDisplayLocalState)
     }
 
-    const showPrimaryInformationReactElement = (): ReactElement => {
+    const showInfoButtons = (): ReactElement => {
         return <section>
-            <button type="button" onClick={changeShowPrimaryInformationValue}>showPrimary:{cardDisplayLocalState.showPrimaryCardInfo.toString()}</button>
-        </section>
-    }
-
-    const showSecondaryInformationReactElement = (): ReactElement => {
-        return <section>
-            <button type="button" onClick={changeShowSecondaryInformationValue}>showSecondary:{cardDisplayLocalState.showSecondaryCardInfo.toString()}</button>
-        </section>
-    }
-
-    const readAloudReactElement = (): ReactElement => {
-        return <section>
-            <button type="button" onClick={changeReadAloud}>readAloud:{cardDisplayLocalState.readAloud.toString()}</button>
+            <button type="button"
+                    onClick={changeShowPrimaryInformationValue}>showPrimary:{cardDisplayLocalState.showPrimaryCardInfo.toString()}</button>
+            <button type="button"
+                    onClick={changeShowSecondaryInformationValue}>showSecondary:{cardDisplayLocalState.showSecondaryCardInfo.toString()}</button>
+            <button type="button"
+                    onClick={changeReadAloud}>readAloud:{cardDisplayLocalState.readAloud.toString()}</button>
         </section>
     }
 
@@ -403,14 +433,14 @@ const Practice: React.FunctionComponent<IPage> = props => {
         {displayMostRecentCharacters(previousCharactersState)}
         {displayNumberOfCharacters()}
         {addCharactersPageContent()}
-        {showPrimaryInformationReactElement()}
-        {showSecondaryInformationReactElement()}
-        {readAloudReactElement()}
-        <p>***</p>
+        {showInfoButtons()}
+
         {buttonsToShowAndHandleCharacterSRSContentElement()}
-        <p>***</p>
-        {showPreviusCharacter()}
-        {todoPageContent()}
+        <div className="side-by-side-container">
+            {todoPageContent()}
+            {showPreviusCharacter(previousCard.current, showPreviusCard.valueOf())}
+        </div>
+
     </section>
 };
 

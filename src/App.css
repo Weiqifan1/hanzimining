@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+
+.side-by-side-container {
+  display: flex;
+  gap: 20px; /* this adds space between the elements, adjust as needed */
+}
+
+.side-by-side-container > * {
+  flex: 1; /* This distributes space equally among the children */
+}
+
+.textarea-autosize {
+  border: none;
+  overflow: hidden;
+  resize: vertical; /* Allow manual vertical resizing */
+  min-height: 24px; /* Just a minimal height to ensure it starts small */
+}

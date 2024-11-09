@@ -1,5 +1,5 @@
 import classes from "./CardComponent.module.css"
-import {PropsWithChildren, ReactElement, useState} from "react";
+import {PropsWithChildren, ReactElement, useEffect, useState} from "react";
 import React from "react";
 import {FlashCard} from "../interfaces/flashcard";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,15 +31,25 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: C
     const [showNotableChardButtons, setShowNotableChardButtons] = useState<boolean>(false)
     const [tagToDisplay, setTagToDisplay] = useState<String>("")
     const [showTagButtons, setShowTagButtons] = useState<boolean>(false)
-    const [localCard, setLocalCard] = useState<FlashCard>(props.content)
+    //const [localCard, setLocalCard] = useState<FlashCard>(props.content)
 
     // primary and secondary information
     const [tempPrimaryInfo, setTempPrimaryInfo] = useState(props.content.primaryInfo);
+
+    useEffect(() => {
+        setTempPrimaryInfo(props.content.primaryInfo);
+    }, [props.content.secondaryInfo]);
+
+
     const handlePrimaryInfoInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
             // handle the input change here, maybe with something like:
         setTempPrimaryInfo(event.target.value);
     };
     const [tempSecondaryInfo, setTempSecondaryInfo] = useState(props.content.secondaryInfo);
+    useEffect(() => {
+        setTempSecondaryInfo(props.content.secondaryInfo);
+    }, [props.content.secondaryInfo]);
+
     const handleSecondaryInfoInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setTempSecondaryInfo(event.target.value);
     };
@@ -141,7 +151,9 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: C
         }
     }
 
-    const displayOriginalCharacter = (): JSX.Element => {
+    const displayOriginalCharacter = (content: FlashCard): JSX.Element => {
+
+        const testCard = ""
         const display: JSX.Element = <section>
             <ul>
                 { props.show ? <li className={classes.characterListElement}>{props.content.backSide}</li> : <li className={classes.characterListElement}></li>}
@@ -312,12 +324,12 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: C
         setTagToDisplay(tagName)
     }
 
-    const displayCard = (): JSX.Element => {
+    const displayCard = (content: FlashCard): JSX.Element => {
         if (cardToDisplay > -1 && cardExistInDeck(cardToDisplay, characterSRSstate)) {
             const newCard: FlashCard = getFlashCard(cardToDisplay, characterSRSstate);
             return displayNotableCard(newCard)
         }else {
-            return displayOriginalCharacter()
+            return displayOriginalCharacter(content)
         }
     }
 
@@ -338,7 +350,7 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: C
         {displayTagButtons()}
         {displayTag()}
         {displayAudio()}
-        {displayCard()}
+        {displayCard(content)}
     </section>
 }
 
