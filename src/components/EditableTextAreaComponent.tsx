@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import FlashCardStateManipulation from "../applogic/FlashcardDisplayLogic/FlashCardStateManipulation";
 
 interface EditableTextAreaProps {
@@ -19,8 +19,7 @@ const EditableTextArea: React.FC<EditableTextAreaProps> =
             if (textareaRef.current) {
                 const scrollHeight = textareaRef.current.scrollHeight;
                 const newHeight = scrollHeight + 20; // Add 20 pixels to the scrollHeight
-                textareaRef.current.style.height = '50px'; // Reset to minimum height first
-                textareaRef.current.style.height = `${newHeight}px`; // Then adjust to new height
+                textareaRef.current.style.height = `${newHeight}px`;
             }
         };
 
@@ -38,7 +37,7 @@ const EditableTextArea: React.FC<EditableTextAreaProps> =
                 ref={textareaRef}
                 value={info}
                 onChange={handleChange}
-                style={{ width: '300px', height: '50px', overflowY: 'hidden', resize: 'none' }}
+                style={{ width: '300px', minHeight: '200px', overflowY: 'hidden', resize: 'both' }}
             />
         ) : null;
     };

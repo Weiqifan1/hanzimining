@@ -436,7 +436,7 @@ const Practice: React.FunctionComponent<IPage> = props => {
         {showInfoButtons()}
 
         {buttonsToShowAndHandleCharacterSRSContentElement()}
-        <div className="side-by-side-container">
+        <div className={showPreviusCard ? "side-by-side-container" : ""}>
             {todoPageContent()}
             {showPreviusCharacter(previousCard.current, showPreviusCard.valueOf())}
         </div>
