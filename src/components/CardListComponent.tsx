@@ -7,7 +7,9 @@ const CardListComponent: React.FC<{data: FlashCard[], cardDisplay: CardDisplay}>
     return (
         <ul>
             {props.data.map((item) =>(
-                <CardComponent content={item} show={true} cardDisplay={props.cardDisplay}/>
+                <CardComponent content={item}
+                               show={true}
+                               cardDisplay={props.cardDisplay} alwaysShow={false}/>
             ))}
         </ul>
     )

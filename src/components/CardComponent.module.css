@@ -4,7 +4,7 @@
 
 /* Update the font-family to include the new Google Font */
 .characterListElement {
-    font-size: 40px;
+    font-size: 100px;
     font-family: 'LXGW WenKai Mono TC', 'KaiTi', 'STKaiti', serif;
 }
 

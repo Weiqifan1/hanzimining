@@ -18,9 +18,10 @@ import EditablePrimaryInfo from "./EditableTextAreaComponent";
 import EditableTextAreaComponent from "./EditableTextAreaComponent";
 import EditableTextArea from "./EditableTextAreaComponent";
 
-const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: CardDisplay}> =
-    (props: PropsWithChildren<{content: FlashCard, show: boolean, cardDisplay: CardDisplay}>) => {
+const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: CardDisplay, alwaysShow: boolean}> =
+    (props: PropsWithChildren<{content: FlashCard, show: boolean, cardDisplay: CardDisplay, alwaysShow: boolean}>) => {
 
+    const showData: boolean = props.show || props.alwaysShow
     const dispatch = useDispatch();
     const {editListItem} = bindActionCreators(characterSRSactionCreators, dispatch)
     const characterSRSstate = useSelector(
@@ -99,7 +100,7 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: C
                                                               contentEditable="true">
             {content.frontSide}</li> </section>
         const audioFrontSide: ReactElement = <section> <li>audio</li> </section>
-        if (!props.show && props.cardDisplay.readAloud) {
+        if (!showData && props.cardDisplay.readAloud) {
             return audioFrontSide
         } else {
             return ordinaryFrontSide
@@ -133,7 +134,7 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: C
         const withAudio: ReactElement = <section>
             <textarea id="audioid" className={classes.audioText} >{props.content.backSide}</textarea>
         </section>
-        if (!props.show) {
+        if (!showData) {
             return withAudio
         }else {
             return <section></section>
@@ -144,7 +145,7 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: C
         const withAudio: ReactElement = <section>
             <textarea id="audioid" className={classes.audioText} >{props.content.backSide}</textarea>
         </section>
-        if (props.show) {
+        if (showData) {
             return withAudio
         }else {
             return <section></section>
@@ -156,28 +157,28 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: C
         const testCard = ""
         const display: JSX.Element = <section>
             <ul>
-                { props.show ? <li className={classes.characterListElement}>{props.content.backSide}</li> : <li className={classes.characterListElement}></li>}
+                { showData ? <li className={classes.characterListElement}>{props.content.backSide}</li> : <li className={classes.characterListElement}></li>}
                 {<section><br/></section>}
-                { props.show ? <li onInput={(e) =>
+                { showData ? <li onInput={(e) =>
                     tempCardName = FlashCardStateManipulation.editStringvalue(e, props.content.cardName)}
                                    contentEditable="true">
                     {content.cardName}</li> : <li></li>}
-                { props.show ? <li>{content.cardNumber}</li> : <li></li>}
-                { props.show ? <li onInput={(e) =>
+                { showData ? <li>{content.cardNumber}</li> : <li></li>}
+                { showData ? <li onInput={(e) =>
                     tempReviewValue = FlashCardStateManipulation.editNumberValue(e, props.content.repetitionValue)}
                                    contentEditable="true">
                     {content.repetitionValue}</li> : <li></li>}
-                { props.show ? <li onInput={(e) =>
+                { showData ? <li onInput={(e) =>
                     tempDateOfLastReview = FlashCardStateManipulation.editStringvalue(e, props.content.dateOfLastReview)}
                                    contentEditable="true">
                     {content.dateOfLastReview}</li> : <li></li>}
-                { props.show ? <li>{content.repetitionHistory}</li> : <li></li>}
+                { showData ? <li>{content.repetitionHistory}</li> : <li></li>}
                 {renderFrontSide()}
-                { props.show ? <li onInput={(e) =>
+                { showData ? <li onInput={(e) =>
                     tempNotableCards = FlashCardStateManipulation.editNumberList(e, props.content.notableCards)}
                     contentEditable="true">
                     {FlashCardStateManipulation.displayNumberList(content.notableCards)}</li> : <li></li>}
-                { props.show ? <li onInput={(e) =>
+                { showData ? <li onInput={(e) =>
                     tempTagsOnCard = FlashCardStateManipulation.editTagList(e, props.content.tags,
                         Object.keys(characterSRSstate.tags))}
                     contentEditable="true">
@@ -185,7 +186,7 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: C
 
 
                 <li><EditableTextArea
-                    showCard={props.show}
+                    showCard={showData}
                     showArea={props.cardDisplay.showPrimaryCardInfo}
                     info={tempPrimaryInfo}//props.content.primaryInfo
                     infoStringToDisplay={"primary info:"}
@@ -193,7 +194,7 @@ const CardComponent: React.FC<{content: FlashCard, show: boolean, cardDisplay: C
                 /></li>
 
                 <li><EditableTextArea
-                    showCard={props.show}
+                    showCard={showData}
                     showArea={props.cardDisplay.showSecondaryCardInfo}
                     info={tempSecondaryInfo}//props.content.secondaryInfo
                     infoStringToDisplay={"secondary info:"}

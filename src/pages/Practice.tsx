@@ -90,7 +90,8 @@ const Practice: React.FunctionComponent<IPage> = props => {
                 contentOrNotEnough = generateCardComponent(
                     srscalculationResult.currentContent,
                     showCharacterSRSContentElement,
-                    cardDisplayLocalState)
+                    cardDisplayLocalState,
+                    false)
             }else {
                 contentOrNotEnough = <p>Content type is undefined!!! this is an error</p>
             }
@@ -110,10 +111,12 @@ const Practice: React.FunctionComponent<IPage> = props => {
             const mostRecentCard = localpreviusCard[1];
 
             if (mostRecentCard.cardNumber > 0) {
+
                 const cardComponent = generateCardComponent(
                     mostRecentCard, // Pass the most recent card
                     showCharacterSRSContentElement,
-                    cardDisplayLocalState
+                    cardDisplayLocalState,
+                    true
                 );
                 return cardComponent;
             } else {
@@ -124,10 +127,13 @@ const Practice: React.FunctionComponent<IPage> = props => {
         }
     };
 
-    const generateCardComponent = (content: FlashCard, showSRSContent: boolean, cardDisplay: CardDisplay) => {
+    const generateCardComponent = (
+        content: FlashCard, showSRSContent: boolean, cardDisplay: CardDisplay, alwaysShow: boolean) => {
+
         return <CardComponent content={content}
                        show={showSRSContent}
-                       cardDisplay={cardDisplay}/>
+                       cardDisplay={cardDisplay}
+                       alwaysShow={alwaysShow}/>
     }
 
     const displayNumberOfCharacters = (): ReactElement => {
