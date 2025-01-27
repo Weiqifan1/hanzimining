@@ -175,6 +175,19 @@ const Practice: React.FunctionComponent<IPage> = props => {
         return charsToAdd
     }
 
+    const addOrRemoveCardsToPracticeFromList = (charactersToAdd: number[]): FlashCard[] => {
+        let charsToAdd: FlashCard[];
+        const sortedCharactersLowestToHighest: FlashCard[] = characterSRSstate.cards.sort(function sort(a: FlashCard, b: FlashCard){if (a.cardNumber < b.cardNumber) {return -1; }if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
+        const onlyCharactersWithReviewValueAt0: FlashCard[] = sortedCharactersLowestToHighest.filter(eachContent => eachContent.repetitionValue === 0)
+        charsToAdd = onlyCharactersWithReviewValueAt0.filter(x => charactersToAdd.includes(x.cardNumber))
+
+        let charsToAddUpdated = charsToAdd.map(eachContent => {
+            const updatedContent: FlashCard = {...eachContent, repetitionValue: 1}
+            return updatedContent
+        })
+        return charsToAddUpdated
+    }
+
     const getNewFinalCharValue = (charactersToAdd: number): number => {
         const sortedCharactersLowestToHighest: FlashCard[] = characterSRSstate.cards.sort(function sort(a: FlashCard, b: FlashCard){if (a.cardNumber < b.cardNumber) {return -1; }if (a.cardNumber > b.cardNumber) {return 1;}return 0;})
         const onlyCharactersWithReviewValueAt0: FlashCard[] = sortedCharactersLowestToHighest.filter(eachContent => eachContent.repetitionValue === 0)
@@ -190,12 +203,37 @@ const Practice: React.FunctionComponent<IPage> = props => {
         setAddMoreCharactersTextField("")
         editListItemInBulk(charactersToDelete, characterSRSstate)
     }
+
     const addANumberOfCharacters = () => {
-        const charactersYouWantToAdd: number = Number(addMoreCharactersTextField) ? Number(addMoreCharactersTextField) : 0
-        const newCharactersToBeAdded: FlashCard[] = addOrRemoveCardsToPractice(charactersYouWantToAdd, true)
-        setAddMoreCharactersTextField("")
-        editListItemInBulk(newCharactersToBeAdded, characterSRSstate)
+        if (!isNaN(Number(addMoreCharactersTextField))) {
+            const charactersYouWantToAdd: number = Number(addMoreCharactersTextField) ? Number(addMoreCharactersTextField) : 0
+            const newCharactersToBeAdded: FlashCard[] = addOrRemoveCardsToPractice(charactersYouWantToAdd, true)
+            setAddMoreCharactersTextField("")
+            editListItemInBulk(newCharactersToBeAdded, characterSRSstate)
+        } else {
+            const numberli = parseNumberList(addMoreCharactersTextField)
+            if (numberli.length > 0) {
+                const newCharactersToBeAdded: FlashCard[] = addOrRemoveCardsToPracticeFromList(numberli)
+                setAddMoreCharactersTextField("")
+                editListItemInBulk(newCharactersToBeAdded, characterSRSstate)
+            } else {
+                setAddMoreCharactersTextField("no nums in list")
+            }
+        }
+
+
     }
+
+    const parseNumberList = (input: string): number[] => {
+        return (
+            input
+                .split(",") // Split the string by commas
+                .filter(value => value.trim() !== "") // Remove empty strings and whitespace
+                .map(Number) // Convert each remaining string to a number
+                .filter(Number.isFinite) // Ensure the result contains only valid numbers
+        );
+    };
+
     const changeOnNewCharacterInputField = (e: React.FormEvent<HTMLInputElement>) => {
         setAddMoreCharactersTextField(e.currentTarget.value)
     }
