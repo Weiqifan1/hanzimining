@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/hanzimining/static/css/main.bf699aed.chunk.css",
+    "main.js": "/hanzimining/static/js/main.a320ca11.chunk.js",
+    "main.js.map": "/hanzimining/static/js/main.a320ca11.chunk.js.map",
+    "runtime-main.js": "/hanzimining/static/js/runtime-main.3363f618.js",
+    "runtime-main.js.map": "/hanzimining/static/js/runtime-main.3363f618.js.map",
+    "static/css/2.3f901481.chunk.css": "/hanzimining/static/css/2.3f901481.chunk.css",
+    "static/js/2.3dfb96d9.chunk.js": "/hanzimining/static/js/2.3dfb96d9.chunk.js",
+    "static/js/2.3dfb96d9.chunk.js.map": "/hanzimining/static/js/2.3dfb96d9.chunk.js.map",
+    "static/js/3.70f9e196.chunk.js": "/hanzimining/static/js/3.70f9e196.chunk.js",
+    "static/js/3.70f9e196.chunk.js.map": "/hanzimining/static/js/3.70f9e196.chunk.js.map",
+    "index.html": "/hanzimining/index.html",
+    "static/css/2.3f901481.chunk.css.map": "/hanzimining/static/css/2.3f901481.chunk.css.map",
+    "static/css/main.bf699aed.chunk.css.map": "/hanzimining/static/css/main.bf699aed.chunk.css.map",
+    "static/js/2.3dfb96d9.chunk.js.LICENSE.txt": "/hanzimining/static/js/2.3dfb96d9.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.3363f618.js",
+    "static/css/2.3f901481.chunk.css",
+    "static/js/2.3dfb96d9.chunk.js",
+    "static/css/main.bf699aed.chunk.css",
+    "static/js/main.a320ca11.chunk.js"
+  ]
+}
